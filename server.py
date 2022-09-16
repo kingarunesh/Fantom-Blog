@@ -42,37 +42,37 @@ app = Flask(__name__)
 ##################################################################################
 @app.route("/")
 def home():
-    return render_template("index.html", path=request.path)
+    return render_template("blog/index.html", path=request.path)
 
 
 @app.route("/blog")
 def blog():
-    return render_template("blogs.html", path=request.path)
+    return render_template("blog/blogs.html", path=request.path)
 
 
 @app.route("/post-detail")
 def post_detail():
-    return render_template("post-detail.html")
+    return render_template("blog/post-detail.html")
 
 
 @app.route("/about")
 def about():
-    return render_template("about.html", path=request.path)
+    return render_template("blog/about.html", path=request.path)
 
 
 @app.route("/contact")
 def contact():
-    return render_template("contact.html", path=request.path)
+    return render_template("blog/contact.html", path=request.path)
 
 
 @app.route("/register")
 def register():
-    return render_template("register.html", path=request.path)
+    return render_template("blog/register.html", path=request.path)
 
 
 @app.route("/login")
 def login():
-    return render_template("login.html", path=request.path)
+    return render_template("blog/login.html", path=request.path)
 
 
 @app.route("/logout")
