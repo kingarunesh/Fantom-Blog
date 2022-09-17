@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import desc
 from datetime import datetime as dt
 
 
@@ -59,8 +60,8 @@ def new_post():
         image_url = request.form["image_url"]
         category = request.form["category"]
         tags = request.form["tags"]
-        created_date = dt.now().strftime("%d %B %Y")
-        updated_date = dt.now().strftime("%d %B %Y")
+        created_date = dt.now().strftime("%H:%M | %d %B %Y")
+        updated_date = dt.now().strftime("%H:%M | %d %B %Y")
         total_view = 1
 
         add_post = Post(
@@ -83,9 +84,32 @@ def new_post():
     return render_template("admin/new-post.html", path=request.path)
 
 
+@app.route("/admin/update-post/<int:post_id>", methods=["GET", "POST"])
+def update_post(post_id):
+    post = Post.query.get(post_id)
+
+    if request.method == "POST":
+        post.title = request.form["title"]
+        post.subtitle = request.form["subtitle"]
+        post.description = request.form["description"]
+        post.image_url = request.form["image_url"]
+        post.category = request.form["category"]
+        post.tags = request.form["tags"]
+        post.updated_date = dt.now().strftime("%H:%M | %d %B %Y")
+
+        db.session.add(post)
+        db.session.commit()
+
+        return redirect(url_for("get_all_post"))
+
+    return render_template("admin/update-post.html", post=post)
+
+
 @app.route("/admin/get-all-post")
 def get_all_post():
-    posts = Post.query.all()
+    # posts = Post.query.all()
+    posts = Post.query.order_by(desc(Post.updated_date)).all()
+
     return render_template("admin/posts.html", path=request.path, posts=posts)
 
 

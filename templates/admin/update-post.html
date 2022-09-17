@@ -2,13 +2,12 @@
 
 <main id="main" class="main">
   <div class="pagetitle">
-    <h1>Create New Post</h1>
+    <h1>Form Layouts</h1>
     <nav>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-          <a href="{{ url_for('dashboard') }}">Home</a>
-        </li>
-        <li class="breadcrumb-item">Create New Post</li>
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item">Forms</li>
+        <li class="breadcrumb-item active">Layouts</li>
       </ol>
     </nav>
   </div>
@@ -18,14 +17,10 @@
       <div class="col-lg-12">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Post Form</h5>
+            <h5 class="card-title">Multi Columns Form</h5>
 
             <!-- Multi Columns Form -->
-            <form
-              class="row g-3"
-              action="{{ url_for('new_post') }}"
-              method="POST"
-            >
+            <form class="row g-3" method="POST">
               <div class="col-md-12">
                 <label for="title" class="form-label">Title</label>
                 <input
@@ -33,6 +28,7 @@
                   name="title"
                   class="form-control"
                   id="title"
+                  value="{{ post.title }}"
                 />
               </div>
 
@@ -43,6 +39,7 @@
                   name="subtitle"
                   class="form-control"
                   id="subtitle"
+                  value="{{ post.subtitle }}"
                 />
               </div>
 
@@ -53,6 +50,7 @@
                   class="form-control"
                   id="image"
                   name="image_url"
+                  value="{{ post.image_url }}"
                 />
               </div>
 
@@ -63,13 +61,17 @@
                   style="height: 100px"
                   id="image"
                   name="description"
-                ></textarea>
+                >
+{{ post.description }}</textarea
+                >
               </div>
 
               <div class="col-md-6">
                 <label for="category" class="form-label">Category</label>
                 <select id="category" class="form-select" name="category">
-                  <option selected>Choose...</option>
+                  <option selected="{{ post.category }}">
+                    {{ post.category }}
+                  </option>
                   <option value="Business">Business</option>
                   <option value="Food">Food</option>
                   <option value="Fashion and beauty">Fashion and beauty</option>
@@ -92,6 +94,7 @@
                   id="tags"
                   name="tags"
                   placeholder="Delhi Tour, Bangalore Place, India Gate"
+                  value="{{ post.tags }}"
                 />
               </div>
 
