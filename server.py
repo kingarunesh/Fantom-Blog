@@ -85,7 +85,8 @@ def new_post():
 
 @app.route("/admin/get-all-post")
 def get_all_post():
-    return render_template("admin/posts.html", path=request.path)
+    posts = Post.query.all()
+    return render_template("admin/posts.html", path=request.path, posts=posts)
 
 
 @app.route("/admin/profile")
