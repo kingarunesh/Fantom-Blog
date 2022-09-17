@@ -7,33 +7,33 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <link rel="icon" href="static/img/favicon.png" type="image/png" />
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png" />
     <title>Fantom Blog</title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="static/css/bootstrap.css" />
-    <link rel="stylesheet" href="static/vendors/linericon/style.css" />
-    <link rel="stylesheet" href="static/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendors/linericon/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" />
     <link
       rel="stylesheet"
-      href="static/vendors/owl-carousel/owl.carousel.min.css"
+      href="{{ url_for('static', filename='vendors/owl-carousel/owl.carousel.min.css') }}"
     />
-    <link rel="stylesheet" href="static/vendors/lightbox/simpleLightbox.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendors/lightbox/simpleLightbox.css') }}" />
     <link
       rel="stylesheet"
-      href="static/vendors/nice-select/css/nice-select.css"
+      href="{{ url_for('static', filename='vendors/nice-select/css/nice-select.css') }}"
     />
-    <link rel="stylesheet" href="static/vendors/animate-css/animate.css" />
-    <link rel="stylesheet" href="static/vendors/jquery-ui/jquery-ui.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendors/animate-css/animate.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendors/jquery-ui/jquery-ui.css') }}" />
     <!-- main css -->
-    <link rel="stylesheet" href="static/css/style.css" />
-    <link rel="stylesheet" href="static/css/responsive.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}" />
   </head>
   <body>
     <!--================Header Menu Area =================-->
     <header class="header_area">
       <div class="logo_part">
         <div class="container">
-          <a class="logo" href="#"><img src="static/img/logo.png" alt="" /></a>
+          <a class="logo" href="#"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="" /></a>
         </div>
       </div>
       <div class="main_menu">
@@ -41,7 +41,7 @@
           <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <a class="navbar-brand logo_h" href="index.html"
-              ><img src="static/img/logo.png" alt=""
+              ><img src="{{ url_for('static', filename='img/logo.png') }}" alt=""
             /></a>
             <button
               class="navbar-toggler"
@@ -190,14 +190,14 @@
             <div class="single-footer-widget instafeed">
               <h6 class="footer_title">Instagram Feed</h6>
               <ul class="list instafeed d-flex flex-wrap">
-                <li><img src="static/img/instagram/Image-01.jpg" alt="" /></li>
-                <li><img src="static/img/instagram/Image-02.jpg" alt="" /></li>
-                <li><img src="static/img/instagram/Image-03.jpg" alt="" /></li>
-                <li><img src="static/img/instagram/Image-04.jpg" alt="" /></li>
-                <li><img src="static/img/instagram/Image-05.jpg" alt="" /></li>
-                <li><img src="static/img/instagram/Image-06.jpg" alt="" /></li>
-                <li><img src="static/img/instagram/Image-07.jpg" alt="" /></li>
-                <li><img src="static/img/instagram/Image-08.jpg" alt="" /></li>
+                <li><img src="static/img/instagram/Image-01.jpg {{ url_for('static', filename='') }}" alt="" /></li>
+                <li><img src="static/img/instagram/Image-02.jpg {{ url_for('static', filename='') }}" alt="" /></li>
+                <li><img src="static/img/instagram/Image-03.jpg {{ url_for('static', filename='') }}" alt="" /></li>
+                <li><img src="static/img/instagram/Image-04.jpg {{ url_for('static', filename='') }}" alt="" /></li>
+                <li><img src="static/img/instagram/Image-05.jpg {{ url_for('static', filename='') }}" alt="" /></li>
+                <li><img src="static/img/instagram/Image-06.jpg {{ url_for('static', filename='') }}" alt="" /></li>
+                <li><img src="static/img/instagram/Image-07.jpg {{ url_for('static', filename='') }}" alt="" /></li>
+                <li><img src="static/img/instagram/Image-08.jpg {{ url_for('static', filename='') }}" alt="" /></li>
               </ul>
             </div>
           </div>
@@ -236,18 +236,18 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="static/js/jquery-3.2.1.min.js"></script>
-    <script src="static/js/popper.js"></script>
-    <script src="static/js/bootstrap.min.js"></script>
-    <script src="static/js/stellar.js"></script>
-    <script src="static/vendors/lightbox/simpleLightbox.min.js"></script>
-    <script src="static/vendors/nice-select/js/jquery.nice-select.min.js"></script>
-    <script src="static/vendors/isotope/imagesloaded.pkgd.min.js"></script>
-    <script src="static/vendors/isotope/isotope-min.js"></script>
-    <script src="static/vendors/owl-carousel/owl.carousel.min.js"></script>
-    <script src="static/vendors/jquery-ui/jquery-ui.js"></script>
-    <script src="static/js/jquery.ajaxchimp.min.js"></script>
-    <script src="static/js/mail-script.js"></script>
-    <script src="static/js/theme.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/stellar.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/lightbox/simpleLightbox.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/nice-select/js/jquery.nice-select.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/isotope/imagesloaded.pkgd.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/isotope/isotope-min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/owl-carousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-ui/jquery-ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.ajaxchimp.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/mail-script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
   </body>
 </html>
