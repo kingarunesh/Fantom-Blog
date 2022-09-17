@@ -1,3 +1,4 @@
+from importlib.resources import path
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
@@ -34,10 +35,50 @@ app = Flask(__name__)
 #     updated_date = db.Column(db.String(250), nullable=False)
 
 
+##################################################################################
+#
+#           ADMIN ROUTES
+#
+##################################################################################
+@app.route("/admin")
+def dashboard():
+    return render_template("admin/index.html", path=request.path)
+
+
+@app.route("/admin/new-post")
+def new_post():
+    return render_template("admin/new-post.html", path=request.path)
+
+
+@app.route("/admin/get-all-post")
+def get_all_post():
+    return render_template("admin/posts.html", path=request.path)
+
+
+@app.route("/admin/profile")
+def admin_profile():
+    return render_template("admin/profile.html", path=request.path)
+
+
+@app.route("/admin/contact")
+def admin_contact():
+    return render_template("admin/contact.html", path=request.path)
+
+
+@app.route("/admin/register")
+def admin_register():
+    return render_template("admin/register.html", path=request.path)
+
+
+@app.route("/admin/login")
+def admin_login():
+    return render_template("admin/login.html", path=request.path)
+
+
 
 ##################################################################################
 #
-#           ROUTES
+#           BLOG ROUTES
 #
 ##################################################################################
 @app.route("/")
@@ -81,4 +122,4 @@ def logout():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")
