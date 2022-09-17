@@ -20,20 +20,39 @@
             <h5 class="card-title">Multi Columns Form</h5>
 
             <!-- Multi Columns Form -->
-            <form class="row g-3">
+            <form
+              class="row g-3"
+              action="{{ url_for('new_post') }}"
+              method="POST"
+            >
               <div class="col-md-12">
                 <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" />
+                <input
+                  type="text"
+                  name="title"
+                  class="form-control"
+                  id="title"
+                />
               </div>
 
               <div class="col-md-12">
                 <label for="subtitle" class="form-label">Subtitle</label>
-                <input type="text" class="form-control" id="subtitle" />
+                <input
+                  type="text"
+                  name="subtitle"
+                  class="form-control"
+                  id="subtitle"
+                />
               </div>
 
               <div class="col-md-12">
                 <label for="image" class="form-label">Image URL</label>
-                <input type="text" class="form-control" id="image" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="image"
+                  name="image_url"
+                />
               </div>
 
               <div class="col-md-12">
@@ -42,12 +61,13 @@
                   class="form-control"
                   style="height: 100px"
                   id="image"
+                  name="description"
                 ></textarea>
               </div>
 
               <div class="col-md-6">
                 <label for="category" class="form-label">Category</label>
-                <select id="category" class="form-select">
+                <select id="category" class="form-select" name="category">
                   <option selected>Choose...</option>
                   <option value="Business">Business</option>
                   <option value="Food">Food</option>
@@ -69,6 +89,7 @@
                   type="text"
                   class="form-control"
                   id="tags"
+                  name="tags"
                   placeholder="Delhi Tour, Bangalore Place, India Gate"
                 />
               </div>
