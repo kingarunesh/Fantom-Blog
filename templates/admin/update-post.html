@@ -54,6 +54,7 @@
                 />
               </div>
 
+              {#
               <div class="col-md-12">
                 <label for="description" class="form-label">Textarea</label>
                 <textarea
@@ -64,6 +65,13 @@
                 >
 {{ post.description }}</textarea
                 >
+              </div>
+              #}
+
+              <div class="col-md-12">
+                <label for="description" class="form-label">Textarea</label>
+
+                {{ ckeditor.create(value='{{ post.description }}') }}
               </div>
 
               <div class="col-md-6">
@@ -110,4 +118,9 @@
   </section>
 </main>
 <!-- End #main -->
+
+{{ ckeditor.load() }}{{ ckeditor.config() }}
+
+<!--  -->
+
 {% endblock %}

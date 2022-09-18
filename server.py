@@ -2,9 +2,14 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 from datetime import datetime as dt
+from flask_ckeditor import CKEditor
+
 
 
 app = Flask(__name__)
+
+app = Flask(__name__)
+ckeditor = CKEditor(app)
 
 
 ##################################################################################
@@ -62,7 +67,8 @@ def new_post():
     if request.method == "POST":
         title = request.form["title"]
         subtitle = request.form["subtitle"]
-        description = request.form["description"]
+        # description = request.form["description"]
+        description = request.form.get("ckeditor")
         image_url = request.form["image_url"]
         category = request.form["category"]
         tags = request.form["tags"]
@@ -97,7 +103,8 @@ def update_post(post_id):
     if request.method == "POST":
         post.title = request.form["title"]
         post.subtitle = request.form["subtitle"]
-        post.description = request.form["description"]
+        # post.description = request.form["description"]
+        post.description = request.form.get("ckeditor")
         post.image_url = request.form["image_url"]
         post.category = request.form["category"]
         post.tags = request.form["tags"]

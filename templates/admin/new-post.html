@@ -56,7 +56,7 @@
                 />
               </div>
 
-              <div class="col-md-12">
+              <!-- <div class="col-md-12">
                 <label for="description" class="form-label">Textarea</label>
                 <textarea
                   class="form-control"
@@ -64,6 +64,11 @@
                   id="image"
                   name="description"
                 ></textarea>
+              </div> -->
+
+              <div class="col-md-12">
+                <label for="description" class="form-label">Textarea</label>
+                {{ ckeditor.create() }} {{ ckeditor.config(name='body') }}
               </div>
 
               <div class="col-md-6">
