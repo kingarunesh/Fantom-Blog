@@ -50,6 +50,12 @@ def dashboard():
     return render_template("admin/index.html", path=request.path)
 
 
+@app.route("/admin/get-all-post")
+def get_all_post():
+    posts = Post.query.order_by(desc(Post.updated_date)).all()
+    return render_template("admin/posts.html", path=request.path, posts=posts)
+
+
 @app.route("/admin/new-post", methods=["GET", "POST"])
 def new_post():
 
@@ -105,12 +111,19 @@ def update_post(post_id):
     return render_template("admin/update-post.html", post=post)
 
 
-@app.route("/admin/get-all-post")
-def get_all_post():
-    # posts = Post.query.all()
-    posts = Post.query.order_by(desc(Post.updated_date)).all()
+@app.route("/admin/delete-post/<int:post_id>", methods=["GET", "POST"])
+def delete_post(post_id):
+    post = Post.query.get(post_id)
 
-    return render_template("admin/posts.html", path=request.path, posts=posts)
+    # if request.method == "POST":
+    #     x = request.form["delete"]
+    #     print(x)
+
+    db.session.delete(post)
+    db.session.commit()
+
+    return redirect(url_for("get_all_post"))
+
 
 
 @app.route("/admin/profile")

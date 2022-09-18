@@ -83,7 +83,15 @@
                   </td>
                   <!-- DELETE POST -->
                   <td>
-                    <a href="#">
+                    {# <a
+                      href="{{ url_for('delete_post', post_id=post.id) }}"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                    > #}
+
+                    <a
+                      href="{{ url_for('delete_post', post_id=post.id) }}"
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="20"
@@ -110,4 +118,59 @@
   </section>
 </main>
 <!-- End #main -->
+
+<!-- Modal -->
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">DELETE POST</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          Are you sure to delete this post.
+
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="flexCheckDefault"
+              name="delete"
+            />
+            <label class="form-check-label" for="flexCheckDefault">
+              Default checkbox
+            </label>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
