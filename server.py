@@ -119,14 +119,9 @@ def update_post(post_id):
     return render_template("admin/update-post.html", post=post)
 
 
-@app.route("/admin/delete-post/<int:post_id>", methods=["GET", "POST"])
+@app.route("/admin/delete-post/<int:post_id>")
 def delete_post(post_id):
     post = Post.query.get(post_id)
-
-    # if request.method == "POST":
-    #     x = request.form["delete"]
-    #     print(x)
-
     db.session.delete(post)
     db.session.commit()
 
