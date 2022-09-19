@@ -1,3 +1,4 @@
+from unicodedata import category
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc, func
@@ -185,6 +186,7 @@ sidebar = {
     "popular_posts":popular_posts
 }
 
+
 ##################################################################################
 #
 #           BLOG ROUTES
@@ -200,6 +202,23 @@ def home():
     if search != None:
         search_posts = Post.query.filter(Post.title.contains(search)).all()
         return render_template("blog/search.html", path=request.path, posts=search_posts, sidebar=sidebar)
+
+    #   get posts by category
+    category = request.args.get("category")
+    if category != None:
+        category_posts = Post.query.filter_by(category=category).all()
+        return render_template("blog/search.html", path=request.path, posts=category_posts, sidebar=sidebar)
+    
+    # get posts by tag
+    query_tag = request.args.get("tag")
+    if query_tag != None:        
+        posts_list = Post.query.all()
+        tag_posts = []
+        for post in posts_list:
+            tag = post.tags
+            if query_tag in tag:
+                tag_posts.append(post)
+        return render_template("blog/search.html", path=request.path, posts=tag_posts, sidebar=sidebar)
     
     return render_template("blog/index.html", path=request.path, posts=posts, sidebar=sidebar)
 
@@ -207,12 +226,29 @@ def home():
 @app.route("/blog")
 def blog():
     posts = Post.query.order_by(desc(Post.updated_date)).all()
-
+    
     #   SEARCH RESULTS
     search = request.args.get("search")
     if search != None:
         search_posts = Post.query.filter(Post.title.contains(search)).all()
         return render_template("blog/search.html", path=request.path, posts=search_posts, sidebar=sidebar)
+
+    #   get posts by category
+    category = request.args.get("category")
+    if category != None:
+        category_posts = Post.query.filter_by(category=category).all()
+        return render_template("blog/search.html", path=request.path, posts=category_posts, sidebar=sidebar)
+    
+    # get posts by tag
+    query_tag = request.args.get("tag")
+    if query_tag != None:        
+        posts_list = Post.query.all()
+        tag_posts = []
+        for post in posts_list:
+            tag = post.tags
+            if query_tag in tag:
+                tag_posts.append(post)
+        return render_template("blog/search.html", path=request.path, posts=tag_posts, sidebar=sidebar)
 
     return render_template("blog/blogs.html", path=request.path, posts=posts, sidebar=sidebar)  
     
@@ -231,6 +267,23 @@ def post_detail(post_id):
     if search != None:
         search_posts = Post.query.filter(Post.title.contains(search)).all()
         return render_template("blog/search.html", path=request.path, posts=search_posts, sidebar=sidebar)
+
+    #   get posts by category
+    category = request.args.get("category")
+    if category != None:
+        category_posts = Post.query.filter_by(category=category).all()
+        return render_template("blog/search.html", path=request.path, posts=category_posts, sidebar=sidebar)
+    
+    # get posts by tag
+    query_tag = request.args.get("tag")
+    if query_tag != None:        
+        posts_list = Post.query.all()
+        tag_posts = []
+        for post in posts_list:
+            tag = post.tags
+            if query_tag in tag:
+                tag_posts.append(post)
+        return render_template("blog/search.html", path=request.path, posts=tag_posts, sidebar=sidebar)
 
     return render_template("blog/post-detail.html", post=post, sidebar=sidebar)
 
