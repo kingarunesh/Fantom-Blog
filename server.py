@@ -45,7 +45,7 @@ class Post(db.Model):
 
 db.create_all()
  
-
+#   NEW (  For admin routes and page setup  )
 ##################################################################################
 #
 #           ADMIN ROUTES
@@ -150,17 +150,12 @@ def admin_login():
     return render_template("admin/login.html", path=request.path)
 
 
-
+#   NEW (  For normal user routes and page setup  )
 ##################################################################################
 #
-#           BLOG ROUTES
+#           CATEGORIES, TAGS
 #
 ##################################################################################
-
-###########################
-#
-#   CATEGORIES, TAGS
-
 #   GET CATEGORIES WITH COUNT   
 categories_with_numbers = Post.query.with_entities(Post.category, func.count(Post.category)).group_by(Post.category).all()
 
@@ -171,7 +166,6 @@ posts = Post.query.all()
 tag_list = []
 for post in posts:
     tag = post.tags.split(',')
-    print(tag)
     for t in tag:
         tag_list.append(t)
  
@@ -191,17 +185,37 @@ sidebar = {
     "popular_posts":popular_posts
 }
 
+##################################################################################
+#
+#           BLOG ROUTES
+#
+##################################################################################
 @app.route("/")
 def home():
+    #   get all post by updated_date - order
     posts = Post.query.order_by(desc(Post.updated_date)).all()
+
+    #   SEARCH RESULTS
+    search = request.args.get("search")
+    if search != None:
+        search_posts = Post.query.filter(Post.title.contains(search)).all()
+        return render_template("blog/search.html", path=request.path, posts=search_posts, sidebar=sidebar)
+    
     return render_template("blog/index.html", path=request.path, posts=posts, sidebar=sidebar)
 
 
 @app.route("/blog")
 def blog():
     posts = Post.query.order_by(desc(Post.updated_date)).all()
-    return render_template("blog/blogs.html", path=request.path, posts=posts, sidebar=sidebar)
 
+    #   SEARCH RESULTS
+    search = request.args.get("search")
+    if search != None:
+        search_posts = Post.query.filter(Post.title.contains(search)).all()
+        return render_template("blog/search.html", path=request.path, posts=search_posts, sidebar=sidebar)
+
+    return render_template("blog/blogs.html", path=request.path, posts=posts, sidebar=sidebar)  
+    
 
 @app.route("/post-detail/<int:post_id>")
 def post_detail(post_id):
@@ -211,6 +225,12 @@ def post_detail(post_id):
     post.total_view += 1
     db.session.add(post)
     db.session.commit()
+
+    #   SEARCH RESULTS
+    search = request.args.get("search")
+    if search != None:
+        search_posts = Post.query.filter(Post.title.contains(search)).all()
+        return render_template("blog/search.html", path=request.path, posts=search_posts, sidebar=sidebar)
 
     return render_template("blog/post-detail.html", post=post, sidebar=sidebar)
 

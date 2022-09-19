@@ -1,0 +1,90 @@
+{% extends "blog/layouts/base.html" %} {% block content %}
+
+<!--================Home Banner Area =================-->
+<section class="banner_area">
+  <div class="banner_inner d-flex align-items-center">
+    <div
+      class="overlay bg-parallax"
+      data-stellar-ratio="0.9"
+      data-stellar-vertical-offset="0"
+      data-background=""
+    ></div>
+    <div class="container">
+      <div class="banner_content text-center">
+        <h2>Category</h2>
+        <div class="page_link">
+          <a href="{{ url_for('home') }}">Home</a>
+          <span style="color: white">Search Result</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--================End Home Banner Area =================-->
+
+<!--================Blog Area =================-->
+<section class="blog_area p_120">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="blog_left_sidebar">
+          {% for post in posts %}
+          <article class="blog_style1">
+            <div class="blog_img">
+              <img class="img-fluid" src="{{ post.image_url }}" alt="" />
+            </div>
+            <div class="blog_text">
+              <div class="blog_text_inner">
+                <a class="cat" href="#">{{ post.category }}</a>
+                <a href="{{ url_for('post_detail', post_id=post.id) }}"
+                  ><h4>{{ post.title }}</h4></a
+                >
+                <p>{{ post.subtitle }}</p>
+                <div class="date">
+                  <a href="#"
+                    ><i class="fa fa-calendar" aria-hidden="true"></i>{{
+                    post.updated_date }}</a
+                  >
+                  <a href="#"
+                    ><i class="fa fa-comments-o" aria-hidden="true"></i> 05</a
+                  >
+                </div>
+              </div>
+            </div>
+          </article>
+          {% endfor %}
+
+          <nav class="blog-pagination justify-content-center d-flex">
+            <ul class="pagination">
+              <li class="page-item">
+                <a href="#" class="page-link" aria-label="Previous">
+                  <span aria-hidden="true">
+                    <span class="lnr lnr-chevron-left"></span>
+                  </span>
+                </a>
+              </li>
+              <li class="page-item"><a href="#" class="page-link">01</a></li>
+              <li class="page-item active">
+                <a href="#" class="page-link">02</a>
+              </li>
+              <li class="page-item"><a href="#" class="page-link">03</a></li>
+              <li class="page-item"><a href="#" class="page-link">04</a></li>
+              <li class="page-item"><a href="#" class="page-link">09</a></li>
+              <li class="page-item">
+                <a href="#" class="page-link" aria-label="Next">
+                  <span aria-hidden="true">
+                    <span class="lnr lnr-chevron-right"></span>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <div class="col-lg-4">{% include 'blog/include/sidebar.html' %}</div>
+    </div>
+  </div>
+</section>
+<!--================Blog Area =================-->
+
+{% endblock %}
