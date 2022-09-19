@@ -55,7 +55,10 @@ db.create_all()
 @app.route("/admin")
 def dashboard():
     posts = Post.query.order_by(desc(Post.updated_date)).all()[:5]
-    return render_template("admin/index.html", path=request.path, posts=posts)
+    #   GET CATEGORIES WITH COUNT   
+    categories_with_numbers = Post.query.with_entities(Post.category, func.count(Post.category)).group_by(Post.category).all()
+
+    return render_template("admin/index.html", path=request.path, posts=posts, chart_data=categories_with_numbers)
 
 
 @app.route("/admin/get-all-post")

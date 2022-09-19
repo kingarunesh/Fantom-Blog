@@ -156,7 +156,7 @@
       <!-- End Left side columns -->
 
       <!-- Right side columns -->
-      <div class="col-lg-6">
+      <div class="col-lg-12">
         <!-- Recent Activity -->
         <div class="card">
           <div class="filter">
@@ -274,7 +274,7 @@
 
             <div
               id="trafficChart"
-              style="min-height: 400px"
+              style="min-height: 600px"
               class="echart"
             ></div>
 
@@ -287,14 +287,14 @@
                       trigger: "item",
                     },
                     legend: {
-                      top: "5%",
+                      top: "10%",
                       left: "center",
                     },
                     series: [
                       {
                         name: "Access From",
                         type: "pie",
-                        radius: ["40%", "70%"],
+                        radius: ["20%", "30%"],
                         avoidLabelOverlap: false,
                         label: {
                           show: false,
@@ -303,7 +303,7 @@
                         emphasis: {
                           label: {
                             show: true,
-                            fontSize: "18",
+                            fontSize: "16",
                             fontWeight: "bold",
                           },
                         },
@@ -311,26 +311,12 @@
                           show: false,
                         },
                         data: [
+                          "{% for x in chart_data: %}",
                           {
-                            value: 1048,
-                            name: "Search Engine",
+                            value: Number("{{ x[1] }}"),
+                            name: "{{ x[0] }}",
                           },
-                          {
-                            value: 735,
-                            name: "Direct",
-                          },
-                          {
-                            value: 580,
-                            name: "Email",
-                          },
-                          {
-                            value: 484,
-                            name: "Union Ads",
-                          },
-                          {
-                            value: 300,
-                            name: "Video Ads",
-                          },
+                          "{% endfor %}",
                         ],
                       },
                     ],
