@@ -126,12 +126,17 @@
                     <tr>
                       <th>{{ post.id }}</th>
                       <th scope="row">
-                        <a href="#"
+                        <a
+                          href="{{ url_for('post_detail', post_id=post.id) }}"
+                          target="_blank"
                           ><img src="{{ post.image_url }}" alt=""
                         /></a>
                       </th>
                       <td>
-                        <a href="#" class="text-primary fw-bold"
+                        <a
+                          href="{{ url_for('post_detail', post_id=post.id) }}"
+                          target="_blank"
+                          class="text-primary fw-bold"
                           >{{ post.title }}</a
                         >
                       </td>
