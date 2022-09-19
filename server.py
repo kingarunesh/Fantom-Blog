@@ -157,7 +157,8 @@ def admin_login():
 ##################################################################################
 @app.route("/")
 def home():
-    return render_template("blog/index.html", path=request.path)
+    posts = Post.query.order_by(desc(Post.updated_date)).all()
+    return render_template("blog/index.html", path=request.path, posts=posts)
 
 
 @app.route("/blog")
