@@ -52,7 +52,8 @@ db.create_all()
 ##################################################################################
 @app.route("/admin")
 def dashboard():
-    return render_template("admin/index.html", path=request.path)
+    posts = Post.query.order_by(desc(Post.updated_date)).all()[:5]
+    return render_template("admin/index.html", path=request.path, posts=posts)
 
 
 @app.route("/admin/get-all-post")

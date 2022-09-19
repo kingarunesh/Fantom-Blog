@@ -94,28 +94,27 @@
           <div class="col-12">
             <div class="card top-selling overflow-auto">
               <div class="filter">
-                <a class="icon" href="#" data-bs-toggle="dropdown"
-                  ><i class="bi bi-three-dots"></i
-                ></a>
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                  <li class="dropdown-header text-start">
-                    <h6>Filter</h6>
-                  </li>
-
-                  <li><a class="dropdown-item" href="#">Today</a></li>
-                  <li><a class="dropdown-item" href="#">This Month</a></li>
-                  <li><a class="dropdown-item" href="#">This Year</a></li>
-                </ul>
+                <a href="{{ url_for('get_all_post') }}" class="m-5"
+                  ><span
+                    style="
+                      color: rgb(10, 10, 222);
+                      font-size: 1.1rem;
+                      text-decoration: underline;
+                    "
+                    >All Posts</span
+                  ></a
+                >
               </div>
 
               <div class="card-body pb-0">
-                <h5 class="card-title">Last 5 Posts <span>| Today</span></h5>
+                <h5 class="card-title">Last 5 Posts</h5>
 
                 <table class="table table-borderless">
                   <thead>
                     <tr>
+                      <th scope="col">ID</th>
                       <th scope="col">Preview</th>
-                      <th scope="col">Title</th>
+                      <th scope="col" style="width: 400px">Title</th>
                       <th scope="col">Category</th>
                       <th scope="col">Updated Date</th>
                       <th scope="col">Views</th>
@@ -123,40 +122,24 @@
                     </tr>
                   </thead>
                   <tbody>
+                    {% for post in posts: %}
                     <tr>
+                      <th>{{ post.id }}</th>
                       <th scope="row">
                         <a href="#"
-                          ><img
-                            src="{{ url_for('static', filename='admin/assets/img/product-1.jpg') }}"
-                            alt=""
+                          ><img src="{{ post.image_url }}" alt=""
                         /></a>
                       </th>
                       <td>
                         <a href="#" class="text-primary fw-bold"
-                          >Ut inventore ipsa voluptas nulla</a
+                          >{{ post.title }}</a
                         >
                       </td>
-                      <td>$64</td>
-                      <td class="fw-bold">124</td>
-                      <td>$5,828</td>
+                      <td>{{ post.category }}</td>
+                      <td>{{ post.updated_date }}</td>
+                      <td class="fw-bold">{{ post.total_view }}</td>
                     </tr>
-                    <tr>
-                      <th scope="row">
-                        <a href="#"
-                          ><img
-                            src="{{ url_for('static', filename='admin/assets/img/product-2.jpg') }}"
-                            alt=""
-                        /></a>
-                      </th>
-                      <td>
-                        <a href="#" class="text-primary fw-bold"
-                          >Exercitationem similique doloremque</a
-                        >
-                      </td>
-                      <td>$46</td>
-                      <td class="fw-bold">98</td>
-                      <td>$4,508</td>
-                    </tr>
+                    {% endfor %}
                   </tbody>
                 </table>
               </div>
