@@ -30,6 +30,8 @@
               id="navbarSupportedContent"
             >
               <ul class="nav navbar-nav menu_nav">
+
+                <!-- home -->
                 <li
                 {% if '/' == path %}
                     class="nav-item active"
@@ -40,7 +42,7 @@
                   <a class="nav-link" href="{{ url_for('home') }}">Home</a>
                 </li>
 
-                
+                <!-- blog -->
                 <li
                   {% if '/blog' == path %}
                     class="nav-item active"
@@ -51,6 +53,7 @@
                   <a class="nav-link" href="{{ url_for('blog') }}">Blog</a>
                 </li>
 
+                <!-- about -->
                 <li 
                 {% if '/about' == path %}
                     class="nav-item active"
@@ -62,6 +65,7 @@
                     >About</a>
                 </li>
 
+                <!-- contact -->
                 <li 
                 {% if '/contact' == path %}
                     class="nav-item active"
@@ -72,9 +76,22 @@
                   <a class="nav-link" href="{{ url_for('contact') }}"
                     >Contact</a>
                 </li>
-
               </ul>
+
+              <!-- right side -->
               <ul class="nav navbar-nav navbar-right ml-auto">
+
+                {% if logged_in: %}
+                
+                <!-- logout -->
+                <li class="nav-item" >
+                  <a class="nav-link" href="{{ url_for('logout') }}"
+                    >Logout</a>
+                </li>
+
+                {% else %}
+
+                <!-- register -->
                 <li 
                 {% if '/register' == path %}
                     class="nav-item active"
@@ -86,6 +103,7 @@
                     >Register</a>
                 </li>
                 
+                <!-- login -->
                 <li 
                 {% if '/login' == path %}
                     class="nav-item active"
@@ -97,10 +115,9 @@
                     >Login</a>
                 </li>
 
-                <li class="nav-item" >
-                  <a class="nav-link" href="{{ url_for('logout') }}"
-                    >Logout</a>
-                </li>
+                
+                {% endif %}
+
               </ul>
             </div>
           </div>

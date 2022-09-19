@@ -218,13 +218,13 @@ def home():
     search = request.args.get("search")
     if search != None:
         search_posts = Post.query.filter(Post.title.contains(search)).all()
-        return render_template("blog/search.html", path=request.path, posts=search_posts, sidebar=sidebar)
+        return render_template("blog/search.html", path=request.path, posts=search_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
 
     #   get posts by category
     category = request.args.get("category")
     if category != None:
         category_posts = Post.query.filter_by(category=category).all()
-        return render_template("blog/search.html", path=request.path, posts=category_posts, sidebar=sidebar)
+        return render_template("blog/search.html", path=request.path, posts=category_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
     
     # get posts by tag
     query_tag = request.args.get("tag")
@@ -235,9 +235,9 @@ def home():
             tag = post.tags
             if query_tag in tag:
                 tag_posts.append(post)
-        return render_template("blog/search.html", path=request.path, posts=tag_posts, sidebar=sidebar)
+        return render_template("blog/search.html", path=request.path, posts=tag_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
     
-    return render_template("blog/index.html", path=request.path, posts=posts, sidebar=sidebar)
+    return render_template("blog/index.html", path=request.path, posts=posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
 
 
 @app.route("/blog")
@@ -248,13 +248,13 @@ def blog():
     search = request.args.get("search")
     if search != None:
         search_posts = Post.query.filter(Post.title.contains(search)).all()
-        return render_template("blog/search.html", path=request.path, posts=search_posts, sidebar=sidebar)
+        return render_template("blog/search.html", path=request.path, posts=search_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
 
     #   get posts by category
     category = request.args.get("category")
     if category != None:
         category_posts = Post.query.filter_by(category=category).all()
-        return render_template("blog/search.html", path=request.path, posts=category_posts, sidebar=sidebar)
+        return render_template("blog/search.html", path=request.path, posts=category_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
     
     # get posts by tag
     query_tag = request.args.get("tag")
@@ -265,9 +265,9 @@ def blog():
             tag = post.tags
             if query_tag in tag:
                 tag_posts.append(post)
-        return render_template("blog/search.html", path=request.path, posts=tag_posts, sidebar=sidebar)
+        return render_template("blog/search.html", path=request.path, posts=tag_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
 
-    return render_template("blog/blogs.html", path=request.path, posts=posts, sidebar=sidebar)  
+    return render_template("blog/blogs.html", path=request.path, posts=posts, sidebar=sidebar, logged_in=current_user.is_authenticated)  
     
 
 @app.route("/post-detail/<int:post_id>")
@@ -283,13 +283,13 @@ def post_detail(post_id):
     search = request.args.get("search")
     if search != None:
         search_posts = Post.query.filter(Post.title.contains(search)).all()
-        return render_template("blog/search.html", path=request.path, posts=search_posts, sidebar=sidebar)
+        return render_template("blog/search.html", path=request.path, posts=search_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
 
     #   get posts by category
     category = request.args.get("category")
     if category != None:
         category_posts = Post.query.filter_by(category=category).all()
-        return render_template("blog/search.html", path=request.path, posts=category_posts, sidebar=sidebar)
+        return render_template("blog/search.html", path=request.path, posts=category_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
     
     # get posts by tag
     query_tag = request.args.get("tag")
@@ -300,19 +300,19 @@ def post_detail(post_id):
             tag = post.tags
             if query_tag in tag:
                 tag_posts.append(post)
-        return render_template("blog/search.html", path=request.path, posts=tag_posts, sidebar=sidebar)
+        return render_template("blog/search.html", path=request.path, posts=tag_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
 
-    return render_template("blog/post-detail.html", post=post, sidebar=sidebar)
+    return render_template("blog/post-detail.html", post=post, sidebar=sidebar, logged_in=current_user.is_authenticated)
 
 
 @app.route("/about")
 def about():
-    return render_template("blog/about.html", path=request.path)
+    return render_template("blog/about.html", path=request.path, logged_in=current_user.is_authenticated)
 
 
 @app.route("/contact")
 def contact():
-    return render_template("blog/contact.html", path=request.path)
+    return render_template("blog/contact.html", path=request.path, logged_in=current_user.is_authenticated)
 
 
 @app.route("/register", methods=["GET", "POST"])
