@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import desc
+from sqlalchemy import desc, func
 from datetime import datetime as dt
 from flask_ckeditor import CKEditor
 
@@ -44,6 +44,7 @@ class Post(db.Model):
 
 
 db.create_all()
+ 
 
 ##################################################################################
 #
@@ -155,22 +156,63 @@ def admin_login():
 #           BLOG ROUTES
 #
 ##################################################################################
+
+###########################
+#
+#   CATEGORIES, TAGS
+
+#   GET CATEGORIES WITH COUNT   
+categories_with_numbers = Post.query.with_entities(Post.category, func.count(Post.category)).group_by(Post.category).all()
+
+
+#   tags
+posts = Post.query.all()
+# all tags
+tag_list = []
+for post in posts:
+    tag = post.tags.split(',')
+    print(tag)
+    for t in tag:
+        tag_list.append(t)
+ 
+# unique tags
+unique_tags = []
+for tag in tag_list:
+    if tag not in unique_tags:
+        unique_tags.append(tag)
+
+# get top 5 popular post by post view count
+popular_posts = Post.query.order_by(desc(Post.total_view))[:5]
+
+
+sidebar = {
+    "categories_with_numbers":categories_with_numbers,
+    "tags":unique_tags,
+    "popular_posts":popular_posts
+}
+
 @app.route("/")
 def home():
     posts = Post.query.order_by(desc(Post.updated_date)).all()
-    return render_template("blog/index.html", path=request.path, posts=posts)
+    return render_template("blog/index.html", path=request.path, posts=posts, sidebar=sidebar)
 
 
 @app.route("/blog")
 def blog():
     posts = Post.query.order_by(desc(Post.updated_date)).all()
-    return render_template("blog/blogs.html", path=request.path, posts=posts)
+    return render_template("blog/blogs.html", path=request.path, posts=posts, sidebar=sidebar)
 
 
 @app.route("/post-detail/<int:post_id>")
 def post_detail(post_id):
     post = Post.query.get(post_id)
-    return render_template("blog/post-detail.html", post=post)
+
+    # increase post view number
+    post.total_view += 1
+    db.session.add(post)
+    db.session.commit()
+
+    return render_template("blog/post-detail.html", post=post, sidebar=sidebar)
 
 
 @app.route("/about")

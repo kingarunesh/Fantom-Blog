@@ -36,7 +36,9 @@
             <div class="blog_text">
               <div class="blog_text_inner">
                 <a class="cat" href="#">{{ post.category }}</a>
-                <a href="#"><h4>{{ post.title }}</h4></a>
+                <a href="{{ url_for('post_detail', post_id=post.id) }}"
+                  ><h4>{{ post.title }}</h4></a
+                >
                 <p>{{ post.subtitle }}</p>
                 <div class="date">
                   <a href="#"
