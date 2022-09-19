@@ -163,7 +163,8 @@ def home():
 
 @app.route("/blog")
 def blog():
-    return render_template("blog/blogs.html", path=request.path)
+    posts = Post.query.order_by(desc(Post.updated_date)).all()
+    return render_template("blog/blogs.html", path=request.path, posts=posts)
 
 
 @app.route("/post-detail/<int:post_id>")
