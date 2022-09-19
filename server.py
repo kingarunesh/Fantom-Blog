@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc, func
 from datetime import datetime as dt
@@ -326,33 +326,67 @@ def register():
     profile_image = request.form.get("image")
     created_date = dt.now().strftime("%H:%M | %d %B %Y")
     last_login = dt.now().strftime("%H:%M | %d %B %Y")
-    admin = True
 
-    if request.method == "POST" and password == confirmPassword:
+    #   check email or phone in database exists
+    if User.query.filter_by(email=email).first():
+        flash("'Email' already exists, Please select different email address")
+        return redirect(url_for("register"))
+    elif User.query.filter_by(phone=phone).first():
+        flash("'Contact Number' already exists, Please select different phone number")
+        return redirect(url_for("register"))
+    
+    #   save data in database
+    if request.method == "POST":
+        if password == confirmPassword:
+            #   generate hash password
+            password = generate_password_hash(password, method="pbkdf2:sha256", salt_length=10)
 
-        password = generate_password_hash(password, method="pbkdf2:sha256", salt_length=10)
+            new_user = User(firstName=firstName,lastName=lastName,email=email,phone=phone,password=password,profile_image=profile_image,
+            created_date=created_date,last_login=last_login)
 
-        new_user = User(firstName=firstName,lastName=lastName,email=email,phone=phone,password=password,profile_image=profile_image,
-        created_date=created_date,last_login=last_login,admin=admin)
+            db.session.add(new_user)
+            db.session.commit()
 
-        db.session.add(new_user)
-        db.session.commit()
+            login_user(new_user)
 
-        login_user(new_user)
-
-        return redirect(url_for("home"))
+            return redirect(url_for("home"))
+        else:
+            flash("'Password' not match with 'Confirm Password', Please enter same password.")
+            return redirect(url_for("register"))
 
     return render_template("blog/register.html", path=request.path)
 
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+
+        user = User.query.filter_by(email=email).first()
+
+        #   user not exists
+        if user == None:
+            flash("'Email' doesn't exists, Please create new account")
+            return redirect(url_for("register"))
+
+        # if user exists then login user
+        if user != None:
+            if check_password_hash(pwhash=user.password, password=password):
+                login_user(user)
+                return redirect(url_for('home'))
+            else:
+                flash("Wrong Password, Please enter correct password.")
+                return redirect(url_for("login"))
+
     return render_template("blog/login.html", path=request.path)
 
 
 @app.route("/logout")
+@login_required
 def logout():
-    pass
+    logout_user()
+    return redirect(url_for('home'))
 
 
 if __name__ == "__main__":
