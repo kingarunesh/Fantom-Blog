@@ -1,17 +1,27 @@
-from unicodedata import category
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc, func
 from datetime import datetime as dt
 from flask_ckeditor import CKEditor
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, current_user, login_user, logout_user, login_required, login_user, UserMixin
 
 
-
+#   FLASK
 app = Flask(__name__)
+app.config['SECRET_KEY']='iloveyounidawhyyoublockedme'
 
-app = Flask(__name__)
+
+#   CKEditor
 ckeditor = CKEditor(app)
 
+#   Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
 
 ##################################################################################
 #
@@ -22,13 +32,17 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blogs.db'
 db = SQLAlchemy(app)
 
 
-# class User(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(250), nullable=False)
-#     email = db.Column(db.String(250), unique=True, nullable=False)
-#     password = db.Column(db.String(250), nullable=False)
-#     phone = db.Column(db.String(15), unique=True, nullable=False)
-#     admin = db.Column(db.Boolean, default=False, nullable=False)
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    firstName = db.Column(db.String(250), nullable=False)
+    lastName = db.Column(db.String(250), nullable=False)
+    email = db.Column(db.String(250), unique=True, nullable=False)
+    phone = db.Column(db.String(15), unique=True, nullable=False)
+    password = db.Column(db.String(250), nullable=False)
+    admin = db.Column(db.Boolean, default=False, nullable=False)
+    profile_image = db.Column(db.String(500), nullable=False)
+    created_date = db.Column(db.String(250), nullable=False)
+    last_login = db.Column(db.String(250), nullable=False)
 
 
 class Post(db.Model):
@@ -301,8 +315,33 @@ def contact():
     return render_template("blog/contact.html", path=request.path)
 
 
-@app.route("/register")
+@app.route("/register", methods=["GET", "POST"])
 def register():
+    firstName = request.form.get("firstName")
+    lastName = request.form.get("lastName")
+    email = request.form.get("email")
+    phone = request.form.get("phone")
+    password = request.form.get("password")
+    confirmPassword = request.form.get("confirmPassword")
+    profile_image = request.form.get("image")
+    created_date = dt.now().strftime("%H:%M | %d %B %Y")
+    last_login = dt.now().strftime("%H:%M | %d %B %Y")
+    admin = True
+
+    if request.method == "POST" and password == confirmPassword:
+
+        password = generate_password_hash(password, method="pbkdf2:sha256", salt_length=10)
+
+        new_user = User(firstName=firstName,lastName=lastName,email=email,phone=phone,password=password,profile_image=profile_image,
+        created_date=created_date,last_login=last_login,admin=admin)
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        login_user(new_user)
+
+        return redirect(url_for("home"))
+
     return render_template("blog/register.html", path=request.path)
 
 

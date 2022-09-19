@@ -14,7 +14,7 @@
         <h2>Register New Account</h2>
         <div class="page_link">
           <a href="{{ url_for('home') }}">Home</a>
-          <span style="color: white">Register</span>
+          <span style="color: white">Create New Account</span>
         </div>
       </div>
     </div>
@@ -27,30 +27,29 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-6">
-        <form
-          class="row contact_form"
-          action="contact_process.php"
-          method="POST"
-        >
+        <form class="row contact_form" method="POST">
           <div class="col-md-12">
+            <!-- first name -->
             <div class="form-group">
               <input
                 type="text"
                 class="form-control"
                 id="name"
-                name="name"
+                name="firstName"
                 placeholder="First Name"
               />
             </div>
+            <!-- last name -->
             <div class="form-group">
               <input
                 type="text"
                 class="form-control"
                 id="name"
-                name="name"
+                name="lastName"
                 placeholder="Last Name"
               />
             </div>
+            <!-- email -->
             <div class="form-group">
               <input
                 type="email"
@@ -60,6 +59,27 @@
                 placeholder="Enter email address"
               />
             </div>
+            <!-- phone number -->
+            <div class="form-group">
+              <input
+                type="number"
+                class="form-control"
+                id="name"
+                name="phone"
+                placeholder="Contact Number"
+              />
+            </div>
+            <!-- profile image -->
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="image"
+                placeholder="Profile Image URL"
+              />
+            </div>
+            <!-- password -->
             <div class="form-group">
               <input
                 type="password"
@@ -69,12 +89,13 @@
                 placeholder="Password"
               />
             </div>
+            <!-- confirm password -->
             <div class="form-group">
               <input
                 type="password"
                 class="form-control"
                 id="confirm-password"
-                name="confirm-password"
+                name="confirmPassword"
                 placeholder="Confirm Password"
               />
             </div>
