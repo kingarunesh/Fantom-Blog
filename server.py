@@ -166,9 +166,10 @@ def blog():
     return render_template("blog/blogs.html", path=request.path)
 
 
-@app.route("/post-detail")
-def post_detail():
-    return render_template("blog/post-detail.html")
+@app.route("/post-detail/<int:post_id>")
+def post_detail(post_id):
+    post = Post.query.get(post_id)
+    return render_template("blog/post-detail.html", post=post)
 
 
 @app.route("/about")
