@@ -23,99 +23,115 @@
 <!--================End Home Banner Area =================-->
 
 <!--================Contact Area =================-->
-<section class="contact_area p_120">
+<section class="contact_area pad-form">
   <div class="container">
     <div class="row">
-      <div class="col-lg-6">
-        <form
-          class="row contact_form"
-          action="{{ url_for('register') }}"
-          method="POST"
-        >
-          {% with messages = get_flashed_messages() %} {% if messages %} {% for
-          message in messages %}
-          <p style="color: red">{{ message }}</p>
-          {% endfor %} {% endif %} {% endwith %}
+      <div class="col-lg-12">
+        <div class="col-lg-6 card div-form">
+          <form
+            class="row contact_form"
+            action="{{ url_for('register') }}"
+            method="POST"
+          >
+            {% with messages = get_flashed_messages() %} {% if messages %} {%
+            for message in messages %}
+            <p style="color: red">{{ message }}</p>
+            {% endfor %} {% endif %} {% endwith %}
 
-          <div class="col-md-12">
-            <!-- first name -->
-            <div class="form-group">
-              <input
-                type="text"
-                class="form-control"
-                id="name"
-                name="firstName"
-                placeholder="First Name"
-              />
-            </div>
-            <!-- last name -->
-            <div class="form-group">
-              <input
-                type="text"
-                class="form-control"
-                id="name"
-                name="lastName"
-                placeholder="Last Name"
-              />
-            </div>
-            <!-- email -->
-            <div class="form-group">
-              <input
-                type="email"
-                class="form-control"
-                id="email"
-                name="email"
-                placeholder="Enter email address"
-              />
-            </div>
-            <!-- phone number -->
-            <div class="form-group">
-              <input
-                type="number"
-                class="form-control"
-                id="name"
-                name="phone"
-                placeholder="Contact Number"
-              />
-            </div>
-            <!-- profile image -->
-            <div class="form-group">
-              <input
-                type="text"
-                class="form-control"
-                id="name"
-                name="image"
-                placeholder="Profile Image URL"
-              />
-            </div>
-            <!-- password -->
-            <div class="form-group">
-              <input
-                type="password"
-                class="form-control"
-                id="password"
-                name="password"
-                placeholder="Password"
-              />
-            </div>
-            <!-- confirm password -->
-            <div class="form-group">
-              <input
-                type="password"
-                class="form-control"
-                id="confirm-password"
-                name="confirmPassword"
-                placeholder="Confirm Password"
-              />
-            </div>
+            <div class="col-md-12">
+              <!-- first name -->
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  name="firstName"
+                  placeholder="First Name"
+                />
+              </div>
+              <!-- last name -->
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  name="lastName"
+                  placeholder="Last Name"
+                />
+              </div>
+              <!-- email -->
+              <div class="form-group">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  placeholder="Enter email address"
+                />
+              </div>
+              <!-- phone number -->
+              <div class="form-group">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="name"
+                  name="phone"
+                  placeholder="Contact Number"
+                />
+              </div>
+              <!-- profile image -->
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  name="image"
+                  placeholder="Profile Image URL"
+                />
+              </div>
+              <!-- password -->
+              <div class="form-group">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  placeholder="Password"
+                />
+              </div>
+              <!-- confirm password -->
+              <div class="form-group">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="confirm-password"
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                />
+              </div>
 
-            <div class="col-md-12 text-center">
-              <button type="submit" value="submit" class="btn submit_btn">
-                Register
-              </button>
+              <div class="col-md-12 text-center">
+                <button type="submit" value="submit" class="btn submit_btn">
+                  Register
+                </button>
+              </div>
             </div>
+          </form>
+
+          <!-- login -->
+          <div class="account-form pt-5">
+            Already have an account?
+            <a href="{{ url_for('login') }}"><strong>Log in</strong></a>
           </div>
-        </form>
+
+          <!-- reset password -->
+          <div class="account-form">
+            Forget password?
+            <a href="{{ url_for('forget_password_send') }}"
+              ><strong>Create New Password</strong></a
+            >
+          </div>
+        </div>
       </div>
     </div>
   </div>

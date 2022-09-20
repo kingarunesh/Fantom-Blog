@@ -76,3 +76,32 @@
 .bookmark-icon a:hover {
   color: blue !important;
 }
+
+/**************************************************************************************************
+*
+*               login.html
+*
+**************************************************************************************************/
+
+.div-form {
+  margin: auto;
+  padding: 2rem;
+}
+
+.pad-form {
+  padding: 3rem 0;
+}
+
+.account-form {
+  padding-top: 1rem;
+}
+
+@media only screen and (max-width: 600px) {
+  .div-form {
+    padding: 1rem;
+  }
+
+  .pad-form {
+    padding: 3rem 0;
+  }
+}

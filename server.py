@@ -43,6 +43,7 @@ class User(UserMixin, db.Model):
     profile_image = db.Column(db.String(500), nullable=False)
     created_date = db.Column(db.String(250), nullable=False)
     last_login = db.Column(db.String(250), nullable=False)
+    # active = db.Column(db.Boolean, default=True, nullable=False)
 
 
 class Post(db.Model):
@@ -462,6 +463,11 @@ def settings():
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
+
+@app.route('/forget-password-send')
+def forget_password_send():
+    return render_template("blog/forget-password-send.html")
 
 
 if __name__ == "__main__":
