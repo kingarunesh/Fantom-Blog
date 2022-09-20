@@ -44,6 +44,7 @@ class User(UserMixin, db.Model):
     phone = db.Column(db.String(15), unique=True, nullable=False)
     password = db.Column(db.String(250), nullable=False)
     admin = db.Column(db.Boolean, default=False, nullable=False)
+    secret_key = db.Column(db.String(250), default=uuid.uuid4().hex, nullable=False)
     profile_image = db.Column(db.String(500), nullable=False)
     created_date = db.Column(db.String(250), nullable=False)
     last_login = db.Column(db.String(250), nullable=False)
@@ -471,19 +472,20 @@ def logout():
 
 @app.route("/forget-password-send", methods=["GET", "POST"])
 def forget_password_send():
-
-    #   generate unique ID for reset password
-    secret_key = uuid.uuid4().hex
-
     if request.method == "POST":
-        #   get request email
         email = request.form["email"]
-        
-        #   get user name by email
         user = User.query.filter_by(email=email).first()
 
+        #   generate unique ID for reset password
+        secret_key = uuid.uuid4().hex
+
         #   create reset link
-        reset_link = "http://127.0.0.1:5000/"
+        reset_link = f"http://127.0.0.1:5000/set-new-password/{email}/{secret_key}"
+
+        #   update secret_key and get user secret_key then compare new secret_key to user secret_key
+        user.secret_key = secret_key
+        db.session.add(user)
+        db.session.commit()
 
         #   send reset link to user email
         send_reset_mail(receiver_email=email, url=reset_link, name=user.firstName)
@@ -492,6 +494,36 @@ def forget_password_send():
         return redirect(url_for("forget_password_send"))
 
     return render_template("blog/forget-password-send.html")
+
+
+@app.route("/set-new-password/<email>/<key>", methods=["GET", "POST"])
+def set_new_password(email, key):
+    user = User.query.filter_by(email=email).first()
+
+    #   if anyone try to change url by email then redirect
+    if user == None:
+        return redirect(url_for("register"))
+
+    if request.method == "POST":
+        if user.secret_key == key:
+            newPassword = request.form["newPassword"]
+            confirmNewPassword = request.form["confirmNewPassword"]
+
+            if newPassword == confirmNewPassword:
+                # update password
+                user.password = generate_password_hash(newPassword, method='pbkdf2:sha256', salt_length=8)
+
+                # uodate secret_key then user can not use again
+                user.secret_key = uuid.uuid4().hex
+
+                db.session.add(user)
+                db.session.commit()
+
+                return redirect(url_for("login"))
+        else:
+            return redirect(url_for("register"))
+
+    return render_template("blog/set-new-password.html")
 
 
 if __name__ == "__main__":
