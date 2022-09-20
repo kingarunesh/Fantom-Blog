@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import desc, func
+from sqlalchemy import desc, func, ForeignKey
+from sqlalchemy.orm import relationship
 from datetime import datetime as dt
 from flask_ckeditor import CKEditor
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -37,6 +38,7 @@ db = SQLAlchemy(app)
 
 
 class User(UserMixin, db.Model):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     firstName = db.Column(db.String(250), nullable=False)
     lastName = db.Column(db.String(250), nullable=False)
@@ -48,7 +50,21 @@ class User(UserMixin, db.Model):
     profile_image = db.Column(db.String(500), nullable=False)
     created_date = db.Column(db.String(250), nullable=False)
     last_login = db.Column(db.String(250), nullable=False)
-    # active = db.Column(db.Boolean, default=True, nullable=False)
+    active = db.Column(db.Boolean, default=True, nullable=False)
+
+    #   contact relation
+    contacts_info = db.relationship("Contact", back_populates="user")
+
+
+class Contact(db.Model):
+    __tablename__ = 'contacts'
+    id = db.Column(db.Integer, primary_key=True)
+    subject = db.Column(db.String(250), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+
+    #   user relation
+    user_id = db.Column(db.Integer, ForeignKey('users.id'))
+    user = db.relationship("User", back_populates="contacts_info")
 
 
 class Post(db.Model):
@@ -62,6 +78,7 @@ class Post(db.Model):
     total_view = db.Column(db.Integer, nullable=False)
     created_date = db.Column(db.String(250), nullable=False)
     updated_date = db.Column(db.String(250), nullable=False)
+
 
 
 db.create_all()
@@ -316,8 +333,24 @@ def about():
     return render_template("blog/about.html", path=request.path, logged_in=current_user.is_authenticated)
 
 
-@app.route("/contact")
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
+    if request.method == "POST":
+        if current_user.is_authenticated:
+            subject = request.form["subject"]
+            message = request.form["message"]
+
+            new_contact = Contact(subject=subject, message=message, user=current_user)
+
+            db.session.add(new_contact)
+            db.session.commit()
+
+            flash("Your message sent successfully.")
+            return redirect(url_for("contact"))
+        else:
+            flash("Please login")
+            return redirect(url_for("login"))
+
     return render_template("blog/contact.html", path=request.path, logged_in=current_user.is_authenticated)
 
 
