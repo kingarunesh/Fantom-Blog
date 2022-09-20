@@ -394,6 +394,39 @@ def profile():
     return render_template("blog/profile.html", path=request.path, logged_in=current_user.is_authenticated, user=current_user)
 
 
+@app.route("/change-password", methods=["POST"])
+@login_required
+def change_password():
+    if request.method == "POST":
+        # get user data
+        user = current_user
+
+        # form data
+        current_password = request.form["currentPassword"]
+        new_password = request.form["newPassword"]
+        confirm_new_password = request.form["confirmNewPassword"]
+
+        if check_password_hash(pwhash=user.password, password=current_password):
+            if new_password == confirm_new_password:
+                # update password
+                user.password = generate_password_hash(password=new_password, method="pbkdf2:sha256", salt_length=8)
+                db.session.add(user)
+                db.session.commit()
+
+                # logout current user
+                logout_user()
+                
+                # redirect to login page
+                return redirect(url_for("login"))
+            else:
+                flash("New password and Confirm new password, doesn't match, Please enter same password")
+                return redirect(url_for("profile"))
+        else:
+            # redirect to same page
+            flash("Current Password is Wrong, Please check once.")
+            return redirect(url_for("profile"))
+
+
 @app.route("/logout")
 @login_required
 def logout():
