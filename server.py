@@ -61,6 +61,7 @@ class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     subject = db.Column(db.String(250), nullable=False)
     message = db.Column(db.Text, nullable=False)
+    send_date = db.Column(db.String(250), default=dt.now().strftime("%H:%M | %d %B %Y"), nullable=False)
 
     #   user relation
     user_id = db.Column(db.Integer, ForeignKey('users.id'))
@@ -350,6 +351,27 @@ def contact():
         else:
             flash("Please login")
             return redirect(url_for("login"))
+    
+    # testing
+
+    contacts = Contact.query.all()
+
+    contact_list = []
+
+    for contact in contacts:
+        if contact.user_id == current_user.id:
+            contact_list.append(contact)
+
+    print(contact_list)
+
+
+
+    # with index for loop
+    items=['baseball','basketball','football']
+    for index, item in enumerate(items):
+        print(index, item)
+
+    # end testing
 
     return render_template("blog/contact.html", path=request.path, logged_in=current_user.is_authenticated)
 
