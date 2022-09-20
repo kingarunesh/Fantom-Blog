@@ -5,6 +5,10 @@ from datetime import datetime as dt
 from flask_ckeditor import CKEditor
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required, login_user, UserMixin
+import uuid
+
+from send_mail import send_reset_mail
+
 
 
 #   FLASK
@@ -465,8 +469,28 @@ def logout():
     return redirect(url_for('home'))
 
 
-@app.route('/forget-password-send')
+@app.route("/forget-password-send", methods=["GET", "POST"])
 def forget_password_send():
+
+    #   generate unique ID for reset password
+    secret_key = uuid.uuid4().hex
+
+    if request.method == "POST":
+        #   get request email
+        email = request.form["email"]
+        
+        #   get user name by email
+        user = User.query.filter_by(email=email).first()
+
+        #   create reset link
+        reset_link = "http://127.0.0.1:5000/"
+
+        #   send reset link to user email
+        send_reset_mail(receiver_email=email, url=reset_link, name=user.firstName)
+
+        flash("Reset password link has sent to you given your email address, go and click there.")
+        return redirect(url_for("forget_password_send"))
+
     return render_template("blog/forget-password-send.html")
 
 
