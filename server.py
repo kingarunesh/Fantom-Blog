@@ -373,6 +373,12 @@ def login():
         # if user exists then login user
         if user != None:
             if check_password_hash(pwhash=user.password, password=password):
+                # update last login time
+                user.last_login = dt.now().strftime("%H:%M | %d %B %Y")
+                db.session.add(user)
+                db.session.commit()
+
+                #   login 
                 login_user(user)
                 return redirect(url_for('home'))
             else:
@@ -385,7 +391,7 @@ def login():
 @app.route("/profile")
 @login_required
 def profile():
-    return render_template("blog/profile.html", path=request.path, logged_in=current_user.is_authenticated)
+    return render_template("blog/profile.html", path=request.path, logged_in=current_user.is_authenticated, user=current_user)
 
 
 @app.route("/logout")

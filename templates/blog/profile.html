@@ -105,7 +105,7 @@
                   <div class="col-lg-4">
                     <img
                       class="profile-img"
-                      src="https://cdn.pixabay.com/photo/2022/08/29/07/44/port-7418239_960_720.jpg"
+                      src="{{ user.profile_image }}"
                       alt=""
                     />
                   </div>
@@ -114,27 +114,27 @@
                     <div class="card">
                       <ul class="list-group list-group-flush">
                         <li class="list-group-item">
-                          <strong>First Name :</strong> Arunesh
+                          <strong>First Name :</strong> {{ user.firstName }}
                         </li>
                         <li class="list-group-item">
-                          <strong>Last Name :</strong> kumar
+                          <strong>Last Name :</strong> {{ user.lastName }}
                         </li>
                         <li class="list-group-item">
-                          <strong>Email :</strong> aruneshkumar.king@gmail.com
+                          <strong>Email :</strong> {{ user.email }}
                         </li>
                         <li class="list-group-item">
-                          <strong>Contact Number :</strong> 8971818410
+                          <strong>Contact Number :</strong> {{ user.phone }}
                         </li>
                         <li class="list-group-item">
                           <strong>Total Saved Posts :</strong> 12
                         </li>
                         <li class="list-group-item">
-                          <strong>Account Created Date :</strong> 19:32 | 13
-                          September 2022
+                          <strong>Account Created Date :</strong> {{
+                          user.created_date }}
                         </li>
                         <li class="list-group-item">
-                          <strong>Last Logged In :</strong> 14:32 | 20 September
-                          2022
+                          <strong>Last Logged In :</strong> {{ user.last_login
+                          }}
                         </li>
                       </ul>
                     </div>
