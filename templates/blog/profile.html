@@ -40,6 +40,20 @@
               >
             </li>
 
+            <!-- Contact -->
+            <li class="nav-item flex-sm-fill">
+              <a
+                id="profile-tab"
+                data-toggle="tab"
+                href="#contact"
+                role="tab"
+                aria-controls="profile"
+                aria-selected="false"
+                class="nav-link border-0 text-uppercase font-weight-bold"
+                >Contacts</a
+              >
+            </li>
+
             <!-- Change Password -->
             <li class="nav-item flex-sm-fill">
               <a
@@ -171,6 +185,38 @@
                       <td>@twitter</td>
                       <td>@twitter</td>
                     </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- contact -->
+            <div
+              id="contact"
+              role="tabpanel"
+              aria-labelledby="profile-tab"
+              class="tab-pane fade p-3"
+            >
+              <div class="row">
+                <table class="table table-hover table-responsive saved-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">ID</th>
+                      <th scope="col">Subject</th>
+                      <th scope="col">Message</th>
+                      <th scope="col">Sent Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for contact in contact_list %} {% if contact.user_id ==
+                    user.id %}
+                    <tr>
+                      <th scope="row">{{ contact.id }}</th>
+                      <td>{{ contact.subject }}</td>
+                      <td>{{ contact.message }}</td>
+                      <td>{{ contact.send_date }}</td>
+                    </tr>
+                    {% endif %} {% endfor %}
                   </tbody>
                 </table>
               </div>

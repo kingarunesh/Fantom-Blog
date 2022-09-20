@@ -352,27 +352,6 @@ def contact():
             flash("Please login")
             return redirect(url_for("login"))
     
-    # testing
-
-    contacts = Contact.query.all()
-
-    contact_list = []
-
-    for contact in contacts:
-        if contact.user_id == current_user.id:
-            contact_list.append(contact)
-
-    print(contact_list)
-
-
-
-    # with index for loop
-    items=['baseball','basketball','football']
-    for index, item in enumerate(items):
-        print(index, item)
-
-    # end testing
-
     return render_template("blog/contact.html", path=request.path, logged_in=current_user.is_authenticated)
 
 
@@ -452,7 +431,21 @@ def login():
 @app.route("/profile")
 @login_required
 def profile():
-    return render_template("blog/profile.html", path=request.path, logged_in=current_user.is_authenticated, user=current_user)
+    #   contact
+    contacts = Contact.query.all()
+    contact_list = []
+
+    for contact in contacts:
+        if contact.user_id == current_user.id:
+            contact_list.append(contact)
+
+    # with index for loop
+    items=['baseball','basketball','football']
+    for index, item in enumerate(items):
+        print(index, item)
+
+    return render_template("blog/profile.html", path=request.path, logged_in=current_user.is_authenticated, user=current_user, contact_list=contact_list)
+
 
 
 @app.route("/change-password", methods=["POST"])
