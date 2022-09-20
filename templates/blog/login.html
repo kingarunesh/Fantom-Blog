@@ -32,11 +32,15 @@
           action="{{ url_for('login') }}"
           method="POST"
         >
-          {% with messages = get_flashed_messages() %} {% if messages %} {% for
-          message in messages %}
-          <p style="color: red">{{ message }}</p>
-          {% endfor %} {% endif %} {% endwith %}
+          <!-- start input -->
           <div class="col-md-12">
+            <!-- start error message -->
+            {% with messages = get_flashed_messages() %} {% if messages %} {%
+            for message in messages %}
+            <div class="alert alert-danger" role="alert">{{ message }}</div>
+            {% endfor %} {% endif %} {% endwith %}
+            <!-- end error message -->
+
             <!-- email -->
             <div class="form-group">
               <input
