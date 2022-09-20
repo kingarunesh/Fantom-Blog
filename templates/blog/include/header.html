@@ -82,6 +82,18 @@
               <ul class="nav navbar-nav navbar-right ml-auto">
 
                 {% if logged_in: %}
+                                
+                <!-- Profile -->
+                <li 
+                {% if '/profile' == path %}
+                    class="nav-item active"
+                {% else %}
+                    class="nav-item"
+                {% endif %}
+                >
+                  <a class="nav-link" href="{{ url_for('profile') }}"
+                    >Profile</a>
+                </li>
                 
                 <!-- logout -->
                 <li class="nav-item" >
@@ -114,7 +126,6 @@
                   <a class="nav-link" href="{{ url_for('login') }}"
                     >Login</a>
                 </li>
-
                 
                 {% endif %}
 

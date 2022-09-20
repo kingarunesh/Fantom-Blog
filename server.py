@@ -382,6 +382,12 @@ def login():
     return render_template("blog/login.html", path=request.path)
 
 
+@app.route("/profile")
+@login_required
+def profile():
+    return render_template("blog/profile.html", path=request.path, logged_in=current_user.is_authenticated)
+
+
 @app.route("/logout")
 @login_required
 def logout():

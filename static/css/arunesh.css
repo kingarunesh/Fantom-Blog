@@ -1,0 +1,53 @@
+/* Rounded tabs */
+@media (min-width: 576px) {
+  .rounded-nav {
+    border-radius: 50rem !important;
+  }
+}
+
+@media (min-width: 576px) {
+  .rounded-nav .nav-link {
+    border-radius: 50rem !important;
+  }
+}
+
+/*
+*
+* ==========================================
+* FOR DEMO PURPOSE
+* ==========================================
+*
+*/
+
+.nav-pills .nav-link {
+  color: #555;
+}
+.text-uppercase {
+  letter-spacing: 0.1em;
+}
+
+/**************************************************************************************************
+*
+*
+*
+**************************************************************************************************/
+.profile-img {
+  border-radius: 50%;
+  height: 350px;
+  width: 350px;
+}
+
+@media only screen and (max-width: 600px) {
+  .profile-img {
+    height: 280px;
+    width: 280px;
+  }
+
+  .profile-body {
+    padding-top: 1.5rem;
+  }
+
+  .saved-table th {
+    min-width: 150px;
+  }
+}

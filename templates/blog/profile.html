@@ -1,0 +1,271 @@
+{% extends "blog/layouts/base.html" %} {% block content %}
+
+<!--================ Profile Area =================-->
+<section class="contact_area" style="padding: 2rem 0.5rem">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <!-- <div class="card">Hello</div> -->
+
+        <div>
+          <div class="p-1 bg-white rounded shadow mb-1">
+            <!-- Rounded tabs -->
+            <ul
+              id="myTab"
+              role="tablist"
+              class="nav nav-tabs nav-pills flex-column flex-sm-row text-center bg-light border-0 rounded-nav"
+            >
+              <!-- Profile Details -->
+              <li class="nav-item flex-sm-fill">
+                <a
+                  id="home-tab"
+                  data-toggle="tab"
+                  href="#profile"
+                  role="tab"
+                  aria-controls="home"
+                  aria-selected="true"
+                  class="nav-link border-0 text-uppercase font-weight-bold active"
+                  >Profile Details</a
+                >
+              </li>
+
+              <!-- Saved Posts -->
+              <li class="nav-item flex-sm-fill">
+                <a
+                  id="profile-tab"
+                  data-toggle="tab"
+                  href="#saved"
+                  role="tab"
+                  aria-controls="profile"
+                  aria-selected="false"
+                  class="nav-link border-0 text-uppercase font-weight-bold"
+                  >Saved Posts</a
+                >
+              </li>
+
+              <!-- Change Password -->
+              <li class="nav-item flex-sm-fill">
+                <a
+                  id="contact-tab"
+                  data-toggle="tab"
+                  href="#password"
+                  role="tab"
+                  aria-controls="contact"
+                  aria-selected="false"
+                  class="nav-link border-0 text-uppercase font-weight-bold"
+                  >Change Password</a
+                >
+              </li>
+
+              <!-- Settings -->
+              <li class="nav-item flex-sm-fill">
+                <a
+                  id="contact-tab"
+                  data-toggle="tab"
+                  href="#settings"
+                  role="tab"
+                  aria-controls="contact"
+                  aria-selected="false"
+                  class="nav-link border-0 text-uppercase font-weight-bold"
+                  >Settings</a
+                >
+              </li>
+
+              <!-- Logout -->
+              <li class="nav-item flex-sm-fill">
+                <a
+                  id="contact-tab"
+                  data-toggle="tab"
+                  href="#logout"
+                  role="tab"
+                  aria-controls="contact"
+                  aria-selected="false"
+                  class="nav-link border-0 text-uppercase font-weight-bold"
+                  >Logout</a
+                >
+              </li>
+            </ul>
+
+            <!-- 
+
+                tab body
+                
+             -->
+
+            <div id="myTabContent" class="tab-content mt-4">
+              <!-- Profile Details -->
+              <div
+                id="profile"
+                role="tabpanel"
+                aria-labelledby="home-tab"
+                class="tab-pane fade p-3 show active"
+              >
+                <div class="row">
+                  <!-- imgage -->
+                  <div class="col-lg-4">
+                    <img
+                      class="profile-img"
+                      src="https://cdn.pixabay.com/photo/2022/08/29/07/44/port-7418239_960_720.jpg"
+                      alt=""
+                    />
+                  </div>
+                  <!-- data -->
+                  <div class="col-lg-8 profile-body">
+                    <div class="card">
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                          <strong>First Name :</strong> Arunesh
+                        </li>
+                        <li class="list-group-item">
+                          <strong>Last Name :</strong> kumar
+                        </li>
+                        <li class="list-group-item">
+                          <strong>Email :</strong> aruneshkumar.king@gmail.com
+                        </li>
+                        <li class="list-group-item">
+                          <strong>Contact Number :</strong> 8971818410
+                        </li>
+                        <li class="list-group-item">
+                          <strong>Total Saved Posts :</strong> 12
+                        </li>
+                        <li class="list-group-item">
+                          <strong>Account Created Date :</strong> 19:32 | 13
+                          September 2022
+                        </li>
+                        <li class="list-group-item">
+                          <strong>Last Logged In :</strong> 14:32 | 20 September
+                          2022
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Saved Posts -->
+              <div
+                id="saved"
+                role="tabpanel"
+                aria-labelledby="profile-tab"
+                class="tab-pane fade p-3"
+              >
+                <div class="row">
+                  <table class="table table-hover table-responsive saved-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Number</th>
+                        <th scope="col">Preview</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Saved Date</th>
+                        <th scope="col">Remove</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                        <td>@fat</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">3</th>
+                        <td>@twitter</td>
+                        <td>@twitter</td>
+                        <td>@twitter</td>
+                        <td>@twitter</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Change Password -->
+              <div
+                id="password"
+                role="tabpanel"
+                aria-labelledby="contact-tab"
+                class="tab-pane fade p-3"
+              >
+                <!-- start form -->
+                <div class="row">
+                  <div class="col-lg-6">
+                    <form action="" method="post">
+                      <!-- current password -->
+                      <div class="form-group">
+                        <input
+                          type="password"
+                          class="form-control"
+                          id="password"
+                          name="password"
+                          placeholder="Current Password"
+                        />
+                      </div>
+
+                      <!-- new password -->
+                      <div class="form-group">
+                        <input
+                          type="password"
+                          class="form-control"
+                          id="password"
+                          name="password"
+                          placeholder="New Password"
+                        />
+                      </div>
+
+                      <!-- confirm new password -->
+                      <div class="form-group">
+                        <input
+                          type="password"
+                          class="form-control"
+                          id="password"
+                          name="password"
+                          placeholder="Confirm NewPassword"
+                        />
+                      </div>
+
+                      <div class="col-md-12 text-center">
+                        <button
+                          type="submit"
+                          value="submit"
+                          class="btn submit_btn"
+                        >
+                          Login
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <!-- end form -->
+              </div>
+
+              <!-- Settings  -->
+              <div
+                id="settings"
+                role="tabpanel"
+                aria-labelledby="contact-tab"
+                class="tab-pane fade p-3"
+              >
+                <div class="col-lg-12">Hello</div>
+              </div>
+
+              <!-- Logout  -->
+              <div
+                id="logout"
+                role="tabpanel"
+                aria-labelledby="contact-tab"
+                class="tab-pane fade p-3"
+              >
+                <p class="text-muted">Logout</p>
+              </div>
+            </div>
+            <!-- End rounded tabs -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--================ Profile Area =================-->
+
+{% endblock %}
