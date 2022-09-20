@@ -427,6 +427,36 @@ def change_password():
             return redirect(url_for("profile"))
 
 
+@app.route("/settings", methods=["GET", "POST"])
+@login_required
+def settings():
+    #   find user
+    user = current_user
+
+    if request.method == "POST":
+        # get from form field
+        firstName = request.form["firstName"]
+        lastName = request.form["lastName"]
+        email = request.form["email"]
+        phone = request.form["phone"]
+        profile_image = request.form["image"]
+
+        #   update existing user data
+        user.firstName = firstName
+        user.lastName = lastName
+        user.email = email
+        user.phone = phone
+        user.profile_image = profile_image
+
+        db.session.add(user)
+        db.session.commit()        
+
+        #   redirect to profile
+        return redirect(url_for("profile"))
+
+    return render_template("blog/profile.html", path=request.path, logged_in=current_user.is_authenticated, user=user)
+
+
 @app.route("/logout")
 @login_required
 def logout():

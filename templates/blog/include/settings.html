@@ -1,0 +1,70 @@
+<form class="row contact_form" action="{{ url_for('settings') }}" method="POST">
+  {% with messages = get_flashed_messages() %} {% if messages %} {% for message
+  in messages %}
+  <p style="color: red">{{ message }}</p>
+  {% endfor %} {% endif %} {% endwith %}
+
+  <div class="col-md-12">
+    <!-- first name -->
+    <div class="form-group">
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="firstName"
+        placeholder="First Name"
+        value="{{ user.firstName }}"
+      />
+    </div>
+    <!-- last name -->
+    <div class="form-group">
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="lastName"
+        placeholder="Last Name"
+        value="{{ user.lastName }}"
+      />
+    </div>
+    <!-- email -->
+    <div class="form-group">
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        placeholder="Enter email address"
+        value="{{ user.email }}"
+      />
+    </div>
+    <!-- phone number -->
+    <div class="form-group">
+      <input
+        type="number"
+        class="form-control"
+        id="name"
+        name="phone"
+        placeholder="Contact Number"
+        value="{{ user.phone }}"
+      />
+    </div>
+    <!-- profile image -->
+    <div class="form-group">
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="image"
+        placeholder="Profile Image URL"
+        value="{{ user.profile_image }}"
+      />
+    </div>
+
+    <div class="col-md-12 text-center">
+      <button type="submit" value="submit" class="btn submit_btn">
+        Update
+      </button>
+    </div>
+  </div>
+</form>
