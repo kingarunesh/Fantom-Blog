@@ -142,18 +142,20 @@
 
         <!-- form coment  -->
         <div class="comment-form">
-          <h4>Leave a Reply</h4>
-          <form>
+          <h4>Leave a Comment</h4>
+          <form method="POST">
             <!-- comment body -->
             <div class="form-group">
               <textarea
                 class="form-control mb-10"
                 rows="5"
-                name="message"
+                name="comment"
                 placeholder="Enter your comment here..."
               ></textarea>
             </div>
-            <a href="#" class="primary-btn submit_btn">Post Comment</a>
+            <button type="submit" class="primary-btn submit_btn">
+              Post Comment
+            </button>
           </form>
         </div>
 

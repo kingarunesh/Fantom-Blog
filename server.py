@@ -61,6 +61,9 @@ class User(UserMixin, db.Model):
     #   bookmark relation
     bookmark_info = db.relationship("Bookmark", back_populates="user")
 
+    #   comment relation
+    comment_info = db.relationship("Comment", back_populates="user")
+
 
 class Contact(db.Model):
     __tablename__ = 'contacts'
@@ -86,9 +89,27 @@ class Post(db.Model):
     total_view = db.Column(db.Integer, nullable=False)
     created_date = db.Column(db.String(250), nullable=False)
     updated_date = db.Column(db.String(250), nullable=False)
+    
     #   post relation
     post_info = db.relationship("Bookmark", back_populates="post")
 
+    #   comment relation
+    comment_post_info = db.relationship("Comment", back_populates="post")
+
+
+class Comment(db.Model):
+    __tablename__ = "comments"
+    id = db.Column(db.Integer, primary_key=True)
+    text_comment = db.Column(db.Text, nullable=False)
+    date_comment = db.Column(db.String(250), default=dt.now().strftime("%H:%M | %d %B %Y"), nullable=False)
+
+    #   user
+    user_id = db.Column(db.Integer, ForeignKey('users.id'))
+    user = db.relationship("User", back_populates="comment_info")
+    
+    #   comment 
+    post_id = db.Column(db.Integer, ForeignKey('posts.id'))
+    post = db.relationship("Post", back_populates="comment_post_info")
 
 class Bookmark(db.Model):
     __tablename__ = "bookmarks"
@@ -316,7 +337,7 @@ def blog():
     return render_template("blog/pages/blogs.html", path=request.path, posts=posts, sidebar=sidebar, logged_in=current_user.is_authenticated)  
     
 
-@app.route("/post-detail/<int:post_id>")
+@app.route("/post-detail/<int:post_id>", methods=["GET","POST"])
 def post_detail(post_id):
     post = Post.query.get(post_id)
 
@@ -353,11 +374,21 @@ def post_detail(post_id):
     saved = True
     if bookmark == None:
         saved = False
-    
     count_bookmark = Bookmark.query.filter_by(post_id=post_id).all()
-
     total_bookmark = len(count_bookmark)
+
+    #   add new comment
+    if request.method == "POST":
+        text = request.form["comment"]
+
+        new_comment = Comment(text_comment=text, user=current_user, post=post)
+        
+        db.session.add(new_comment)
+        db.session.commit()
+
+        return redirect(url_for("post_detail", post_id=post_id))
     
+    #   users comment display
 
     return render_template("blog/pages/post-detail.html", post=post, sidebar=sidebar, logged_in=current_user.is_authenticated, saved=saved, total_bookmark=total_bookmark)
 
