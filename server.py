@@ -345,8 +345,19 @@ def post_detail(post_id):
             if query_tag in tag:
                 tag_posts.append(post)
         return render_template("blog/pages/search.html", path=request.path, posts=tag_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+    
+    # bookmark icon
+    bookmark = Bookmark.query.filter_by(user_id=current_user.id, post_id=post.id).first()
+    saved = True
+    if bookmark == None:
+        saved = False
+    
+    count_bookmark = Bookmark.query.filter_by(post_id=post_id).all()
 
-    return render_template("blog/pages/post-detail.html", post=post, sidebar=sidebar, logged_in=current_user.is_authenticated)
+    total_bookmark = len(count_bookmark)
+    
+
+    return render_template("blog/pages/post-detail.html", post=post, sidebar=sidebar, logged_in=current_user.is_authenticated, saved=saved, total_bookmark=total_bookmark)
 
 
 @app.route("/bookmark")
@@ -364,6 +375,10 @@ def bookmark():
         return redirect(url_for("post_detail", post_id=current_post.id))
     #   if user have already bookmark then remove post from bookmark
     else:
+        #   remove bookmark post
+        db.session.delete(bookmark)
+        db.session.commit()
+
         return redirect(url_for("post_detail", post_id=current_post.id))
 
     

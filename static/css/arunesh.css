@@ -73,14 +73,7 @@
   gap: 1rem;
 }
 
-.bi {
-  color: rgb(21, 102, 252);
-}
-
-.bi:hover {
-  fill: rgb(0, 24, 112);
-}
-
+/* body image size */
 .post-desc-img img {
   max-width: 100%;
 }
