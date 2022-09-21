@@ -26,17 +26,17 @@
               >
             </li>
 
-            <!-- Saved Posts -->
+            <!-- bookmark Posts -->
             <li class="nav-item flex-sm-fill">
               <a
                 id="profile-tab"
                 data-toggle="tab"
-                href="#saved"
+                href="#bookmark"
                 role="tab"
                 aria-controls="profile"
                 aria-selected="false"
                 class="nav-link border-0 text-uppercase font-weight-bold"
-                >Saved Posts</a
+                >Bookmarks Posts</a
               >
             </li>
 
@@ -152,41 +152,77 @@
               </div>
             </div>
 
-            <!-- Saved Posts -->
+            <!-- Bookmarks Posts -->
             <div
-              id="saved"
+              id="bookmark"
               role="tabpanel"
               aria-labelledby="profile-tab"
               class="tab-pane fade p-3"
             >
               <div class="row">
-                <table class="table table-hover table-responsive saved-table">
-                  <thead>
-                    <tr>
-                      <th scope="col">Number</th>
-                      <th scope="col">Preview</th>
-                      <th scope="col">Title</th>
-                      <th scope="col">Saved Date</th>
-                      <th scope="col">Remove</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Jacob</td>
-                      <td>Thornton</td>
-                      <td>@fat</td>
-                      <td>@fat</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>@twitter</td>
-                      <td>@twitter</td>
-                      <td>@twitter</td>
-                      <td>@twitter</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div style="overflow-x: auto">
+                  <!-- <table class="table table-hover table-responsive saved-table"> -->
+                  <table class="table table-hover bookmark-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Preview</th>
+                        <th scope="col" style="min-width: 500px">Title</th>
+                        <th scope="col" style="min-width: 150px">Saved Date</th>
+                        <th scope="col">Remove</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for bookmark in bookmarks_posts %}
+                      <tr>
+                        <th scope="row">{{ bookmark.id }}</th>
+
+                        <!-- post preview -->
+                        <td>
+                          <img
+                            src="{{ bookmark.post.image_url }}"
+                            class="bookmark-preview-image"
+                          />
+                        </td>
+
+                        <!-- post title -->
+                        <td style="font-size: 1.2rem; padding: 1.2rem 0">
+                          <a
+                            href="{{ url_for('post_detail', post_id=bookmark.post.id) }}"
+                            >{{ bookmark.post.title }}</a
+                          >
+                        </td>
+
+                        <!-- date bookmark -->
+                        <td></td>
+
+                        <!-- remove bookmark -->
+                        <td>
+                          <a
+                            href="{{ url_for('bookmark', post_id=bookmark.post.id) }}"
+                            ><svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="25"
+                              height="25"
+                              fill="red"
+                              class="bi bi-trash"
+                              viewBox="0 0 16 16"
+                            >
+                              <path
+                                d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
+                              />
+                              <path
+                                fill-rule="evenodd"
+                                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                              />
+                            </svg>
+                          </a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
 

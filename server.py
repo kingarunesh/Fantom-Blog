@@ -381,7 +381,6 @@ def bookmark():
 
         return redirect(url_for("post_detail", post_id=current_post.id))
 
-    
 
 
 @app.route("/about")
@@ -497,13 +496,15 @@ def login():
 def profile():
     #   contact
     contacts = Contact.query.all()
-
     contact_list = []
     for contact in (contacts):
         if contact.user_id == current_user.id:
             contact_list.append(contact)    
+    
+    #   bookmark
+    bookmarks_posts = Bookmark.query.filter_by(user_id=current_user.id).all()
 
-    return render_template("blog/auth/profile.html", path=request.path, logged_in=current_user.is_authenticated, user=current_user, contact_list=contact_list)
+    return render_template("blog/auth/profile.html", path=request.path, logged_in=current_user.is_authenticated, user=current_user, contact_list=contact_list, bookmarks_posts=bookmarks_posts)
 
 
 
