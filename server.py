@@ -1,3 +1,4 @@
+from email.policy import default
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc, func, ForeignKey
@@ -92,6 +93,7 @@ class Post(db.Model):
 class Bookmark(db.Model):
     __tablename__ = "bookmarks"
     id = db.Column(db.Integer, primary_key=True)
+    bookmark_date = db.Column(db.String(250), default=dt.now().strftime("%H:%M | %d %B %Y"), nullable=False)
 
     #   user
     user_id = db.Column(db.Integer, ForeignKey("users.id"))
@@ -502,7 +504,8 @@ def profile():
             contact_list.append(contact)    
     
     #   bookmark
-    bookmarks_posts = Bookmark.query.filter_by(user_id=current_user.id).all()
+    # bookmarks_posts = Bookmark.query.filter_by(user_id=current_user.id).all()
+    bookmarks_posts = Bookmark.query.order_by(desc(Bookmark.bookmark_date)).filter_by(user_id=current_user.id).all()
 
     return render_template("blog/auth/profile.html", path=request.path, logged_in=current_user.is_authenticated, user=current_user, contact_list=contact_list, bookmarks_posts=bookmarks_posts)
 
