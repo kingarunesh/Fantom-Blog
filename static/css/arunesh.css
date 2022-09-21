@@ -61,20 +61,28 @@
 *               post-details.html
 *
 **************************************************************************************************/
-
-.cat-bookmark {
+.post-bookmark {
   display: flex;
-  align-items: center;
+  gap: 1rem;
+
+  margin: 3rem 0 1rem;
+}
+
+.footer-post-bookmark {
+  display: flex;
   gap: 1rem;
 }
 
-/* .bookmark-link:hover {
-  color: none;
-  background: none;
-} */
+.bi {
+  color: rgb(21, 102, 252);
+}
 
-.bookmark-icon a:hover {
-  color: blue !important;
+.bi:hover {
+  fill: rgb(0, 24, 112);
+}
+
+.post-desc-img img {
+  max-width: 100%;
 }
 
 /**************************************************************************************************

@@ -12,7 +12,7 @@
       href="{{ url_for('static', filename='img/favicon.png') }}"
       type="image/png"
     />
-    <title>Fantom Blog</title>
+    <title>{% block title %}{% endblock %}</title>
 
     <!-- Bootstrap CSS -->
 
