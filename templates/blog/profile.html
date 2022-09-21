@@ -208,15 +208,33 @@
                     </tr>
                   </thead>
                   <tbody>
-                    {% for contact in contact_list %} {% if contact.user_id ==
-                    user.id %}
+                    {% for contact in contact_list %}
                     <tr>
-                      <th scope="row">{{ contact.id }}</th>
+                      <th scope="row" id="contact_number">{{ contact.id }}</th>
                       <td>{{ contact.subject }}</td>
                       <td>{{ contact.message }}</td>
                       <td>{{ contact.send_date }}</td>
                     </tr>
-                    {% endif %} {% endfor %}
+                    {% endfor %}
+
+                    <!-- new -->
+                    {# {% for contact in contact_list %}
+                    <tr>
+                      <th scope="row" id="contact_number"></th>
+                      <td>{{ contact.subject }}</td>
+                      <td>{{ contact.message }}</td>
+                      <td>{{ contact.send_date }}</td>
+                    </tr>
+                    {% endfor %} #}
+
+                    <!-- <script>
+                      for (i = 0; i <= "{{contact_list|length}}"; i++) {
+                        document.getElementById("contact_number").textContent =
+                          i;
+                      }
+                    </script> -->
+
+                    <!-- end new -->
                   </tbody>
                 </table>
               </div>

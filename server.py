@@ -445,16 +445,11 @@ def login():
 def profile():
     #   contact
     contacts = Contact.query.all()
+
     contact_list = []
-
-    for contact in contacts:
+    for contact in (contacts):
         if contact.user_id == current_user.id:
-            contact_list.append(contact)
-
-    # with index for loop
-    items=['baseball','basketball','football']
-    for index, item in enumerate(items):
-        print(index, item)
+            contact_list.append(contact)    
 
     return render_template("blog/profile.html", path=request.path, logged_in=current_user.is_authenticated, user=current_user, contact_list=contact_list)
 
@@ -588,3 +583,4 @@ def set_new_password(email, key):
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
+
