@@ -197,9 +197,16 @@
                   </p>
                 </div>
               </div>
+
+              {% if user.id == comment.user_id %}
               <div class="reply-btn">
-                <a href="" class="btn-reply">Delete</a>
+                <a
+                  href="{{ url_for('delete_comment', comment_id=comment.id) }}"
+                  class="btn-reply"
+                  >Delete</a
+                >
               </div>
+              {% endif %}
             </div>
             {% endfor %}
             <!-- end comment -->

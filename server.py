@@ -384,11 +384,9 @@ def post_detail(post_id):
     if request.method == "POST":
         if current_user.is_authenticated == False:
             return redirect(url_for("login"))
-            
-        text = request.form["comment"]
 
+        text = request.form["comment"]
         new_comment = Comment(text_comment=text, user=current_user, post=post)
-        
         db.session.add(new_comment)
         db.session.commit()
 
@@ -398,7 +396,7 @@ def post_detail(post_id):
     # comments = Comment.query.filter_by(post_id=post_id).all()
     comments = Comment.query.order_by(Comment.date_comment).filter_by(post_id=post_id).all()
 
-    return render_template("blog/pages/post-detail.html", post=post, sidebar=sidebar, logged_in=current_user.is_authenticated, saved=saved, total_bookmark=total_bookmark, comments=comments, total_comments=len(comments))
+    return render_template("blog/pages/post-detail.html", post=post, sidebar=sidebar, logged_in=current_user.is_authenticated, saved=saved, total_bookmark=total_bookmark, comments=comments, total_comments=len(comments), user=current_user)
 
 
 @app.route("/bookmark")
@@ -546,8 +544,24 @@ def profile():
     # bookmarks_posts = Bookmark.query.filter_by(user_id=current_user.id).all()
     bookmarks_posts = Bookmark.query.order_by(desc(Bookmark.bookmark_date)).filter_by(user_id=current_user.id).all()
 
-    return render_template("blog/auth/profile.html", path=request.path, logged_in=current_user.is_authenticated, user=current_user, contact_list=contact_list, bookmarks_posts=bookmarks_posts)
+    #   comments
+    comments = Comment.query.order_by(Comment.date_comment).filter_by(user_id=current_user.id).all()
 
+    return render_template("blog/auth/profile.html", path=request.path, logged_in=current_user.is_authenticated, user=current_user, contact_list=contact_list, bookmarks_posts=bookmarks_posts, comments=comments)
+
+
+@app.route("/delete-comment/<comment_id>")
+@login_required
+def delete_comment(comment_id):
+    comment = Comment.query.filter_by(id=comment_id).filter_by(user_id=current_user.id).first()
+
+    post = Post.query.filter_by(id=comment.post_id).first()
+
+    if comment != None:
+        db.session.delete(comment)
+        db.session.commit()
+
+    return redirect(url_for("post_detail", post_id=post.id))
 
 
 @app.route("/change-password", methods=["POST"])
