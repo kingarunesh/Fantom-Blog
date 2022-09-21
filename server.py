@@ -23,6 +23,8 @@ ckeditor = CKEditor(app)
 #   Login
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = 'login'
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -357,6 +359,11 @@ def contact():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+
+    #   if user logged in then redirect to profile page
+    if current_user.is_active == True:
+        return redirect(url_for('profile'))
+
     firstName = request.form.get("firstName")
     lastName = request.form.get("lastName")
     email = request.form.get("email")
@@ -399,6 +406,11 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+
+    #   if user logged in then redirect to profile page
+    if current_user.is_active == True:
+        return redirect(url_for('profile'))
+
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
