@@ -370,15 +370,21 @@ def post_detail(post_id):
         return render_template("blog/pages/search.html", path=request.path, posts=tag_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
     
     # bookmark icon
-    bookmark = Bookmark.query.filter_by(user_id=current_user.id, post_id=post.id).first()
     saved = True
-    if bookmark == None:
-        saved = False
-    count_bookmark = Bookmark.query.filter_by(post_id=post_id).all()
-    total_bookmark = len(count_bookmark)
+    total_bookmark = None
+    if current_user.is_authenticated == True:
+        bookmark = Bookmark.query.filter_by(user_id=current_user.id, post_id=post.id).first()
+        if bookmark == None:
+            saved = False
+        count_bookmark = Bookmark.query.filter_by(post_id=post_id).all()
+        total_bookmark = len(count_bookmark)
+    
 
     #   add new comment
     if request.method == "POST":
+        if current_user.is_authenticated == False:
+            return redirect(url_for("login"))
+            
         text = request.form["comment"]
 
         new_comment = Comment(text_comment=text, user=current_user, post=post)
@@ -389,8 +395,10 @@ def post_detail(post_id):
         return redirect(url_for("post_detail", post_id=post_id))
     
     #   users comment display
+    # comments = Comment.query.filter_by(post_id=post_id).all()
+    comments = Comment.query.order_by(Comment.date_comment).filter_by(post_id=post_id).all()
 
-    return render_template("blog/pages/post-detail.html", post=post, sidebar=sidebar, logged_in=current_user.is_authenticated, saved=saved, total_bookmark=total_bookmark)
+    return render_template("blog/pages/post-detail.html", post=post, sidebar=sidebar, logged_in=current_user.is_authenticated, saved=saved, total_bookmark=total_bookmark, comments=comments, total_comments=len(comments))
 
 
 @app.route("/bookmark")

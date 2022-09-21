@@ -161,25 +161,48 @@
 
         <!-- users comment  -->
         <div class="comments-area">
-          <h4>05 Comments</h4>
+          <h4>{{ total_comments }} Comments</h4>
 
           <!-- list comment  -->
           <div class="comment-list">
-            <div class="single-comment justify-content-between d-flex">
+            <!-- start comment -->
+            {% for comment in comments %}
+            <div
+              class="single-comment justify-content-between d-flex"
+              style="margin: 2rem 0 3rem"
+            >
               <div class="user justify-content-between d-flex">
                 <div class="thumb">
-                  <img src="static/img/blog/c1.jpg" alt="" />
+                  <img
+                    src="{{ comment.user.profile_image }}"
+                    style="width: 60px; border-radius: 4px"
+                    alt=""
+                  />
                 </div>
                 <div class="desc">
-                  <h5><a href="#">Emilly Blunt</a></h5>
-                  <p class="date">December 4, 2017 at 3:12 pm</p>
-                  <p class="comment">Never say goodbye till the end comes!</p>
+                  <h5>
+                    {{ comment.user.firstName }} {{ comment.user.lastName }}
+                  </h5>
+                  <p
+                    class="date"
+                    style="color: rgb(126, 126, 126); font-size: 0.8rem"
+                  >
+                    {{ comment.date_comment }}
+                  </p>
+                  <p
+                    class="comment"
+                    style="color: rgb(78, 78, 78); font-size: 1rem"
+                  >
+                    {{ comment.text_comment }}
+                  </p>
                 </div>
               </div>
               <div class="reply-btn">
-                <a href="" class="btn-reply text-uppercase">reply</a>
+                <a href="" class="btn-reply">Delete</a>
               </div>
             </div>
+            {% endfor %}
+            <!-- end comment -->
           </div>
         </div>
       </div>
