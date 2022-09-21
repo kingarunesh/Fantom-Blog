@@ -244,13 +244,13 @@ def home():
     search = request.args.get("search")
     if search != None:
         search_posts = Post.query.filter(Post.title.contains(search)).all()
-        return render_template("blog/search.html", path=request.path, posts=search_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+        return render_template("blog/pages/search.html", path=request.path, posts=search_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
 
     #   get posts by category
     category = request.args.get("category")
     if category != None:
         category_posts = Post.query.filter_by(category=category).all()
-        return render_template("blog/search.html", path=request.path, posts=category_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+        return render_template("blog/pages/search.html", path=request.path, posts=category_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
     
     # get posts by tag
     query_tag = request.args.get("tag")
@@ -261,9 +261,9 @@ def home():
             tag = post.tags
             if query_tag in tag:
                 tag_posts.append(post)
-        return render_template("blog/search.html", path=request.path, posts=tag_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+        return render_template("blog/pages/search.html", path=request.path, posts=tag_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
     
-    return render_template("blog/index.html", path=request.path, posts=posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+    return render_template("blog/pages/index.html", path=request.path, posts=posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
 
 
 @app.route("/blog")
@@ -274,13 +274,13 @@ def blog():
     search = request.args.get("search")
     if search != None:
         search_posts = Post.query.filter(Post.title.contains(search)).all()
-        return render_template("blog/search.html", path=request.path, posts=search_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+        return render_template("blog/pages/search.html", path=request.path, posts=search_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
 
     #   get posts by category
     category = request.args.get("category")
     if category != None:
         category_posts = Post.query.filter_by(category=category).all()
-        return render_template("blog/search.html", path=request.path, posts=category_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+        return render_template("blog/pages/search.html", path=request.path, posts=category_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
     
     # get posts by tag
     query_tag = request.args.get("tag")
@@ -291,9 +291,9 @@ def blog():
             tag = post.tags
             if query_tag in tag:
                 tag_posts.append(post)
-        return render_template("blog/search.html", path=request.path, posts=tag_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+        return render_template("blog/pages/search.html", path=request.path, posts=tag_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
 
-    return render_template("blog/blogs.html", path=request.path, posts=posts, sidebar=sidebar, logged_in=current_user.is_authenticated)  
+    return render_template("blog/pages/blogs.html", path=request.path, posts=posts, sidebar=sidebar, logged_in=current_user.is_authenticated)  
     
 
 @app.route("/post-detail/<int:post_id>")
@@ -309,13 +309,13 @@ def post_detail(post_id):
     search = request.args.get("search")
     if search != None:
         search_posts = Post.query.filter(Post.title.contains(search)).all()
-        return render_template("blog/search.html", path=request.path, posts=search_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+        return render_template("blog/pages/search.html", path=request.path, posts=search_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
 
     #   get posts by category
     category = request.args.get("category")
     if category != None:
         category_posts = Post.query.filter_by(category=category).all()
-        return render_template("blog/search.html", path=request.path, posts=category_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+        return render_template("blog/pages/search.html", path=request.path, posts=category_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
     
     # get posts by tag
     query_tag = request.args.get("tag")
@@ -326,14 +326,14 @@ def post_detail(post_id):
             tag = post.tags
             if query_tag in tag:
                 tag_posts.append(post)
-        return render_template("blog/search.html", path=request.path, posts=tag_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+        return render_template("blog/pages/search.html", path=request.path, posts=tag_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
 
-    return render_template("blog/post-detail.html", post=post, sidebar=sidebar, logged_in=current_user.is_authenticated)
+    return render_template("blog/pages/post-detail.html", post=post, sidebar=sidebar, logged_in=current_user.is_authenticated)
 
 
 @app.route("/about")
 def about():
-    return render_template("blog/about.html", path=request.path, logged_in=current_user.is_authenticated)
+    return render_template("blog/pages/about.html", path=request.path, logged_in=current_user.is_authenticated)
 
 
 @app.route("/contact", methods=["GET", "POST"])
@@ -354,12 +354,11 @@ def contact():
             flash("Please login")
             return redirect(url_for("login"))
     
-    return render_template("blog/contact.html", path=request.path, logged_in=current_user.is_authenticated)
+    return render_template("blog/pages/contact.html", path=request.path, logged_in=current_user.is_authenticated)
 
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-
     #   if user logged in then redirect to profile page
     if current_user.is_active == True:
         return redirect(url_for('profile'))
@@ -401,7 +400,7 @@ def register():
             flash("'Password' not match with 'Confirm Password', Please enter same password.")
             return redirect(url_for("register"))
 
-    return render_template("blog/register.html", path=request.path)
+    return render_template("blog/auth/register.html", path=request.path)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -437,7 +436,7 @@ def login():
                 flash("Wrong Password, Please enter correct password.")
                 return redirect(url_for("login"))
 
-    return render_template("blog/login.html", path=request.path)
+    return render_template("blog/auth/login.html", path=request.path)
 
 
 @app.route("/profile")
@@ -451,7 +450,7 @@ def profile():
         if contact.user_id == current_user.id:
             contact_list.append(contact)    
 
-    return render_template("blog/profile.html", path=request.path, logged_in=current_user.is_authenticated, user=current_user, contact_list=contact_list)
+    return render_template("blog/auth/profile.html", path=request.path, logged_in=current_user.is_authenticated, user=current_user, contact_list=contact_list)
 
 
 
@@ -515,7 +514,7 @@ def settings():
         #   redirect to profile
         return redirect(url_for("profile"))
 
-    return render_template("blog/profile.html", path=request.path, logged_in=current_user.is_authenticated, user=user)
+    return render_template("blog/auth/profile.html", path=request.path, logged_in=current_user.is_authenticated, user=user)
 
 
 @app.route("/logout")
@@ -548,7 +547,7 @@ def forget_password_send():
         flash("Reset password link has sent to you given your email address, go and click there.")
         return redirect(url_for("forget_password_send"))
 
-    return render_template("blog/forget-password-send.html")
+    return render_template("blog/auth/forget-password-send.html")
 
 
 @app.route("/set-new-password/<email>/<key>", methods=["GET", "POST"])
@@ -578,7 +577,7 @@ def set_new_password(email, key):
         else:
             return redirect(url_for("register"))
 
-    return render_template("blog/set-new-password.html")
+    return render_template("blog/auth/set-new-password.html")
 
 
 if __name__ == "__main__":
