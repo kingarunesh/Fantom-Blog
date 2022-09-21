@@ -57,6 +57,9 @@ class User(UserMixin, db.Model):
     #   contact relation
     contacts_info = db.relationship("Contact", back_populates="user")
 
+    #   bookmark relation
+    bookmark_info = db.relationship("Bookmark", back_populates="user")
+
 
 class Contact(db.Model):
     __tablename__ = 'contacts'
@@ -71,6 +74,7 @@ class Contact(db.Model):
 
 
 class Post(db.Model):
+    __tablename__ = "posts"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(500), unique=True, nullable=False)
     subtitle = db.Column(db.String(500), nullable=False)
@@ -81,7 +85,21 @@ class Post(db.Model):
     total_view = db.Column(db.Integer, nullable=False)
     created_date = db.Column(db.String(250), nullable=False)
     updated_date = db.Column(db.String(250), nullable=False)
+    #   post relation
+    post_info = db.relationship("Bookmark", back_populates="post")
 
+
+class Bookmark(db.Model):
+    __tablename__ = "bookmarks"
+    id = db.Column(db.Integer, primary_key=True)
+
+    #   user
+    user_id = db.Column(db.Integer, ForeignKey("users.id"))
+    user = db.relationship("User", back_populates="bookmark_info")
+
+    #   post
+    post_id = db.Column(db.Integer, ForeignKey("posts.id"))
+    post = db.relationship("Post", back_populates="post_info")
 
 
 db.create_all()
@@ -329,6 +347,26 @@ def post_detail(post_id):
         return render_template("blog/pages/search.html", path=request.path, posts=tag_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
 
     return render_template("blog/pages/post-detail.html", post=post, sidebar=sidebar, logged_in=current_user.is_authenticated)
+
+
+@app.route("/bookmark")
+def bookmark():
+    post = request.args.get("post_id")
+    current_post = Post.query.get(post)
+
+    #   check if user doese not have already bookmark this post
+    bookmark = Bookmark.query.filter_by(user_id=current_user.id, post_id=current_post.id).first()
+    if bookmark == None:
+        #   save post
+        new_bookmark = Bookmark(user=current_user, post=current_post)
+        db.session.add(new_bookmark)
+        db.session.commit()
+        return redirect(url_for("post_detail", post_id=current_post.id))
+    #   if user have already bookmark then remove post from bookmark
+    else:
+        return redirect(url_for("post_detail", post_id=current_post.id))
+
+    
 
 
 @app.route("/about")
