@@ -1,5 +1,5 @@
-from email.policy import default
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, abort
+from functools import wraps
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc, func, ForeignKey
 from sqlalchemy.orm import relationship
@@ -421,7 +421,6 @@ def bookmark():
         return redirect(url_for("post_detail", post_id=current_post.id))
 
 
-
 @app.route("/about")
 def about():
     return render_template("blog/pages/about.html", path=request.path, logged_in=current_user.is_authenticated)
@@ -496,16 +495,21 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-
     #   if user logged in then redirect to profile page
     if current_user.is_active == True:
         return redirect(url_for('profile'))
 
+    #   login user
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
 
         user = User.query.filter_by(email=email).first()
+
+        # if user delete account redirect to register
+        if user.active != True:
+            flash("Please create new account")
+            return redirect(url_for("register"))
 
         #   user not exists
         if user == None:
@@ -627,6 +631,19 @@ def settings():
     return render_template("blog/auth/profile.html", path=request.path, logged_in=current_user.is_authenticated, user=user)
 
 
+@app.route("/delete-account")
+@login_required
+def delete_account():
+    #   delete account
+    current_user.active = False
+    db.session.add(current_user)
+    db.session.commit()
+
+    logout_user()
+
+    return redirect(url_for("home"))
+
+
 @app.route("/logout")
 @login_required
 def logout():
@@ -639,6 +656,11 @@ def forget_password_send():
     if request.method == "POST":
         email = request.form["email"]
         user = User.query.filter_by(email=email).first()
+
+        # if user deleted account
+        if user == None or user.active != True:
+            flash("User does not exist, Please create new account.")
+            return redirect(url_for("register"))
 
         #   generate unique ID for reset password
         secret_key = uuid.uuid4().hex
@@ -688,6 +710,24 @@ def set_new_password(email, key):
             return redirect(url_for("register"))
 
     return render_template("blog/auth/set-new-password.html")
+
+
+#   testing
+def admin_only(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if current_user.admin != True:
+            return abort(403)
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+@app.route("/test")
+@login_required
+@admin_only
+def test():
+    print(current_user.active)
+    return "<h1>Hello, Arunesh</h1>"
 
 
 if __name__ == "__main__":
