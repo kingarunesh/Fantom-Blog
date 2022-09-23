@@ -25,7 +25,6 @@ ckeditor = CKEditor(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
@@ -286,8 +285,44 @@ def admin_register():
     return render_template("admin/auth/register.html", path=request.path)
 
 
-@app.route("/admin/login")
+@app.route("/admin/login", methods=["GET", "POST"])
 def admin_login():
+
+    # #   if user is logged in then redirect to home
+    if current_user.is_active == True:
+        return redirect(url_for('home'))
+
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+
+        user = User.query.filter_by(email=email).first()
+
+        #   check user is exists or not
+        if user == None:
+            flash("User does not exist, Please create new account.")
+            return redirect(url_for('admin_register'))
+
+        #   check user is admin or not
+        if user.admin == False:
+            flash("Invalid user, You do not have permission to login here.")
+            return redirect(url_for('login'))
+
+        #   login user
+
+        if check_password_hash(pwhash=user.password, password=password):
+            #   update user last login
+            user.last_login = dt.now().strftime("%H:%M | %d %B %Y")
+            db.session.add(user)
+            db.session.commit()
+
+            # login user
+            login_user(user)
+            return redirect(url_for("dashboard"))
+        else:
+            flash("Wrong password, Please enter correct password")
+            return redirect(url_for("admin_login"))
+
     return render_template("admin/auth/login.html", path=request.path)
 
 
