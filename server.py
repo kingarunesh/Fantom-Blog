@@ -256,7 +256,7 @@ def admin_profile():
     return render_template("admin/auth/profile.html", path=request.path)
 
 
-@app.route("/admin/contact")
+@app.route("/admin/contacts")
 @login_required
 @admin_only
 def admin_contact():
@@ -284,6 +284,36 @@ def done_contact(contact_id):
     db.session.commit()
 
     return redirect(url_for("admin_contact"))
+
+
+@app.route("/admin/comments")
+@login_required
+@admin_only
+def admin_comments():
+    comments = Comment.query.order_by(Comment.date_comment).all()
+    return render_template("/admin/pages/comments.html", comments=comments, path=request.path)
+
+
+@app.route("/admin/delete-comments/<comment_id>")
+@login_required
+@admin_only
+def admin_delete_comments(comment_id):
+    comment = Comment.query.get(comment_id)
+
+    if comment == None:
+        return redirect(url_for("admin_comments"))
+    
+    db.session.delete(comment)
+    db.session.commit()
+
+    return redirect(url_for("admin_comments"))
+
+
+@app.route("/admin/users")
+@login_required
+@admin_only
+def admin_users():
+    return render_template("admin/pages/users.html", path=request.path)
 
 
 @app.route("/admin/register", methods=["GET", "POST"])

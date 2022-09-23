@@ -60,7 +60,7 @@
         <!-- contacts -->
         <li class="nav-item">
           <a 
-            {% if '/admin/contact' == path: %}
+            {% if '/admin/contacts' == path: %}
                 class="nav-link"
             {% else: %}
                 class="nav-link collapsed"
@@ -71,21 +71,33 @@
           </a>
         </li>
 
-        <!-- users -->
-        <li class="nav-item">
-          <a class="nav-link collapsed" href="#">
-            <i class="bi bi-people"></i>
-            <span>Users</span>
-          </a>
-        </li>
-
         <!-- comments on post -->
         <li class="nav-item">
-          <a class="nav-link collapsed" href="#">
+          <a 
+            {% if '/admin/comments' == path: %}
+                class="nav-link"
+            {% else: %}
+                class="nav-link collapsed"
+            {% endif %}
+          href="{{ url_for('admin_comments') }}">
             <i class="bi bi-chat-left-text"></i>
             <span>Comments</span>
           </a>
         </li>
+
+        <!-- users -->
+        <li class="nav-item">
+          <a 
+          {% if '/admin/users' == path: %}
+                class="nav-link"
+            {% else: %}
+                class="nav-link collapsed"
+            {% endif %}
+          href="{{ url_for('admin_users') }}">
+            <i class="bi bi-people"></i>
+            <span>Users</span>
+          </a>
+        </li>       
 
         <!-- preview site -->
         <li class="nav-item">
