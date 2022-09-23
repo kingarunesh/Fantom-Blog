@@ -36,13 +36,6 @@ login_manager.login_view = 'login'
 
 ##################################################################################
 #
-#           Flask login
-#
-##################################################################################
-
-
-##################################################################################
-#
 #           DATABASE
 #
 ##################################################################################
@@ -138,6 +131,23 @@ class Bookmark(db.Model):
 
 
 db.create_all()
+
+
+##################################################################################
+#
+#           Flask login
+#
+##################################################################################
+def admin_only(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if current_user.admin != True:
+            # return abort(403)
+            return render_template("errors/403.html")
+        return f(*args, **kwargs)
+    return decorated_function
+
+
  
 #   NEW (  For admin routes and page setup  )
 ##################################################################################
@@ -147,6 +157,7 @@ db.create_all()
 ##################################################################################
 @app.route("/admin/")
 @login_required
+@admin_only
 def dashboard():
     posts = Post.query.order_by(desc(Post.updated_date)).all()[:5]
     #   GET CATEGORIES WITH COUNT   
@@ -248,7 +259,6 @@ def admin_register():
         profile_image = request.form["profile_image"]
         password = request.form["password"]
         confirmPassword = request.form["confirmPassword"]
-        agree = request.form["agree"]
 
         # password equal check
         if password != confirmPassword:
@@ -284,7 +294,7 @@ def admin_login():
 @app.route("/admin/logout")
 def admin_logout():
     logout_user()
-    return redirect(url_for("admin_login"))
+    return redirect(url_for("home"))
 
 
 #   NEW (  For normal user routes and page setup  )
@@ -771,23 +781,6 @@ def set_new_password(email, key):
 
     return render_template("blog/auth/set-new-password.html")
 
-
-#   testing
-def admin_only(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if current_user.admin != True:
-            return abort(403)
-        return f(*args, **kwargs)
-    return decorated_function
-
-
-@app.route("/test")
-@login_required
-@admin_only
-def test():
-    print(current_user.active)
-    return "<h1>Hello, Arunesh</h1>"
 
 
 if __name__ == "__main__":
