@@ -1,20 +1,63 @@
 {% extends "admin/layouts/base.html" %} {% block content %}
 
 <main id="main" class="main">
-  <p class="text-center p-5">
-    This page is only available in the pro version!
-    <a
-      href="https://bootstrapmade.com/demo/templates/NiceAdmin/pages-contact.html"
-      target="_blank"
-      >Preview the page online</a
-    >
-    |
-    <a
-      href="https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/#download"
-      target="_blank"
-      >Buy the pro version</a
-    >
-  </p>
+  <div class="pagetitle">
+    <h1>All Posts List</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{{ url_for('dashboard') }}">Home</a>
+        </li>
+        <li class="breadcrumb-item">Contacts</li>
+      </ol>
+    </nav>
+  </div>
+  <!-- End Page Title -->
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title" style="text-decoration: underline">
+              List of All Contacts
+            </h5>
+
+            <!-- Table with hoverable rows -->
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">User</th>
+                  <th scope="col">Subject</th>
+                  <th scope="col">Message</th>
+                  <th scope="col">Contact Date</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for contact in contacts: %}
+                <tr>
+                  <th scope="row">{{ contact.id }}</th>
+                  <td>{{ contact.user.email }}</td>
+                  <td>{{ contact.subject }}</td>
+                  <td>{{ contact.message }}</td>
+                  <td>{{ contact.send_date }}</td>
+
+                  <!-- DELETE POST -->
+                  <td>
+                    <a href="#"> Pendding </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <!-- End Table with hoverable rows -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 <!-- End #main -->
 

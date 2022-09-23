@@ -134,7 +134,7 @@ db.create_all()
 
 ##################################################################################
 #
-#           Flask login
+#            login
 #
 ##################################################################################
 def admin_only(f):
@@ -257,7 +257,9 @@ def admin_profile():
 @login_required
 @admin_only
 def admin_contact():
-    return render_template("admin/pages/contact.html", path=request.path)
+    contacts = Contact.query.order_by(Contact.send_date).all()
+
+    return render_template("admin/pages/contact.html", path=request.path, contacts=contacts)
 
 
 @app.route("/admin/register", methods=["GET", "POST"])
