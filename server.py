@@ -371,18 +371,25 @@ def post_detail(post_id):
     
     # bookmark icon
     saved = True
-    total_bookmark = None
+    total_bookmark = 0
+
+    if current_user.is_authenticated != True:
+        saved = False
+
     if current_user.is_authenticated == True:
         bookmark = Bookmark.query.filter_by(user_id=current_user.id, post_id=post.id).first()
         if bookmark == None:
             saved = False
-        count_bookmark = Bookmark.query.filter_by(post_id=post_id).all()
-        total_bookmark = len(count_bookmark)
+    
+    # count total bookmark
+    count_bookmark = Bookmark.query.filter_by(post_id=post_id).all()
+    total_bookmark = len(count_bookmark)
     
 
     #   add new comment
     if request.method == "POST":
         if current_user.is_authenticated == False:
+            flash("Please login to submit contact information.")
             return redirect(url_for("login"))
 
         text = request.form["comment"]
@@ -401,6 +408,10 @@ def post_detail(post_id):
 
 @app.route("/bookmark")
 def bookmark():
+    if current_user.is_authenticated != True:
+        flash("Please login to bookmark post.")
+        return redirect(url_for("login"))
+
     post = request.args.get("post_id")
     current_post = Post.query.get(post)
 
@@ -506,14 +517,14 @@ def login():
 
         user = User.query.filter_by(email=email).first()
 
-        # if user delete account redirect to register
-        if user.active != True:
-            flash("Please create new account")
-            return redirect(url_for("register"))
-
         #   user not exists
         if user == None:
             flash("'Email' doesn't exists, Please create new account")
+            return redirect(url_for("register"))
+
+        # if user delete account redirect to register
+        if user.active != True:
+            flash("Please create new account")
             return redirect(url_for("register"))
 
         # if user exists then login user

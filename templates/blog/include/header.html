@@ -1,14 +1,14 @@
 <header class="header_area">
       <div class="logo_part">
         <div class="container">
-          <a class="logo" href="#"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="" /></a>
+          <a class="logo"  href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="" /></a>
         </div>
       </div>
       <div class="main_menu">
         <nav class="navbar navbar-expand-lg navbar-light">
           <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
-            <a class="navbar-brand logo_h" href="index.html"
+            <a href="{{ url_for('home') }}" class="navbar-brand logo_h" 
               ><img src="{{ url_for('static', filename='img/logo.png') }}" alt=""
             /></a>
             <button
@@ -134,4 +134,4 @@
           </div>
         </nav>
       </div>
-    </header>
+</header>
