@@ -33,12 +33,16 @@
             action="{{ url_for('register') }}"
             method="POST"
           >
-            {% with messages = get_flashed_messages() %} {% if messages %} {%
-            for message in messages %}
-            <p style="color: red">{{ message }}</p>
-            {% endfor %} {% endif %} {% endwith %}
-
             <div class="col-md-12">
+              <!-- error message -->
+              {% with messages = get_flashed_messages() %} {% if messages %} {%
+              for message in messages %}
+              <div class="alert alert-danger">
+                <strong>{{ message }}</strong>
+              </div>
+              {% endfor %} {% endif %} {% endwith %}
+              <!-- end error message -->
+
               <!-- first name -->
               <div class="form-group">
                 <input

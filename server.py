@@ -581,15 +581,20 @@ def login():
             flash("'Email' doesn't exists, Please create new account")
             return redirect(url_for("register"))
 
-        # if user delete account redirect to register
+        #   if user delete account redirect to register
         if user.active != True:
             flash("Please create new account")
             return redirect(url_for("register"))
+        
+        #   if user is admin then return, user does not exists becuase this form valid only for normal users
+        if user.admin == True:
+            flash("User not valid, Please create new account")
+            return redirect(url_for("register"))
 
-        # if user exists then login user
+        #   if user exists then login user
         if user != None:
             if check_password_hash(pwhash=user.password, password=password):
-                # update last login time
+                #   update last login time
                 user.last_login = dt.now().strftime("%H:%M | %d %B %Y")
                 db.session.add(user)
                 db.session.commit()
@@ -730,6 +735,11 @@ def forget_password_send():
         # if user deleted account
         if user == None or user.active != True:
             flash("User does not exist, Please create new account.")
+            return redirect(url_for("register"))
+        
+        #   if user is admin then return, user does not exists becuase this form valid only for normal users
+        if user.admin == True:
+            flash("User not valid, Please create new account")
             return redirect(url_for("register"))
 
         #   generate unique ID for reset password
