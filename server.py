@@ -1,3 +1,5 @@
+from email.policy import default
+from pickle import FALSE
 from flask import Flask, render_template, request, redirect, url_for, flash, abort, current_app
 from functools import wraps
 from flask_sqlalchemy import SQLAlchemy
@@ -75,6 +77,7 @@ class Contact(db.Model):
     subject = db.Column(db.String(250), nullable=False)
     message = db.Column(db.Text, nullable=False)
     send_date = db.Column(db.String(250), default=dt.now().strftime("%H:%M | %d %B %Y"), nullable=False)
+    status = db.Column(db.Boolean, default=False, nullable=False)
 
     #   user relation
     user_id = db.Column(db.Integer, ForeignKey('users.id'))
@@ -260,6 +263,27 @@ def admin_contact():
     contacts = Contact.query.order_by(Contact.send_date).all()
 
     return render_template("admin/pages/contact.html", path=request.path, contacts=contacts)
+
+
+@app.route("/admin/done-contact/<contact_id>")
+@login_required
+@admin_only
+def done_contact(contact_id):
+
+    contact = Contact.query.get(contact_id)
+
+    if contact == None:
+        return redirect(url_for("admin_contact"))
+
+    if contact.status == True:
+        contact.status = False
+    else:
+        contact.status = True
+    
+    db.session.add(contact)
+    db.session.commit()
+
+    return redirect(url_for("admin_contact"))
 
 
 @app.route("/admin/register", methods=["GET", "POST"])
