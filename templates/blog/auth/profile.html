@@ -253,6 +253,7 @@
                     <thead>
                       <tr>
                         <th scope="col">ID</th>
+                        <th scope="col" style="min-width: 500px">Title</th>
                         <th scope="col" style="min-width: 500px">Comment</th>
                         <th scope="col" style="min-width: 200px">
                           Commented Date
@@ -264,6 +265,14 @@
                       {% for comment in comments %}
                       <tr>
                         <th scope="row">{{ comment.id }}</th>
+
+                        <!-- post title -->
+                        <td style="font-size: 1.2rem; padding: 1.2rem 0">
+                          <a
+                            href="{{ url_for('post_detail', post_id=comment.post.id) }}"
+                            >{{ comment.post.title }}</a
+                          >
+                        </td>
 
                         <!-- comment -->
                         <td style="font-size: 1.2rem; padding: 1.2rem 0">
