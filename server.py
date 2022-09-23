@@ -313,7 +313,29 @@ def admin_delete_comments(comment_id):
 @login_required
 @admin_only
 def admin_users():
-    return render_template("admin/pages/users.html", path=request.path)
+    users = User.query.order_by(User.created_date).all()
+    return render_template("admin/pages/users.html", path=request.path, users=users)
+
+
+@app.route("/admin/delete-users/<user_id>")
+@login_required
+@admin_only
+def admin_delete_users(user_id):
+    user = User.query.get(user_id)
+
+    if user == None:
+        return redirect(url_for("admin_users"))
+    
+    if user.active == True:
+        user.active = False
+    elif user.active == False:
+        user.active = True
+
+    db.session.add(user)
+    db.session.commit()
+
+    return redirect(url_for("admin_users"))
+
 
 
 @app.route("/admin/register", methods=["GET", "POST"])
