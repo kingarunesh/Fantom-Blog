@@ -39,7 +39,7 @@
             {% endif %}
           href="{{ url_for('get_all_post') }}">
             <i class="bi bi-card-list"></i>
-            <span>Get All Posts</span>
+            <span>Posts</span>
           </a>
         </li>
 
@@ -74,7 +74,7 @@
         <!-- users -->
         <li class="nav-item">
           <a class="nav-link collapsed" href="#">
-            <i class="bi bi-card-list"></i>
+            <i class="bi bi-people"></i>
             <span>Users</span>
           </a>
         </li>
@@ -82,11 +82,20 @@
         <!-- comments on post -->
         <li class="nav-item">
           <a class="nav-link collapsed" href="#">
-            <i class="bi bi-box-arrow-in-right"></i>
+            <i class="bi bi-chat-left-text"></i>
             <span>Comments</span>
           </a>
         </li>
 
+        <!-- preview site -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{{ url_for('home') }}" target="_blank">
+            <i class="bi bi-box-arrow-up-right"></i>
+            <span>Preview Site</span>
+          </a>
+        </li>
+
+        <!-- logout -->
         <li class="nav-item">
           <a class="nav-link collapsed" href="{{ url_for('admin_logout') }}">
             <i class="bi bi-box-arrow-in-right"></i>
