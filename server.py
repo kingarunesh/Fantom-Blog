@@ -49,8 +49,8 @@ class User(UserMixin, db.Model):
     admin = db.Column(db.Boolean, default=False, nullable=False)
     active = db.Column(db.Boolean, default=True, nullable=False)
     secret_key = db.Column(db.String(250), default=uuid.uuid4().hex, nullable=False)
-    created_date = db.Column(db.String(250), default=dt.now().strftime("%H:%M | %d %B %Y"), nullable=False)
-    last_login = db.Column(db.String(250), default=dt.now().strftime("%H:%M | %d %B %Y"), nullable=False)
+    created_date = db.Column(db.String(250), nullable=False)
+    last_login = db.Column(db.String(250), nullable=False)
     #   user will give input
     firstName = db.Column(db.String(250), nullable=False)
     lastName = db.Column(db.String(250), nullable=False)
@@ -166,12 +166,16 @@ def dashboard():
 
 
 @app.route("/admin/get-all-post")
+@login_required
+@admin_only
 def get_all_post():
     posts = Post.query.order_by(desc(Post.updated_date)).all()
     return render_template("admin/pages/posts.html", path=request.path, posts=posts)
 
 
 @app.route("/admin/new-post", methods=["GET", "POST"])
+@login_required
+@admin_only
 def new_post():
 
     if request.method == "POST":
@@ -207,6 +211,8 @@ def new_post():
 
 
 @app.route("/admin/update-post/<int:post_id>", methods=["GET", "POST"])
+@login_required
+@admin_only
 def update_post(post_id):
     post = Post.query.get(post_id)
 
@@ -229,6 +235,8 @@ def update_post(post_id):
 
 
 @app.route("/admin/delete-post/<int:post_id>")
+@login_required
+@admin_only
 def delete_post(post_id):
     post = Post.query.get(post_id)
     db.session.delete(post)
@@ -239,17 +247,25 @@ def delete_post(post_id):
 
 
 @app.route("/admin/profile")
+@login_required
+@admin_only
 def admin_profile():
-    return render_template("admin/profile.html", path=request.path)
+    return render_template("admin/auth/profile.html", path=request.path)
 
 
 @app.route("/admin/contact")
+@login_required
+@admin_only
 def admin_contact():
     return render_template("admin/pages/contact.html", path=request.path)
 
 
 @app.route("/admin/register", methods=["GET", "POST"])
 def admin_register():
+    # if user is logged in then redirect to home page
+    if current_user.is_active == True:
+        return redirect(url_for("home"))
+
     if request.method == "POST":
         firstName = request.form["firstName"]
         lastName = request.form["lastName"]
@@ -274,7 +290,7 @@ def admin_register():
         
         # create new account
         hash_password = generate_password_hash(password, method='pbkdf2:sha256', salt_length=10)
-        new_user = User(firstName=firstName,lastName=lastName,email=email,phone=phone,profile_image=profile_image,password=hash_password,admin=True)
+        new_user = User(firstName=firstName,lastName=lastName,email=email,phone=phone,profile_image=profile_image,password=hash_password,admin=True,created_date=dt.now().strftime("%H:%M | %d %B %Y"), last_login=dt.now().strftime("%H:%M | %d %B %Y"))
         db.session.add(new_user)
         db.session.commit()
 
@@ -327,6 +343,8 @@ def admin_login():
 
 
 @app.route("/admin/logout")
+@login_required
+@admin_only
 def admin_logout():
     logout_user()
     return redirect(url_for("home"))
@@ -583,7 +601,7 @@ def register():
             #   generate hash password
             password = generate_password_hash(password, method="pbkdf2:sha256", salt_length=10)
 
-            new_user = User(firstName=firstName,lastName=lastName,email=email,phone=phone,password=password,profile_image=profile_image)
+            new_user = User(firstName=firstName,lastName=lastName,email=email,phone=phone,password=password,profile_image=profile_image, created_date=dt.now().strftime("%H:%M | %d %B %Y"), last_login=dt.now().strftime("%H:%M | %d %B %Y"))
 
             db.session.add(new_user)
             db.session.commit()
