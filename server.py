@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, abort
+from flask import Flask, render_template, request, redirect, url_for, flash, abort, current_app
 from functools import wraps
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc, func, ForeignKey
@@ -24,12 +24,22 @@ ckeditor = CKEditor(app)
 #   Login
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'
 
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+
+
+login_manager.login_view = 'login'
+
+
+##################################################################################
+#
+#           Flask login
+#
+##################################################################################
+
 
 ##################################################################################
 #
@@ -42,19 +52,21 @@ db = SQLAlchemy(app)
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
+    #   default 
     id = db.Column(db.Integer, primary_key=True)
+    admin = db.Column(db.Boolean, default=False, nullable=False)
+    active = db.Column(db.Boolean, default=True, nullable=False)
+    secret_key = db.Column(db.String(250), default=uuid.uuid4().hex, nullable=False)
+    created_date = db.Column(db.String(250), default=dt.now().strftime("%H:%M | %d %B %Y"), nullable=False)
+    last_login = db.Column(db.String(250), default=dt.now().strftime("%H:%M | %d %B %Y"), nullable=False)
+    #   user will give input
     firstName = db.Column(db.String(250), nullable=False)
     lastName = db.Column(db.String(250), nullable=False)
     email = db.Column(db.String(250), unique=True, nullable=False)
     phone = db.Column(db.String(15), unique=True, nullable=False)
-    password = db.Column(db.String(250), nullable=False)
-    admin = db.Column(db.Boolean, default=False, nullable=False)
-    secret_key = db.Column(db.String(250), default=uuid.uuid4().hex, nullable=False)
     profile_image = db.Column(db.String(500), nullable=False)
-    created_date = db.Column(db.String(250), nullable=False)
-    last_login = db.Column(db.String(250), nullable=False)
-    active = db.Column(db.Boolean, default=True, nullable=False)
-
+    password = db.Column(db.String(250), nullable=False)
+    
     #   contact relation
     contacts_info = db.relationship("Contact", back_populates="user")
 
@@ -133,19 +145,20 @@ db.create_all()
 #           ADMIN ROUTES
 #
 ##################################################################################
-@app.route("/admin")
+@app.route("/admin/")
+@login_required
 def dashboard():
     posts = Post.query.order_by(desc(Post.updated_date)).all()[:5]
     #   GET CATEGORIES WITH COUNT   
     categories_with_numbers = Post.query.with_entities(Post.category, func.count(Post.category)).group_by(Post.category).all()
 
-    return render_template("admin/index.html", path=request.path, posts=posts, chart_data=categories_with_numbers)
+    return render_template("admin/pages/index.html", path=request.path, posts=posts, chart_data=categories_with_numbers)
 
 
 @app.route("/admin/get-all-post")
 def get_all_post():
     posts = Post.query.order_by(desc(Post.updated_date)).all()
-    return render_template("admin/posts.html", path=request.path, posts=posts)
+    return render_template("admin/pages/posts.html", path=request.path, posts=posts)
 
 
 @app.route("/admin/new-post", methods=["GET", "POST"])
@@ -180,7 +193,7 @@ def new_post():
 
         return redirect(url_for('get_all_post'))
 
-    return render_template("admin/new-post.html", path=request.path)
+    return render_template("admin/pages/new-post.html", path=request.path)
 
 
 @app.route("/admin/update-post/<int:post_id>", methods=["GET", "POST"])
@@ -202,7 +215,7 @@ def update_post(post_id):
 
         return redirect(url_for("get_all_post"))
 
-    return render_template("admin/update-post.html", post=post)
+    return render_template("admin/pages/update-post.html", post=post)
 
 
 @app.route("/admin/delete-post/<int:post_id>")
@@ -222,17 +235,56 @@ def admin_profile():
 
 @app.route("/admin/contact")
 def admin_contact():
-    return render_template("admin/contact.html", path=request.path)
+    return render_template("admin/pages/contact.html", path=request.path)
 
 
-@app.route("/admin/register")
+@app.route("/admin/register", methods=["GET", "POST"])
 def admin_register():
-    return render_template("admin/register.html", path=request.path)
+    if request.method == "POST":
+        firstName = request.form["firstName"]
+        lastName = request.form["lastName"]
+        email = request.form["email"]
+        phone = request.form["phone"]
+        profile_image = request.form["profile_image"]
+        password = request.form["password"]
+        confirmPassword = request.form["confirmPassword"]
+        agree = request.form["agree"]
+
+        # password equal check
+        if password != confirmPassword:
+            flash("Password and Confirm Password is did not match, Please enter same password")
+            return redirect(url_for("admin_register"))
+        
+        # search exists email or phone
+        if User.query.filter_by(email=email).first():
+            flash("Email already register, Please enter anthor email address.")
+            return redirect(url_for("admin_register"))
+        elif User.query.filter_by(phone=phone).first():
+            flash("Phone already register, Please enter anthor Phone address.")
+            return redirect(url_for("admin_register"))
+        
+        # create new account
+        hash_password = generate_password_hash(password, method='pbkdf2:sha256', salt_length=10)
+        new_user = User(firstName=firstName,lastName=lastName,email=email,phone=phone,profile_image=profile_image,password=hash_password,admin=True)
+        db.session.add(new_user)
+        db.session.commit()
+
+        # login user & redirect to dashboard
+        login_user(new_user)
+        return redirect(url_for("dashboard"))
+
+    return render_template("admin/auth/register.html", path=request.path)
 
 
 @app.route("/admin/login")
 def admin_login():
-    return render_template("admin/login.html", path=request.path)
+    return render_template("admin/auth/login.html", path=request.path)
+
+
+@app.route("/admin/logout")
+def admin_logout():
+    logout_user()
+    return redirect(url_for("admin_login"))
 
 
 #   NEW (  For normal user routes and page setup  )
@@ -471,8 +523,6 @@ def register():
     password = request.form.get("password")
     confirmPassword = request.form.get("confirmPassword")
     profile_image = request.form.get("image")
-    created_date = dt.now().strftime("%H:%M | %d %B %Y")
-    last_login = dt.now().strftime("%H:%M | %d %B %Y")
 
     #   check email or phone in database exists
     if User.query.filter_by(email=email).first():
@@ -488,8 +538,7 @@ def register():
             #   generate hash password
             password = generate_password_hash(password, method="pbkdf2:sha256", salt_length=10)
 
-            new_user = User(firstName=firstName,lastName=lastName,email=email,phone=phone,password=password,profile_image=profile_image,
-            created_date=created_date,last_login=last_login)
+            new_user = User(firstName=firstName,lastName=lastName,email=email,phone=phone,password=password,profile_image=profile_image)
 
             db.session.add(new_user)
             db.session.commit()

@@ -3,12 +3,12 @@
 <main>
   <div class="container">
     <section
-      class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4"
+      class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-3"
     >
       <div class="container">
         <div class="row justify-content-center">
           <div
-            class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center"
+            class="col-lg-5 col-md-6 d-flex flex-column align-items-center justify-content-center"
           >
             <div class="d-flex justify-content-center py-4">
               <a
@@ -24,7 +24,7 @@
             </div>
             <!-- End Logo -->
 
-            <div class="card mb-3">
+            <div class="card mb-5">
               <div class="card-body">
                 <div class="pt-4 pb-2">
                   <h5 class="card-title text-center pb-0 fs-4">
@@ -35,19 +35,47 @@
                   </p>
                 </div>
 
-                <form class="row g-3 needs-validation" novalidate>
+                <form
+                  action="{{ url_for('admin_register') }}"
+                  method="POST"
+                  class="row g-3 needs-validation"
+                >
+                  <!-- error message -->
+                  {% with messages = get_flashed_messages() %} {% if messages %}
+                  {% for message in messages %}
+                  <div class="alert alert-danger">{{ message }}</div>
+                  {% endfor %} {% endif %} {% endwith %}
+                  <!-- end error message -->
+
+                  <!-- first name -->
                   <div class="col-12">
-                    <label for="yourName" class="form-label">Your Name</label>
+                    <label for="firstName" class="form-label">First Name</label>
                     <input
                       type="text"
-                      name="name"
+                      name="firstName"
                       class="form-control"
-                      id="yourName"
+                      id="firstName"
+                      required
+                    />
+                    <div class="invalid-feedback">
+                      Please, enter your First Name!
+                    </div>
+                  </div>
+
+                  <!-- last name -->
+                  <div class="col-12">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input
+                      type="text"
+                      name="lastName"
+                      class="form-control"
+                      id="lastName"
                       required
                     />
                     <div class="invalid-feedback">Please, enter your name!</div>
                   </div>
 
+                  <!-- email -->
                   <div class="col-12">
                     <label for="yourEmail" class="form-label">Your Email</label>
                     <input
@@ -62,15 +90,42 @@
                     </div>
                   </div>
 
+                  <!-- image -->
                   <div class="col-12">
-                    <label for="yourPassword" class="form-label"
-                      >Password</label
+                    <label for="profile_image" class="form-label"
+                      >Profile Image URL</label
                     >
+                    <input
+                      type="text"
+                      name="profile_image"
+                      class="form-control"
+                      id="profile_image"
+                      required
+                    />
+                    <div class="invalid-feedback">Please, enter your name!</div>
+                  </div>
+
+                  <!-- phone -->
+                  <div class="col-12">
+                    <label for="phone" class="form-label">Contact Number</label>
+                    <input
+                      type="number"
+                      name="phone"
+                      class="form-control"
+                      id="phone"
+                      required
+                    />
+                    <div class="invalid-feedback">Contact Number</div>
+                  </div>
+
+                  <!-- password -->
+                  <div class="col-12">
+                    <label for="password" class="form-label">Password</label>
                     <input
                       type="password"
                       name="password"
                       class="form-control"
-                      id="yourPassword"
+                      id="password"
                       required
                     />
                     <div class="invalid-feedback">
@@ -78,15 +133,16 @@
                     </div>
                   </div>
 
+                  <!-- confirm password -->
                   <div class="col-12">
-                    <label for="yourPassword" class="form-label"
+                    <label for="confirmPassword" class="form-label"
                       >Confirm Password</label
                     >
                     <input
                       type="password"
-                      name="password"
+                      name="confirmPassword"
                       class="form-control"
-                      id="yourPassword"
+                      id="confirmPassword"
                       required
                     />
                     <div class="invalid-feedback">
@@ -94,13 +150,13 @@
                     </div>
                   </div>
 
+                  <!-- agree -->
                   <div class="col-12">
                     <div class="form-check">
                       <input
                         class="form-check-input"
-                        name="terms"
+                        name="agree"
                         type="checkbox"
-                        value=""
                         id="acceptTerms"
                         required
                       />
@@ -113,6 +169,8 @@
                       </div>
                     </div>
                   </div>
+
+                  <!-- button -->
                   <div class="col-12">
                     <button class="btn btn-primary w-100" type="submit">
                       Create Account
