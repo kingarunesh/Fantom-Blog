@@ -162,11 +162,15 @@ def admin_only(f):
 @login_required
 @admin_only
 def dashboard():
+    #   get all posts
     posts = Post.query.order_by(desc(Post.updated_date)).all()[:5]
-    #   GET CATEGORIES WITH COUNT   
-    categories_with_numbers = Post.query.with_entities(Post.category, func.count(Post.category)).group_by(Post.category).all()
+    
+    #   count total pendding contact
+    pending_contacts = Contact.query.filter_by(status=False).count()
+    #   get last 5 contact person
+    last_5_contacts = Contact.query.order_by(desc(Contact.id)).filter_by(status=False).all()[:5]
 
-    return render_template("admin/pages/index.html", path=request.path, posts=posts, chart_data=categories_with_numbers)
+    return render_template("admin/pages/dashboard.html", path=request.path, posts=posts, pending_contacts=pending_contacts, last_5_contacts=last_5_contacts, user=current_user)
 
 
 #   posts
@@ -175,7 +179,13 @@ def dashboard():
 @admin_only
 def get_all_post():
     posts = Post.query.order_by(desc(Post.updated_date)).all()
-    return render_template("admin/pages/posts.html", path=request.path, posts=posts)
+
+    #   count total pendding contact
+    pending_contacts = Contact.query.filter_by(status=False).count()
+    #   get last 5 contact person
+    last_5_contacts = Contact.query.order_by(desc(Contact.id)).filter_by(status=False).all()[:5]
+
+    return render_template("admin/pages/posts.html", path=request.path, posts=posts, pending_contacts=pending_contacts, last_5_contacts=last_5_contacts, user=current_user)
 
 
 #   new post
@@ -183,6 +193,11 @@ def get_all_post():
 @login_required
 @admin_only
 def new_post():
+
+    #   count total pendding contact
+    pending_contacts = Contact.query.filter_by(status=False).count()
+    #   get last 5 contact person
+    last_5_contacts = Contact.query.order_by(desc(Contact.id)).filter_by(status=False).all()[:5]
 
     if request.method == "POST":
         title = request.form["title"]
@@ -213,7 +228,7 @@ def new_post():
 
         return redirect(url_for('get_all_post'))
 
-    return render_template("admin/pages/new-post.html", path=request.path)
+    return render_template("admin/pages/new-post.html", path=request.path, user=current_user, pending_contacts=pending_contacts, last_5_contacts=last_5_contacts)
 
 
 #   update post
@@ -222,6 +237,11 @@ def new_post():
 @admin_only
 def update_post(post_id):
     post = Post.query.get(post_id)
+
+    #   count total pendding contact
+    pending_contacts = Contact.query.filter_by(status=False).count()
+    #   get last 5 contact person
+    last_5_contacts = Contact.query.order_by(desc(Contact.id)).filter_by(status=False).all()[:5]
 
     if request.method == "POST":
         post.title = request.form["title"]
@@ -238,7 +258,7 @@ def update_post(post_id):
 
         return redirect(url_for("get_all_post"))
 
-    return render_template("admin/pages/update-post.html", post=post)
+    return render_template("admin/pages/update-post.html", post=post, user=current_user, pending_contacts=pending_contacts, last_5_contacts=last_5_contacts)
 
 
 #   delete post
@@ -258,7 +278,12 @@ def delete_post(post_id):
 @login_required
 @admin_only
 def admin_profile():
-    return render_template("admin/auth/profile.html", path=request.path, user=current_user)
+    #   count total pendding contact
+    pending_contacts = Contact.query.filter_by(status=False).count()
+    #   get last 5 contact person
+    last_5_contacts = Contact.query.order_by(desc(Contact.id)).filter_by(status=False).all()[:5]
+
+    return render_template("admin/auth/profile.html", path=request.path, user=current_user, pending_contacts=pending_contacts, last_5_contacts=last_5_contacts)
 
 
 #   update profile
@@ -330,7 +355,12 @@ def update_admin_password():
 def admin_contact():
     contacts = Contact.query.order_by(Contact.send_date).all()
 
-    return render_template("admin/pages/contact.html", path=request.path, contacts=contacts)
+    #   count total pendding contact
+    pending_contacts = Contact.query.filter_by(status=False).count()
+    #   get last 5 contact person
+    last_5_contacts = Contact.query.order_by(desc(Contact.id)).filter_by(status=False).all()[:5]
+
+    return render_template("admin/pages/contact.html", path=request.path, contacts=contacts, user=current_user, pending_contacts=pending_contacts, last_5_contacts=last_5_contacts)
 
 
 @app.route("/admin/done-contact/<contact_id>")
@@ -359,7 +389,13 @@ def done_contact(contact_id):
 @admin_only
 def admin_comments():
     comments = Comment.query.order_by(Comment.date_comment).all()
-    return render_template("/admin/pages/comments.html", comments=comments, path=request.path)
+
+    #   count total pendding contact
+    pending_contacts = Contact.query.filter_by(status=False).count()
+    #   get last 5 contact person
+    last_5_contacts = Contact.query.order_by(desc(Contact.id)).filter_by(status=False).all()[:5]
+
+    return render_template("/admin/pages/comments.html", comments=comments, path=request.path, user=current_user, pending_contacts=pending_contacts, last_5_contacts=last_5_contacts)
 
 
 @app.route("/admin/delete-comments/<comment_id>")
@@ -382,7 +418,13 @@ def admin_delete_comments(comment_id):
 @admin_only
 def admin_users():
     users = User.query.order_by(User.created_date).all()
-    return render_template("admin/pages/users.html", path=request.path, users=users)
+
+    #   count total pendding contact
+    pending_contacts = Contact.query.filter_by(status=False).count()
+    #   get last 5 contact person
+    last_5_contacts = Contact.query.order_by(desc(Contact.id)).filter_by(status=False).all()[:5]
+
+    return render_template("admin/pages/users.html", path=request.path, users=users, user=current_user, pending_contacts=pending_contacts, last_5_contacts=last_5_contacts)
 
 
 #   user profile
@@ -390,6 +432,10 @@ def admin_users():
 @login_required
 @admin_only
 def admin_user_profile(user_id):
+    #   count total pendding contact
+    pending_contacts = Contact.query.filter_by(status=False).count()
+    #   get last 5 contact person
+    last_5_contacts = Contact.query.order_by(desc(Contact.id)).filter_by(status=False).all()[:5]
 
     # get user
     user = User.query.get(user_id)
@@ -409,7 +455,7 @@ def admin_user_profile(user_id):
 
     print(bookmarks)
 
-    return render_template("admin/pages/user_profile.html", user=user, contacts=contacts, comments=comments, bookmarks=bookmarks)
+    return render_template("admin/pages/user_profile.html", user=user, contacts=contacts, comments=comments, bookmarks=bookmarks, pending_contacts=pending_contacts, last_5_contacts=last_5_contacts)
 
 
 #   deactivate user

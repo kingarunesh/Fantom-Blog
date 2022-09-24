@@ -19,7 +19,7 @@
       <!-- Left side columns -->
       <div class="col-lg-12">
         <div class="row">
-          <!-- TEST Card -->
+          <!-- post count -->
           <div class="col-xxl-4 col-xl-12">
             <div class="card info-card customers-card">
               <div class="card-body">
@@ -47,7 +47,9 @@
               </div>
             </div>
           </div>
+          <!-- end post count -->
 
+          <!-- all contacts count -->
           <div class="col-xxl-4 col-xl-12">
             <div class="card info-card customers-card">
               <div class="card-body">
@@ -67,7 +69,9 @@
               </div>
             </div>
           </div>
+          <!-- end all contacts count -->
 
+          <!-- all comments count -->
           <div class="col-xxl-4 col-xl-12">
             <div class="card info-card customers-card">
               <div class="card-body">
@@ -87,10 +91,10 @@
               </div>
             </div>
           </div>
+          <!-- end all comments count -->
+          <!-- end card -->
 
-          <!-- End TEST Card -->
-
-          <!-- LAST 5 POSTS -->
+          <!-- last 5 posts -->
           <div class="col-12">
             <div class="card top-selling overflow-auto">
               <div class="filter">
@@ -108,7 +112,6 @@
 
               <div class="card-body pb-0">
                 <h5 class="card-title">Last 5 Posts</h5>
-
                 <table class="table table-borderless">
                   <thead>
                     <tr>
@@ -143,6 +146,7 @@
                       <td>{{ post.category }}</td>
                       <td>{{ post.updated_date }}</td>
                       <td class="fw-bold">{{ post.total_view }}</td>
+                      <td class="fw-bold">{{ post.total_view }}</td>
                     </tr>
                     {% endfor %}
                   </tbody>
@@ -150,93 +154,18 @@
               </div>
             </div>
           </div>
-          <!-- End Top Selling -->
+          <!-- end last 5 posts -->
         </div>
       </div>
       <!-- End Left side columns -->
 
-      <!-- Right side columns -->
+      <!--  columns -->
       <div class="col-lg-12">
         <!-- Recent Activity -->
         <div class="card">
-          <div class="filter">
-            <a class="icon" href="#" data-bs-toggle="dropdown"
-              ><i class="bi bi-three-dots"></i
-            ></a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-              <li class="dropdown-header text-start">
-                <h6>Filter</h6>
-              </li>
-
-              <li><a class="dropdown-item" href="#">Today</a></li>
-              <li><a class="dropdown-item" href="#">This Month</a></li>
-              <li><a class="dropdown-item" href="#">This Year</a></li>
-            </ul>
-          </div>
-
           <div class="card-body">
             <h5 class="card-title">Recent Activity <span>| Today</span></h5>
-
             <div class="activity">
-              <div class="activity-item d-flex">
-                <div class="activite-label">32 min</div>
-                <i
-                  class="bi bi-circle-fill activity-badge text-success align-self-start"
-                ></i>
-                <div class="activity-content">
-                  Quia quae rerum
-                  <a href="#" class="fw-bold text-dark">explicabo officiis</a>
-                  beatae
-                </div>
-              </div>
-              <!-- End activity item-->
-
-              <div class="activity-item d-flex">
-                <div class="activite-label">56 min</div>
-                <i
-                  class="bi bi-circle-fill activity-badge text-danger align-self-start"
-                ></i>
-                <div class="activity-content">
-                  Voluptatem blanditiis blanditiis eveniet
-                </div>
-              </div>
-              <!-- End activity item-->
-
-              <div class="activity-item d-flex">
-                <div class="activite-label">2 hrs</div>
-                <i
-                  class="bi bi-circle-fill activity-badge text-primary align-self-start"
-                ></i>
-                <div class="activity-content">
-                  Voluptates corrupti molestias voluptatem
-                </div>
-              </div>
-              <!-- End activity item-->
-
-              <div class="activity-item d-flex">
-                <div class="activite-label">1 day</div>
-                <i
-                  class="bi bi-circle-fill activity-badge text-info align-self-start"
-                ></i>
-                <div class="activity-content">
-                  Tempore autem saepe
-                  <a href="#" class="fw-bold text-dark">occaecati voluptatem</a>
-                  tempore
-                </div>
-              </div>
-              <!-- End activity item-->
-
-              <div class="activity-item d-flex">
-                <div class="activite-label">2 days</div>
-                <i
-                  class="bi bi-circle-fill activity-badge text-warning align-self-start"
-                ></i>
-                <div class="activity-content">
-                  Est sit eum reiciendis exercitationem
-                </div>
-              </div>
-              <!-- End activity item-->
-
               <div class="activity-item d-flex">
                 <div class="activite-label">4 weeks</div>
                 <i
@@ -251,83 +180,8 @@
           </div>
         </div>
         <!-- End Recent Activity -->
-
-        <!-- Website Traffic -->
-        <div class="card">
-          <div class="filter">
-            <a class="icon" href="#" data-bs-toggle="dropdown"
-              ><i class="bi bi-three-dots"></i
-            ></a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-              <li class="dropdown-header text-start">
-                <h6>Filter</h6>
-              </li>
-
-              <li><a class="dropdown-item" href="#">Today</a></li>
-              <li><a class="dropdown-item" href="#">This Month</a></li>
-              <li><a class="dropdown-item" href="#">This Year</a></li>
-            </ul>
-          </div>
-
-          <div class="card-body pb-0">
-            <h5 class="card-title">Website Traffic <span>| Today</span></h5>
-
-            <div
-              id="trafficChart"
-              style="min-height: 600px"
-              class="echart"
-            ></div>
-
-            <script>
-              document.addEventListener("DOMContentLoaded", () => {
-                echarts
-                  .init(document.querySelector("#trafficChart"))
-                  .setOption({
-                    tooltip: {
-                      trigger: "item",
-                    },
-                    legend: {
-                      top: "10%",
-                      left: "center",
-                    },
-                    series: [
-                      {
-                        name: "Access From",
-                        type: "pie",
-                        radius: ["20%", "30%"],
-                        avoidLabelOverlap: false,
-                        label: {
-                          show: false,
-                          position: "center",
-                        },
-                        emphasis: {
-                          label: {
-                            show: true,
-                            fontSize: "16",
-                            fontWeight: "bold",
-                          },
-                        },
-                        labelLine: {
-                          show: false,
-                        },
-                        data: [
-                          "{% for x in chart_data: %}",
-                          {
-                            value: Number("{{ x[1] }}"),
-                            name: "{{ x[0] }}",
-                          },
-                          "{% endfor %}",
-                        ],
-                      },
-                    ],
-                  });
-              });
-            </script>
-          </div>
-        </div>
-        <!-- End Website Traffic -->
       </div>
-      <!-- End Right side columns -->
+      <!-- end columns -->
     </div>
   </section>
 </main>
