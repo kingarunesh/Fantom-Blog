@@ -119,6 +119,7 @@
                   <div class="col-lg-9 col-md-8">{{ user.last_login }}</div>
                 </div>
               </div>
+              <!-- end overview -->
 
               <!-- edit profile -->
               <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
@@ -221,6 +222,7 @@
                 </form>
                 <!-- End Profile Edit Form -->
               </div>
+              <!-- end edit profile -->
 
               <!-- settings -->
               <div class="tab-pane fade pt-3" id="profile-settings">
@@ -287,10 +289,22 @@
                 </form>
                 <!-- End settings Form -->
               </div>
+              <!-- end settings -->
 
               <!-- change password -->
               <div class="tab-pane fade pt-3" id="profile-change-password">
-                <form>
+                <form
+                  action="{{ url_for('update_admin_password') }}"
+                  method="POST"
+                >
+                  <!-- error message -->
+                  {% with messages = get_flashed_messages() %} {% if messages %}
+                  {% for message in messages %}
+                  <div class="alert alert-danger">{{ message }}</div>
+                  {% endfor %} {% endif %} {% endwith %}
+                  <!-- end error message -->
+
+                  <!-- current password -->
                   <div class="row mb-3">
                     <label
                       for="currentPassword"
@@ -299,14 +313,16 @@
                     >
                     <div class="col-md-8 col-lg-9">
                       <input
-                        name="password"
+                        name="currentPassword"
                         type="password"
                         class="form-control"
                         id="currentPassword"
+                        required
                       />
                     </div>
                   </div>
 
+                  <!-- new password -->
                   <div class="row mb-3">
                     <label
                       for="newPassword"
@@ -315,26 +331,29 @@
                     >
                     <div class="col-md-8 col-lg-9">
                       <input
-                        name="newpassword"
+                        name="newPassword"
                         type="password"
                         class="form-control"
                         id="newPassword"
+                        required
                       />
                     </div>
                   </div>
 
+                  <!-- confirm new password -->
                   <div class="row mb-3">
                     <label
-                      for="renewPassword"
+                      for="confirmNewPassword"
                       class="col-md-4 col-lg-3 col-form-label"
-                      >Re-enter New Password</label
+                      >Confirm New Password</label
                     >
                     <div class="col-md-8 col-lg-9">
                       <input
-                        name="renewpassword"
+                        name="confirmNewPassword"
                         type="password"
                         class="form-control"
-                        id="renewPassword"
+                        id="confirmNewPassword"
+                        required
                       />
                     </div>
                   </div>
@@ -347,6 +366,7 @@
                 </form>
                 <!-- End Change Password Form -->
               </div>
+              <!-- end change password -->
             </div>
             <!-- End Bordered Tabs -->
           </div>

@@ -288,6 +288,41 @@ def update_admin_profile():
         return redirect(url_for("admin_profile"))
         
 
+@app.route("/admin/update-password", methods=["POST"])
+@login_required
+@admin_only
+def update_admin_password():
+    user = current_user
+
+    if user == None:
+        return redirect(url_for("admin_profile"))
+    
+    if request.method == "POST":
+        currentPassword = request.form["currentPassword"]
+        newPassword = request.form["newPassword"]
+        confirmNewPassword = request.form["confirmNewPassword"]
+
+        #   check hash password
+        if check_password_hash(pwhash=user.password, password=currentPassword):
+            # check new password and confirm new password
+            if newPassword == confirmNewPassword:
+                hash_password = generate_password_hash(newPassword, method='pbkdf2:sha256', salt_length=10)
+
+                user.password = hash_password
+                db.session.add(user)
+                db.session.commit()
+
+                logout_user()
+
+                return redirect(url_for("admin_login"))
+
+            else:
+                flash("Please enter same, new password and confirm new password")
+                return redirect(url_for("admin_profile"))
+        else:
+            flash("Wrong current password")
+            return redirect(url_for("admin_profile"))
+
 
 @app.route("/admin/contacts")
 @login_required
