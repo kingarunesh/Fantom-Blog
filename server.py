@@ -317,6 +317,7 @@ def admin_users():
     return render_template("admin/pages/users.html", path=request.path, users=users)
 
 
+#   user profile
 @app.route("/admin/user/<user_id>")
 @login_required
 @admin_only
@@ -326,11 +327,11 @@ def admin_user_profile(user_id):
     return render_template("admin/pages/user_profile.html", user=user)
 
 
-
-@app.route("/admin/delete-users/<user_id>")
+#   deactivate user
+@app.route("/admin/deactivate-users/<user_id>")
 @login_required
 @admin_only
-def admin_delete_users(user_id):
+def admin_deactivate_users(user_id):
     user = User.query.get(user_id)
 
     if user == None:
@@ -344,7 +345,7 @@ def admin_delete_users(user_id):
     db.session.add(user)
     db.session.commit()
 
-    return redirect(url_for("admin_users"))
+    return redirect(url_for("admin_user_profile", user_id=user.id))
 
 
 #   make user admin
@@ -367,7 +368,7 @@ def admin_make_users(user_id):
 
     return redirect(url_for('admin_user_profile', user_id=user_id))
 
-
+#   remove admin user
 @app.route("/admin/activate-users/<user_id>")
 @login_required
 @admin_only
@@ -385,9 +386,10 @@ def admin_activate_users(user_id):
     db.session.add(user)
     db.session.commit()
 
-    return redirect(url_for("admin_users"))
+    return redirect(url_for("admin_user_profile", user_id=user.id))
 
 
+# admin register
 @app.route("/admin/register", methods=["GET", "POST"])
 def admin_register():
     # if user is logged in then redirect to home page
@@ -429,6 +431,7 @@ def admin_register():
     return render_template("admin/auth/register.html", path=request.path)
 
 
+# admin login
 @app.route("/admin/login", methods=["GET", "POST"])
 def admin_login():
 
@@ -470,6 +473,7 @@ def admin_login():
     return render_template("admin/auth/login.html", path=request.path)
 
 
+# admin logout
 @app.route("/admin/logout")
 @login_required
 @admin_only

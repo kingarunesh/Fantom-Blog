@@ -80,7 +80,7 @@
                   User currently active, if you want you can deactivate user
                   account ?
                   <a
-                    href="{{ url_for('admin_delete_users', user_id=user.id) }}"
+                    href="{{ url_for('admin_activate_users', user_id=user.id) }}"
                     class="btn btn-danger"
                     >Deactivate Account</a
                   >
@@ -89,7 +89,7 @@
                   User currently deactivate, if you want you can activate user
                   now ?
                   <a
-                    href="{{ url_for('admin_activate_users', user_id=user.id) }}"
+                    href="{{ url_for('admin_deactivate_users', user_id=user.id) }}"
                     class="btn btn-primary"
                     >Activate Account</a
                   >
