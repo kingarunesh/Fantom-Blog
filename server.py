@@ -11,7 +11,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required, login_user, UserMixin
 import uuid
 
-from send_mail import send_reset_mail
+from send_mail import send_reset_mail, verification_admin
 
 
 
@@ -49,6 +49,7 @@ class User(UserMixin, db.Model):
     #   default 
     id = db.Column(db.Integer, primary_key=True)
     admin = db.Column(db.Boolean, default=False, nullable=False)
+    verify = db.Column(db.Boolean, default=False, nullable=False)
     active = db.Column(db.Boolean, default=True, nullable=False)
     secret_key = db.Column(db.String(250), default=uuid.uuid4().hex, nullable=False)
     created_date = db.Column(db.String(250), nullable=False)
@@ -548,11 +549,13 @@ def admin_register():
             flash("Password and Confirm Password is did not match, Please enter same password")
             return redirect(url_for("admin_register"))
         
-        # search exists email or phone
+        # email exist
         if User.query.filter_by(email=email).first():
             flash("Email already register, Please enter anthor email address.")
             return redirect(url_for("admin_register"))
-        elif User.query.filter_by(phone=phone).first():
+        
+        # phone exists
+        if User.query.filter_by(phone=phone).first():
             flash("Phone already register, Please enter anthor Phone address.")
             return redirect(url_for("admin_register"))
         
@@ -562,9 +565,11 @@ def admin_register():
         db.session.add(new_user)
         db.session.commit()
 
-        # login user & redirect to dashboard
-        login_user(new_user)
-        return redirect(url_for("dashboard"))
+        #   send mail for verification
+        verify_url = f"http://127.0.0.1:5000/admin/verify/{new_user.id}/{new_user.secret_key}"
+        verification_admin(url=verify_url)
+
+        return render_template("admin/auth/send-verification.html")
 
     return render_template("admin/auth/register.html", path=request.path)
 
@@ -573,7 +578,7 @@ def admin_register():
 @app.route("/admin/login", methods=["GET", "POST"])
 def admin_login():
 
-    # #   if user is logged in then redirect to home
+    #   if user is logged in then redirect to home
     if current_user.is_active == True:
         return redirect(url_for('home'))
 
@@ -592,9 +597,13 @@ def admin_login():
         if user.admin == False:
             flash("Invalid user, You do not have permission to login here.")
             return redirect(url_for('login'))
+        
+        #   verify account or not
+        if user.verify == False:
+            flash("Your account not verify. Please contact on 'fantomblog.contact@gmail.com' for verification.")
+            return redirect(url_for('admin_login'))
 
         #   login user
-
         if check_password_hash(pwhash=user.password, password=password):
             #   update user last login
             user.last_login = dt.now().strftime("%H:%M | %d %B %Y")
