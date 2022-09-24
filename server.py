@@ -11,7 +11,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required, login_user, UserMixin
 import uuid
 
-from send_mail import send_reset_mail, verification_admin
+from send_mail import send_reset_mail, verification_admin, account_verified
 
 
 
@@ -572,6 +572,32 @@ def admin_register():
         return render_template("admin/auth/send-verification.html")
 
     return render_template("admin/auth/register.html", path=request.path)
+
+
+
+@app.route("/admin/verify/<user_id>/<secret_key>")
+def verify_user(user_id, secret_key):
+
+    # get user
+    user = User.query.get(user_id)
+
+    # user not exists
+    if user == None:
+        flash("User not exists.")
+        return redirect(url_for("admin_register"))
+    
+    if user.secret_key == secret_key:
+        #   set new value
+        user.secret_key = uuid.uuid4().hex
+        user.verify = True
+        #   save user to database
+        db.session.add(user)
+        db.session.commit()
+        #   send user mail
+        account_verified(user.email, url="http://127.0.0.1:5000/admin/login", name=user.firstName)
+
+        return render_template("admin/auth/verify-user.html")
+
 
 
 # admin login
