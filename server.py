@@ -317,6 +317,16 @@ def admin_users():
     return render_template("admin/pages/users.html", path=request.path, users=users)
 
 
+@app.route("/admin/user/<user_id>")
+@login_required
+@admin_only
+def admin_user_profile(user_id):
+    user = User.query.get(user_id)
+
+    return render_template("admin/pages/user_profile.html", user=user)
+
+
+
 @app.route("/admin/delete-users/<user_id>")
 @login_required
 @admin_only
@@ -336,6 +346,46 @@ def admin_delete_users(user_id):
 
     return redirect(url_for("admin_users"))
 
+
+#   make user admin
+@app.route("/admin/admin-user/<user_id>")
+@login_required
+@admin_only
+def admin_make_users(user_id):
+    user = User.query.get(user_id)
+
+    if user == None:
+        return redirect(url_for('admin_user_profile', user_id=user_id))
+    
+    if user.admin == True:
+        user.admin = False
+    elif user.admin == False:
+        user.admin = True
+    
+    db.session.add(user)
+    db.session.commit()
+
+    return redirect(url_for('admin_user_profile', user_id=user_id))
+
+
+@app.route("/admin/activate-users/<user_id>")
+@login_required
+@admin_only
+def admin_activate_users(user_id):
+    user = User.query.get(user_id)
+
+    if user == None:
+        return redirect(url_for("admin_users"))
+    
+    if user.active == False:
+        user.active = True
+    elif user.active == True:
+        user.active = False
+
+    db.session.add(user)
+    db.session.commit()
+
+    return redirect(url_for("admin_users"))
 
 
 @app.route("/admin/register", methods=["GET", "POST"])

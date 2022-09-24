@@ -1,0 +1,130 @@
+{% extends "admin/layouts/base.html" %} {% block content %}
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>User All Details</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{{ url_for('dashboard') }}">Home</a>
+        </li>
+        <li class="breadcrumb-item">User Profile</li>
+      </ol>
+    </nav>
+  </div>
+  <!-- End Page Title -->
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <!-- profile details -->
+        <div class="card">
+          <div class="card-body p-4">
+            <h5 class="card-title p-1 pb-4" style="text-decoration: underline">
+              User Profile Details
+            </h5>
+            <!-- detail -->
+            <div class="row">
+              <div class="col-lg-4 mb-5">
+                <img
+                  src="{{ user.profile_image }}"
+                  alt=""
+                  style="max-width: 100%; border-radius: 1rem"
+                />
+              </div>
+              <div class="col-lg-8">
+                <strong> ID : </strong> {{ user.id }}
+                <hr />
+                <strong>First Name : </strong> {{ user.firstName }}
+                <hr />
+                <strong>Last Name : </strong> {{ user.lastName }}
+                <hr />
+                <strong>Email : </strong> {{ user.email }}
+                <hr />
+                <strong>Phone : </strong> {{ user.phone }}
+                <hr />
+                <strong> Admin: </strong> {{ user.admin }}
+                <hr />
+                <strong>Active : </strong> {{ user.active }}
+                <hr />
+                <strong>Created Date : </strong> {{ user.created_date }}
+                <hr />
+                <strong>Last Login : </strong> {{ user.last_login }}
+                <hr />
+                <!-- make admin -->
+                <div>
+                  {% if user.admin == True %}
+                  <!--  -->
+                  User is currently admin, if you want you can make normal user
+                  ?
+                  <a
+                    href="{{ url_for('admin_make_users', user_id=user.id) }}"
+                    class="btn btn-danger"
+                    >Remove as Admin</a
+                  >
+                  {% else %}
+                  <!--  -->
+                  If you want you can make user admin ?
+                  <a
+                    href="{{ url_for('admin_make_users', user_id=user.id) }}"
+                    class="btn btn-primary"
+                    >Make as Admin</a
+                  >
+                  {% endif %}
+                </div>
+                <hr />
+                <!-- user active or not -->
+                <div>
+                  {% if user.active == True %}
+                  <!--  -->
+                  User currently active, if you want you can deactivate user
+                  account ?
+                  <a
+                    href="{{ url_for('admin_delete_users', user_id=user.id) }}"
+                    class="btn btn-danger"
+                    >Deactivate Account</a
+                  >
+                  {% else %}
+                  <!--  -->
+                  User currently deactivate, if you want you can activate user
+                  now ?
+                  <a
+                    href="{{ url_for('admin_activate_users', user_id=user.id) }}"
+                    class="btn btn-primary"
+                    >Activate Account</a
+                  >
+                  {% endif %}
+                </div>
+                <!-- end user active or not -->
+              </div>
+            </div>
+            <!-- end detail -->
+          </div>
+        </div>
+        <!-- end profile details -->
+
+        <!-- user comments -->
+        <div class="card">
+          <div class="card-body p-4">
+            <h5 class="card-title p-1 pb-4" style="text-decoration: underline">
+              Settings
+            </h5>
+            <!-- detail -->
+            <div class="row">
+              <div class="col-lg-5 mb-5">hello</div>
+              <div class="col-lg-7">
+                <strong>Last Login : </strong> {{ user.last_login }}
+                <hr />
+              </div>
+            </div>
+            <!-- end detail -->
+          </div>
+        </div>
+        <!--  -->
+      </div>
+    </div>
+  </section>
+</main>
+<!-- End #main -->
+
+{% endblock %}

@@ -46,7 +46,12 @@
                     />
                   </td>
                   <td>{{ user.firstName }} {{ user.lastName }}</td>
-                  <td><a href="#">{{ user.email }}</a></td>
+                  <td>
+                    <a
+                      href="{{ url_for('admin_user_profile', user_id=user.id) }}"
+                      >{{ user.email }}</a
+                    >
+                  </td>
                   <td>{{ user.created_date }}</td>
                   <td>
                     <a
