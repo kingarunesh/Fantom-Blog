@@ -163,14 +163,21 @@ def admin_only(f):
 @admin_only
 def dashboard():
     #   get all posts
-    posts = Post.query.order_by(desc(Post.updated_date)).all()[:5]
+    posts = Post.query.order_by(desc(Post.id)).all()[:5]
     
     #   count total pendding contact
     pending_contacts = Contact.query.filter_by(status=False).count()
     #   get last 5 contact person
     last_5_contacts = Contact.query.order_by(desc(Contact.id)).filter_by(status=False).all()[:5]
 
-    return render_template("admin/pages/dashboard.html", path=request.path, posts=posts, pending_contacts=pending_contacts, last_5_contacts=last_5_contacts, user=current_user)
+    #   total post
+    total_posts = len(Post.query.all())
+    #   total users
+    users_total = len(User.query.all())
+    #   total contacts
+    total_contacts = len(Contact.query.all())
+
+    return render_template("admin/pages/dashboard.html", path=request.path, posts=posts, pending_contacts=pending_contacts, last_5_contacts=last_5_contacts, user=current_user, total_posts=total_posts, users_total=users_total, total_contacts=total_contacts)
 
 
 #   posts
