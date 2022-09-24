@@ -8,7 +8,7 @@ sender_email_password = "loggflqbakatmlhj"
 
 
 #   password reset mail
-def send_reset_mail(receiver_email, url):
+def send_reset_mail(receiver_email, url, name):
     message = MIMEMultipart("alternative")
     message["Subject"] = "Reset Password"
     message["From"] = sender_email
@@ -51,7 +51,7 @@ def send_reset_mail(receiver_email, url):
 #   send varification mail
 def verification_admin(url):
     message = MIMEMultipart("alternative")
-    message["Subject"] = "Reset Password"
+    message["Subject"] = "Admin Verification"
     message["From"] = sender_email
     message["To"] = sender_email
 
@@ -93,7 +93,7 @@ def verification_admin(url):
 #   account verified mail
 def account_verified(email, url, name):
     message = MIMEMultipart("alternative")
-    message["Subject"] = "Reset Password"
+    message["Subject"] = "Account Verified"
     message["From"] = sender_email
     message["To"] = email
 

@@ -77,7 +77,7 @@ class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     subject = db.Column(db.String(250), nullable=False)
     message = db.Column(db.Text, nullable=False)
-    send_date = db.Column(db.String(250), default=dt.now().strftime("%H:%M | %d %B %Y"), nullable=False)
+    send_date = db.Column(db.String(250), nullable=False)
     status = db.Column(db.Boolean, default=False, nullable=False)
 
     #   user relation
@@ -109,7 +109,7 @@ class Comment(db.Model):
     __tablename__ = "comments"
     id = db.Column(db.Integer, primary_key=True)
     text_comment = db.Column(db.Text, nullable=False)
-    date_comment = db.Column(db.String(250), default=dt.now().strftime("%H:%M | %d %B %Y"), nullable=False)
+    date_comment = db.Column(db.String(250), nullable=False)
 
     #   user
     user_id = db.Column(db.Integer, ForeignKey('users.id'))
@@ -122,7 +122,7 @@ class Comment(db.Model):
 class Bookmark(db.Model):
     __tablename__ = "bookmarks"
     id = db.Column(db.Integer, primary_key=True)
-    bookmark_date = db.Column(db.String(250), default=dt.now().strftime("%H:%M | %d %B %Y"), nullable=False)
+    bookmark_date = db.Column(db.String(250), nullable=False)
 
     #   user
     user_id = db.Column(db.Integer, ForeignKey("users.id"))
@@ -186,7 +186,7 @@ def dashboard():
 @login_required
 @admin_only
 def get_all_post():
-    posts = Post.query.order_by(desc(Post.updated_date)).all()
+    posts = Post.query.order_by(desc(Post.id)).all()
 
     #   count total pendding contact
     pending_contacts = Contact.query.filter_by(status=False).count()
@@ -215,8 +215,8 @@ def new_post():
         image_url = request.form["image_url"]
         category = request.form["category"]
         tags = request.form["tags"]
-        created_date = dt.now().strftime("%H:%M | %d %B %Y")
-        updated_date = dt.now().strftime("%H:%M | %d %B %Y")
+        created_date = dt.now().strftime("%d %B %Y")
+        updated_date = dt.now().strftime("%d %B %Y")
         total_view = 1
 
         add_post = Post(
@@ -259,7 +259,7 @@ def update_post(post_id):
         post.image_url = request.form["image_url"]
         post.category = request.form["category"]
         post.tags = request.form["tags"]
-        post.updated_date = dt.now().strftime("%H:%M | %d %B %Y")
+        post.updated_date = dt.now().strftime("%d %B %Y")
 
         db.session.add(post)
         db.session.commit()
@@ -361,7 +361,7 @@ def update_admin_password():
 @login_required
 @admin_only
 def admin_contact():
-    contacts = Contact.query.order_by(Contact.send_date).all()
+    contacts = Contact.query.order_by(desc(Contact.id)).all()
 
     #   count total pendding contact
     pending_contacts = Contact.query.filter_by(status=False).count()
@@ -396,7 +396,7 @@ def done_contact(contact_id):
 @login_required
 @admin_only
 def admin_comments():
-    comments = Comment.query.order_by(Comment.date_comment).all()
+    comments = Comment.query.order_by(desc(Comment.id)).all()
 
     #   count total pendding contact
     pending_contacts = Contact.query.filter_by(status=False).count()
@@ -425,7 +425,7 @@ def admin_delete_comments(comment_id):
 @login_required
 @admin_only
 def admin_users():
-    users = User.query.order_by(User.created_date).all()
+    users = User.query.order_by(desc(User.id)).all()
 
     #   count total pendding contact
     pending_contacts = Contact.query.filter_by(status=False).count()
@@ -561,7 +561,19 @@ def admin_register():
         
         # create new account
         hash_password = generate_password_hash(password, method='pbkdf2:sha256', salt_length=10)
-        new_user = User(firstName=firstName,lastName=lastName,email=email,phone=phone,profile_image=profile_image,password=hash_password,admin=True,created_date=dt.now().strftime("%H:%M | %d %B %Y"), last_login=dt.now().strftime("%H:%M | %d %B %Y"))
+
+        new_user = User(
+            firstName=firstName,
+            lastName=lastName,
+            email=email,
+            phone=phone,
+            profile_image=profile_image,
+            password=hash_password,
+            admin=True,
+            created_date=dt.now().strftime("%I:%M %p, %d-%B-%Y"), 
+            last_login=dt.now().strftime("%I:%M %p, %d-%B-%Y")
+            )
+
         db.session.add(new_user)
         db.session.commit()
 
@@ -632,7 +644,7 @@ def admin_login():
         #   login user
         if check_password_hash(pwhash=user.password, password=password):
             #   update user last login
-            user.last_login = dt.now().strftime("%H:%M | %d %B %Y")
+            user.last_login = dt.now().strftime("%I:%M %p, %d-%B-%Y")
             db.session.add(user)
             db.session.commit()
 
@@ -781,7 +793,7 @@ sidebar = {
 @app.route("/")
 def home():
     #   get all post by updated_date - order
-    posts = Post.query.order_by(desc(Post.updated_date)).all()
+    posts = Post.query.order_by(desc(Post.id)).all()
 
     #   SEARCH RESULTS
     search = request.args.get("search")
@@ -811,7 +823,7 @@ def home():
 
 @app.route("/blog")
 def blog():
-    posts = Post.query.order_by(desc(Post.updated_date)).all()
+    posts = Post.query.order_by(desc(Post.id)).all()
     
     #   SEARCH RESULTS
     search = request.args.get("search")
@@ -898,7 +910,7 @@ def post_detail(post_id):
             return redirect(url_for("login"))
 
         text = request.form["comment"]
-        new_comment = Comment(text_comment=text, user=current_user, post=post)
+        new_comment = Comment(text_comment=text, user=current_user, post=post, date_comment=dt.now().strftime("%I:%M %p, %d-%B-%Y"))
         db.session.add(new_comment)
         db.session.commit()
 
@@ -906,7 +918,7 @@ def post_detail(post_id):
     
     #   users comment display
     # comments = Comment.query.filter_by(post_id=post_id).all()
-    comments = Comment.query.order_by(Comment.date_comment).filter_by(post_id=post_id).all()
+    comments = Comment.query.order_by(desc(Comment.id)).filter_by(post_id=post_id).all()
 
     return render_template("blog/pages/post-detail.html", post=post, sidebar=sidebar, logged_in=current_user.is_authenticated, saved=saved, total_bookmark=total_bookmark, comments=comments, total_comments=len(comments), user=current_user)
 
@@ -924,7 +936,7 @@ def bookmark():
     bookmark = Bookmark.query.filter_by(user_id=current_user.id, post_id=current_post.id).first()
     if bookmark == None:
         #   save post
-        new_bookmark = Bookmark(user=current_user, post=current_post)
+        new_bookmark = Bookmark(user=current_user, post=current_post, bookmark_date=dt.now().strftime("%I:%M %p, %d-%B-%Y"))
         db.session.add(new_bookmark)
         db.session.commit()
         return redirect(url_for("post_detail", post_id=current_post.id))
@@ -949,7 +961,7 @@ def contact():
             subject = request.form["subject"]
             message = request.form["message"]
 
-            new_contact = Contact(subject=subject, message=message, user=current_user)
+            new_contact = Contact(subject=subject, message=message, user=current_user, send_date=dt.now().strftime("%I:%M %p, %d-%B-%Y"))
 
             db.session.add(new_contact)
             db.session.commit()
@@ -991,7 +1003,16 @@ def register():
             #   generate hash password
             password = generate_password_hash(password, method="pbkdf2:sha256", salt_length=10)
 
-            new_user = User(firstName=firstName,lastName=lastName,email=email,phone=phone,password=password,profile_image=profile_image, created_date=dt.now().strftime("%H:%M | %d %B %Y"), last_login=dt.now().strftime("%H:%M | %d %B %Y"))
+            new_user = User(
+                firstName=firstName,
+                lastName=lastName,
+                email=email,
+                phone=phone,
+                password=password,
+                profile_image=profile_image,
+                created_date=dt.now().strftime("%I:%M %p, %d-%B-%Y"),
+                last_login=dt.now().strftime("%I:%M %p, %d-%B-%Y")
+                )
 
             db.session.add(new_user)
             db.session.commit()
@@ -1038,7 +1059,7 @@ def login():
         if user != None:
             if check_password_hash(pwhash=user.password, password=password):
                 #   update last login time
-                user.last_login = dt.now().strftime("%H:%M | %d %B %Y")
+                user.last_login = dt.now().strftime("%I:%M %p, %d-%B-%Y")
                 db.session.add(user)
                 db.session.commit()
 
@@ -1056,7 +1077,7 @@ def login():
 @login_required
 def profile():
     #   contact
-    contacts = Contact.query.all()
+    contacts = Contact.query.order_by(desc(Contact.id)).all()
     contact_list = []
     for contact in (contacts):
         if contact.user_id == current_user.id:
@@ -1064,10 +1085,10 @@ def profile():
     
     #   bookmark
     # bookmarks_posts = Bookmark.query.filter_by(user_id=current_user.id).all()
-    bookmarks_posts = Bookmark.query.order_by(desc(Bookmark.bookmark_date)).filter_by(user_id=current_user.id).all()
+    bookmarks_posts = Bookmark.query.order_by(desc(Bookmark.id)).filter_by(user_id=current_user.id).all()
 
     #   comments
-    comments = Comment.query.order_by(Comment.date_comment).filter_by(user_id=current_user.id).all()
+    comments = Comment.query.order_by(desc(Comment.id)).filter_by(user_id=current_user.id).all()
 
     return render_template("blog/auth/profile.html", path=request.path, logged_in=current_user.is_authenticated, user=current_user, contact_list=contact_list, bookmarks_posts=bookmarks_posts, comments=comments)
 
