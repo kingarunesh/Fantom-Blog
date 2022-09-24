@@ -558,13 +558,57 @@ def admin_login():
     return render_template("admin/auth/login.html", path=request.path)
 
 
+#   forget password ( send password change link )
+@app.route("/admin/forget-password", methods=["GET", "POST"])
+def admin_forget_password():
+
+    if request.method == "POST":
+        email = request.form["email"]
+
+        user = User.query.filter_by(email=email).first()
+
+        #   user exists or not
+        if user == None:
+            flash("Invalid Email, Please enter correct email address.")
+            return redirect(url_for("admin_forget_password"))
+        
+        #   user is admin or not
+        if user.admin == False:
+            flash("You don not have permission, Please enter correct email address.")
+            return redirect(url_for("admin_forget_password"))
+        
+        #   user is active account or not
+        if user.active == False:
+            flash("You account is not active, Please enter correct email address.")
+            return redirect(url_for("admin_forget_password"))
+        
+        #   set new secret_key in database in user table
+        new_secret_key = uuid.uuid4().hex
+
+        user.secret_key = new_secret_key
+        db.session.add(user)
+        db.session.commit()        
+
+        #   send reset password link
+        send_url = f"http://127.0.0.1:5000/admin/reset-password/{user.id}/{new_secret_key}"
+
+        send_reset_mail(receiver_email=email, url=send_url, name=user.firstName)
+
+        #   redirect
+        flash("Password reset link has sent to your email address, Please check your mail for reset password.")
+        return redirect(url_for("admin_forget_password")) 
+        
+
+    return render_template("/admin/auth/forget-password.html")
+
+
 # admin logout
 @app.route("/admin/logout")
 @login_required
 @admin_only
 def admin_logout():
     logout_user()
-    return redirect(url_for("home"))
+    return redirect(url_for("admin_login"))
 
 
 #   NEW (  For normal user routes and page setup  )
