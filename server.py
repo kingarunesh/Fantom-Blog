@@ -598,8 +598,46 @@ def admin_forget_password():
         flash("Password reset link has sent to your email address, Please check your mail for reset password.")
         return redirect(url_for("admin_forget_password")) 
         
-
     return render_template("/admin/auth/forget-password.html")
+
+
+#   reset password for admin
+@app.route("/admin/reset-password/<user_id>/<secret_key>", methods=["GET", "POST"])
+def admin_reset_password(user_id, secret_key):
+    #   get user
+    user = User.query.get(user_id)
+
+    #   user exists or not
+    if user == None:
+        flash("User does not exists, Please create new account")
+        return redirect(url_for("admin_register"))
+
+    if secret_key != user.secret_key:
+        flash("Reset password url is not valid, Please create new account")
+        return redirect(url_for("admin_register"))
+    
+    if request.method == "POST":
+        newPassword = request.form["newPassword"]
+        confirmmNewPassword = request.form["confirmmNewPassword"]
+        #   password confirm
+        if newPassword == confirmmNewPassword:
+            #   generate new hash password
+            hash_password = generate_password_hash(newPassword, method='pbkdf2:sha256', salt_length=10)
+            #   set new password to database
+            user.password = hash_password
+            user.secret_key = uuid.uuid4().hex
+            
+            db.session.add(user)
+            db.session.commit()
+
+            #   redirect to login
+            flash("Password updated sucessfully.")
+            return redirect(url_for("admin_login"))
+        else:
+            flash("Please enter 'new password' and 'confirm new password' same.")
+            return redirect(url_for("admin_reset_password"))
+
+    return render_template("/admin/auth/reset-password.html")
 
 
 # admin logout
