@@ -157,6 +157,7 @@ def admin_only(f):
 #           ADMIN ROUTES
 #
 ##################################################################################
+#   dashbaord
 @app.route("/admin/")
 @login_required
 @admin_only
@@ -168,6 +169,7 @@ def dashboard():
     return render_template("admin/pages/index.html", path=request.path, posts=posts, chart_data=categories_with_numbers)
 
 
+#   posts
 @app.route("/admin/get-all-post")
 @login_required
 @admin_only
@@ -176,6 +178,7 @@ def get_all_post():
     return render_template("admin/pages/posts.html", path=request.path, posts=posts)
 
 
+#   new post
 @app.route("/admin/new-post", methods=["GET", "POST"])
 @login_required
 @admin_only
@@ -213,6 +216,7 @@ def new_post():
     return render_template("admin/pages/new-post.html", path=request.path)
 
 
+#   update post
 @app.route("/admin/update-post/<int:post_id>", methods=["GET", "POST"])
 @login_required
 @admin_only
@@ -237,6 +241,7 @@ def update_post(post_id):
     return render_template("admin/pages/update-post.html", post=post)
 
 
+#   delete post
 @app.route("/admin/delete-post/<int:post_id>")
 @login_required
 @admin_only
@@ -248,12 +253,40 @@ def delete_post(post_id):
     return redirect(url_for("get_all_post"))
 
 
-
+#   profile
 @app.route("/admin/profile")
 @login_required
 @admin_only
 def admin_profile():
-    return render_template("admin/auth/profile.html", path=request.path)
+    return render_template("admin/auth/profile.html", path=request.path, user=current_user)
+
+
+#   update profile
+@app.route("/admin/update-profile", methods=["POST"])
+@login_required
+@admin_only
+def update_admin_profile():
+
+    user = current_user
+
+    if request.method == "POST":
+        firstName = request.form["firstName"]
+        lastName = request.form["lastName"]
+        email = request.form["email"]
+        phone = request.form["phone"]
+        profile_image = request.form["profile_image"]
+
+        user.firstName = firstName
+        user.lastName = lastName
+        user.email = email
+        user.phone = phone
+        user.profile_image = profile_image
+
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect(url_for("admin_profile"))
+        
 
 
 @app.route("/admin/contacts")
