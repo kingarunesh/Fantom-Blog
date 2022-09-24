@@ -605,6 +605,9 @@ def blog():
 def post_detail(post_id):
     post = Post.query.get(post_id)
 
+    if post == None:
+        return redirect(url_for("blog"))
+
     # increase post view number
     post.total_view += 1
     db.session.add(post)
