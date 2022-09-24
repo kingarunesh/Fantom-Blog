@@ -21,7 +21,7 @@
         <div class="card">
           <div class="card-body p-4">
             <h5 class="card-title p-1 pb-4" style="text-decoration: underline">
-              User Profile Details
+              Profile Details
             </h5>
             <!-- detail -->
             <div class="row">
@@ -103,24 +103,185 @@
         </div>
         <!-- end profile details -->
 
-        <!-- user comments -->
+        <!-- contact -->
         <div class="card">
           <div class="card-body p-4">
             <h5 class="card-title p-1 pb-4" style="text-decoration: underline">
-              Settings
+              Contacts List
             </h5>
-            <!-- detail -->
-            <div class="row">
-              <div class="col-lg-5 mb-5">hello</div>
-              <div class="col-lg-7">
-                <strong>Last Login : </strong> {{ user.last_login }}
-                <hr />
-              </div>
+            {% if contacts == [] %}
+            <div style="color: red">User did not bookmark any post</div>
+            {% else %}
+            <!-- Table -->
+            <div style="overflow-x: auto">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col" style="min-width: 200px">Subject</th>
+                    <th scope="col" style="min-width: 350px">Message</th>
+                    <th scope="col" style="min-width: 200px">Contact Date</th>
+                    <th scope="col" style="min-width: 100px">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for contact in contacts: %}
+                  <tr>
+                    <th scope="row">{{ contact.id }}</th>
+                    <td>{{ contact.subject }}</td>
+                    <td>{{ contact.message }}</td>
+                    <td>{{ contact.send_date }}</td>
+                    <td>
+                      <a
+                        href="{{ url_for('done_contact', contact_id=contact.id) }}"
+                      >
+                        {% if contact.status == True %}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="25"
+                          height="25"
+                          fill="currentColor"
+                          class="bi bi-check-lg"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"
+                          />
+                        </svg>
+                        {% else %}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="25"
+                          height="25"
+                          fill="red"
+                          class="bi bi-hourglass"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="M2 1.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1-.5-.5zm2.5.5v1a3.5 3.5 0 0 0 1.989 3.158c.533.256 1.011.791 1.011 1.491v.702c0 .7-.478 1.235-1.011 1.491A3.5 3.5 0 0 0 4.5 13v1h7v-1a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351v-.702c0-.7.478-1.235 1.011-1.491A3.5 3.5 0 0 0 11.5 3V2h-7z"
+                          />
+                        </svg>
+                        {% endif %}
+                      </a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
             </div>
-            <!-- end detail -->
+            <!-- End Table -->
+            {% endif %}
           </div>
         </div>
-        <!--  -->
+        <!-- end contact -->
+
+        <!-- comments -->
+        <div class="card">
+          <div class="card-body p-4">
+            <h5 class="card-title p-1 pb-4" style="text-decoration: underline">
+              Comments List
+            </h5>
+            {% if comments == [] %}
+            <div style="color: red">User did not bookmark any post</div>
+            {% else %}
+            <!-- Table -->
+            <div style="overflow-x: auto">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col" style="min-width: 300px">Post Title</th>
+                    <th scope="col" style="min-width: 350px">Comment</th>
+                    <th scope="col" style="min-width: 200px">Comment Date</th>
+                    <th scope="col" style="min-width: 100px">Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for comment in comments: %}
+                  <tr>
+                    <th scope="row">{{ comment.id }}</th>
+                    <td>
+                      <a
+                        href="{{ url_for('post_detail', post_id=comment.post.id) }}"
+                        target="_blank"
+                        >{{ comment.post.title }}</a
+                      >
+                    </td>
+                    <td>{{ comment.text_comment }}</td>
+                    <td>{{ comment.date_comment }}</td>
+                    <td>
+                      <a
+                        href="{{ url_for('admin_delete_comments', comment_id=comment.id) }}"
+                        ><svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="25"
+                          height="25"
+                          fill="red"
+                          class="bi bi-trash"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
+                          />
+                          <path
+                            fill-rule="evenodd"
+                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                          />
+                        </svg>
+                      </a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <!-- End Table -->
+            {% endif %}
+          </div>
+        </div>
+        <!-- end comments -->
+
+        <!-- bookmark -->
+        <div class="card">
+          <div class="card-body p-4">
+            <h5 class="card-title p-1 pb-4" style="text-decoration: underline">
+              Bookmarks List
+            </h5>
+            {% if bookmarks == [] %}
+            <div style="color: red">User did not bookmark any post</div>
+            {% else %}
+            <!-- Table -->
+            <div style="overflow-x: auto">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col" style="min-width: 300px">Post Title</th>
+                    <th scope="col" style="min-width: 200px">Bookmark Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for bookmark in bookmarks: %}
+                  <tr>
+                    <th scope="row">{{ bookmark.id }}</th>
+                    <td>
+                      <a
+                        href="{{ url_for('post_detail', post_id=bookmark.post.id) }}"
+                        target="_blank"
+                        >{{ bookmark.post.title }}</a
+                      >
+                    </td>
+                    <td>{{ bookmark.bookmark_date }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <!-- End Table -->
+            {% endif %}
+          </div>
+        </div>
+        <!-- end bookmark -->
       </div>
     </div>
   </section>

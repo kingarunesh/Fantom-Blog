@@ -322,9 +322,26 @@ def admin_users():
 @login_required
 @admin_only
 def admin_user_profile(user_id):
+
+    # get user
     user = User.query.get(user_id)
 
-    return render_template("admin/pages/user_profile.html", user=user)
+    # if does not exists ( this is imposible but for my safe )
+    if user == None:
+        return redirect(url_for('admin_users'))
+
+    # user related only contacts
+    contacts = Contact.query.filter_by(user_id=user.id).all()
+
+    # user related only comments
+    comments = Comment.query.filter_by(user_id=user.id).all()
+
+    # bookmarks
+    bookmarks = Bookmark.query.filter_by(user_id=user.id).all()
+
+    print(bookmarks)
+
+    return render_template("admin/pages/user_profile.html", user=user, contacts=contacts, comments=comments, bookmarks=bookmarks)
 
 
 #   deactivate user
