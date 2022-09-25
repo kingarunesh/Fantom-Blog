@@ -715,7 +715,7 @@ def admin_forget_password():
         db.session.commit()        
 
         #   send reset password link
-        send_url = f"http://127.0.0.1:5000/admin/reset-password/{user.id}/{new_secret_key}"
+        send_url = f"https://fantom-blog.herokuapp.com/admin/reset-password/{user.id}/{new_secret_key}"
 
         send_reset_mail(receiver_email=email, url=send_url, name=user.firstName)
 
@@ -775,41 +775,6 @@ def admin_logout():
 
 
 #   NEW (  For normal user routes and page setup  )
-##################################################################################
-#
-#           CATEGORIES, TAGS
-#
-##################################################################################
-#   GET CATEGORIES WITH COUNT   
-categories_with_numbers = Post.query.with_entities(Post.category, func.count(Post.category)).group_by(Post.category).all()
-
-
-#   tags
-posts = Post.query.all()
-# all tags
-tag_list = []
-for post in posts:
-    tag = post.tags.split(',')
-    for t in tag:
-        tag_list.append(t)
- 
-# unique tags
-unique_tags = []
-for tag in tag_list:
-    if tag not in unique_tags:
-        unique_tags.append(tag)
-
-# get top 5 popular post by post view count
-popular_posts = Post.query.order_by(desc(Post.total_view))[:5]
-
-
-sidebar = {
-    "categories_with_numbers":categories_with_numbers,
-    "tags":unique_tags,
-    "popular_posts":popular_posts
-}
-
-
 ##################################################################################
 #
 #           BLOG ROUTES
@@ -1296,7 +1261,7 @@ def forget_password_send():
         secret_key = uuid.uuid4().hex
 
         #   create reset link
-        reset_link = f"http://127.0.0.1:5000/set-new-password/{email}/{secret_key}"
+        reset_link = f"https://fantom-blog.herokuapp.com/set-new-password/{email}/{secret_key}"
 
         #   update secret_key and get user secret_key then compare new secret_key to user secret_key
         user.secret_key = secret_key
