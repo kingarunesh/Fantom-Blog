@@ -609,6 +609,8 @@ def verify_user(user_id, secret_key):
         account_verified(user.email, url="http://127.0.0.1:5000/admin/login", name=user.firstName)
 
         return render_template("admin/auth/verify-user.html")
+    else:
+        return render_template("errors/204.html")
 
 
 
