@@ -1,5 +1,3 @@
-from email.policy import default
-from pickle import FALSE
 from flask import Flask, render_template, request, redirect, url_for, flash, abort, current_app
 from functools import wraps
 from flask_sqlalchemy import SQLAlchemy
