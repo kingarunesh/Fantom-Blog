@@ -3,8 +3,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 
-sender_email = "fantomblog.contact@gmail.com"
-sender_email_password = "loggflqbakatmlhj"
+sender_email = "contact.fantomblog@gmail.com"
+sender_email_password = "atoyegyyjeefxcsr"
 
 
 #   password reset mail
