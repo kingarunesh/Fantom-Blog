@@ -809,17 +809,36 @@ def home():
     #   get all post by updated_date - order
     posts = Post.query.order_by(desc(Post.id)).all()
 
+    # get top 5 popular post by post view count
+    popular_posts = Post.query.order_by(desc(Post.total_view))[:5]
+
+    #   GET CATEGORIES WITH COUNT   
+    categories_with_numbers = Post.query.with_entities(Post.category, func.count(Post.category)).group_by(Post.category).all()
+
+    # all tags
+    tag_list = []
+    for post in posts:
+        tag = post.tags.split(',')
+        for t in tag:
+            tag_list.append(t)
+    
+    # unique tags
+    unique_tags = []
+    for tag in tag_list:
+        if tag not in unique_tags:
+            unique_tags.append(tag)
+
     #   SEARCH RESULTS
     search = request.args.get("search")
     if search != None:
         search_posts = Post.query.filter(Post.title.contains(search)).all()
-        return render_template("blog/pages/search.html", path=request.path, posts=search_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+        return render_template("blog/pages/search.html", path=request.path, posts=search_posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
 
     #   get posts by category
     category = request.args.get("category")
     if category != None:
         category_posts = Post.query.filter_by(category=category).all()
-        return render_template("blog/pages/search.html", path=request.path, posts=category_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+        return render_template("blog/pages/search.html", path=request.path, posts=category_posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
     
     # get posts by tag
     query_tag = request.args.get("tag")
@@ -830,26 +849,45 @@ def home():
             tag = post.tags
             if query_tag in tag:
                 tag_posts.append(post)
-        return render_template("blog/pages/search.html", path=request.path, posts=tag_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+        return render_template("blog/pages/search.html", path=request.path, posts=tag_posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
             
-    return render_template("blog/pages/index.html", path=request.path, posts=posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+    return render_template("blog/pages/index.html", path=request.path, posts=posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
 
 
 @app.route("/blog")
 def blog():
     posts = Post.query.order_by(desc(Post.id)).all()
+
+    # get top 5 popular post by post view count
+    popular_posts = Post.query.order_by(desc(Post.total_view))[:5]
+
+    #   GET CATEGORIES WITH COUNT   
+    categories_with_numbers = Post.query.with_entities(Post.category, func.count(Post.category)).group_by(Post.category).all()
+
+    # all tags
+    tag_list = []
+    for post in posts:
+        tag = post.tags.split(',')
+        for t in tag:
+            tag_list.append(t)
+    
+    # unique tags
+    unique_tags = []
+    for tag in tag_list:
+        if tag not in unique_tags:
+            unique_tags.append(tag)
     
     #   SEARCH RESULTS
     search = request.args.get("search")
     if search != None:
         search_posts = Post.query.filter(Post.title.contains(search)).all()
-        return render_template("blog/pages/search.html", path=request.path, posts=search_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+        return render_template("blog/pages/search.html", path=request.path, posts=search_posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
 
     #   get posts by category
     category = request.args.get("category")
     if category != None:
         category_posts = Post.query.filter_by(category=category).all()
-        return render_template("blog/pages/search.html", path=request.path, posts=category_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+        return render_template("blog/pages/search.html", path=request.path, posts=category_posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
     
     # get posts by tag
     query_tag = request.args.get("tag")
@@ -860,13 +898,36 @@ def blog():
             tag = post.tags
             if query_tag in tag:
                 tag_posts.append(post)
-        return render_template("blog/pages/search.html", path=request.path, posts=tag_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+        return render_template("blog/pages/search.html", path=request.path, posts=tag_posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
 
-    return render_template("blog/pages/blogs.html", path=request.path, posts=posts, sidebar=sidebar, logged_in=current_user.is_authenticated)  
+    return render_template("blog/pages/blogs.html", path=request.path, posts=posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)  
     
 
 @app.route("/post-detail/<int:post_id>", methods=["GET","POST"])
-def post_detail(post_id):
+def post_detail(post_id):   
+    posts = Post.query.order_by(desc(Post.id)).all()
+
+    # get top 5 popular post by post view count
+    popular_posts = Post.query.order_by(desc(Post.total_view))[:5]
+
+    #   GET CATEGORIES WITH COUNT   
+    categories_with_numbers = Post.query.with_entities(Post.category, func.count(Post.category)).group_by(Post.category).all()
+
+    # all tags
+    tag_list = []
+    for post in posts:
+        tag = post.tags.split(',')
+        for t in tag:
+            tag_list.append(t)
+    
+    # unique tags
+    unique_tags = []
+    for tag in tag_list:
+        if tag not in unique_tags:
+            unique_tags.append(tag)
+    
+    
+    #   post details
     post = Post.query.get(post_id)
 
     if post == None:
@@ -881,13 +942,13 @@ def post_detail(post_id):
     search = request.args.get("search")
     if search != None:
         search_posts = Post.query.filter(Post.title.contains(search)).all()
-        return render_template("blog/pages/search.html", path=request.path, posts=search_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+        return render_template("blog/pages/search.html", path=request.path, posts=search_posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
 
     #   get posts by category
     category = request.args.get("category")
     if category != None:
         category_posts = Post.query.filter_by(category=category).all()
-        return render_template("blog/pages/search.html", path=request.path, posts=category_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+        return render_template("blog/pages/search.html", path=request.path, posts=category_posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
     
     # get posts by tag
     query_tag = request.args.get("tag")
@@ -898,7 +959,7 @@ def post_detail(post_id):
             tag = post.tags
             if query_tag in tag:
                 tag_posts.append(post)
-        return render_template("blog/pages/search.html", path=request.path, posts=tag_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
+        return render_template("blog/pages/search.html", path=request.path, posts=tag_posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
     
     # bookmark icon
     saved = True
@@ -934,7 +995,7 @@ def post_detail(post_id):
     # comments = Comment.query.filter_by(post_id=post_id).all()
     comments = Comment.query.order_by(desc(Comment.id)).filter_by(post_id=post_id).all()
 
-    return render_template("blog/pages/post-detail.html", post=post, sidebar=sidebar, logged_in=current_user.is_authenticated, saved=saved, total_bookmark=total_bookmark, comments=comments, total_comments=len(comments), user=current_user, author=post.user)
+    return render_template("blog/pages/post-detail.html", post=post, logged_in=current_user.is_authenticated, saved=saved, total_bookmark=total_bookmark, comments=comments, total_comments=len(comments), user=current_user, author=post.user, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
 
 
 @app.route("/bookmark")
