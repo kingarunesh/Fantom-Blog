@@ -10,6 +10,7 @@ from flask_ckeditor import CKEditor
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required, login_user, UserMixin
 import uuid
+import os
 
 from send_mail import send_reset_mail, verification_admin, account_verified
 
@@ -40,8 +41,12 @@ login_manager.login_view = 'login'
 #           DATABASE
 #
 ##################################################################################
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blogs.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blogs.db'
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///blog.db")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
 
 
 class User(UserMixin, db.Model):
