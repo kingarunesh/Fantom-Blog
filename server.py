@@ -583,7 +583,7 @@ def admin_register():
         db.session.commit()
 
         #   send mail for verification
-        verify_url = f"http://127.0.0.1:5000/admin/verify/{new_user.id}/{new_user.secret_key}"
+        verify_url = f"https://fantom-blog.herokuapp.com/admin/verify/{new_user.id}/{new_user.secret_key}"
         verification_admin(url=verify_url)
 
         return render_template("admin/auth/send-verification.html")
@@ -611,7 +611,7 @@ def verify_user(user_id, secret_key):
         db.session.add(user)
         db.session.commit()
         #   send user mail
-        account_verified(user.email, url="http://127.0.0.1:5000/admin/login", name=user.firstName)
+        account_verified(user.email, url="https://fantom-blog.herokuapp.com/admin/login", name=user.firstName)
 
         return render_template("admin/auth/verify-user.html")
     else:
