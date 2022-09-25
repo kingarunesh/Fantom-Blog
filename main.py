@@ -3,7 +3,8 @@ from functools import wraps
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc, func, ForeignKey
 from sqlalchemy.orm import relationship
-from datetime import datetime as dt
+from datetime import datetime
+import pytz
 from flask_ckeditor import CKEditor
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required, login_user, UserMixin
@@ -218,8 +219,8 @@ def new_post():
         image_url = request.form["image_url"]
         category = request.form["category"]
         tags = request.form["tags"]
-        created_date = dt.now().strftime("%d %B %Y")
-        updated_date = dt.now().strftime("%d %B %Y")
+        created_date = datetime.now(pytz.timezone('Asia/Kolkata')).strftime("%d %B %Y")
+        updated_date = datetime.now(pytz.timezone('Asia/Kolkata')).strftime("%d %B %Y")
         total_view = 1
 
         add_post = Post(
@@ -262,7 +263,7 @@ def update_post(post_id):
         post.image_url = request.form["image_url"]
         post.category = request.form["category"]
         post.tags = request.form["tags"]
-        post.updated_date = dt.now().strftime("%d %B %Y")
+        post.updated_date = datetime.now(pytz.timezone('Asia/Kolkata')).strftime("%d %B %Y")
 
         db.session.add(post)
         db.session.commit()
@@ -573,8 +574,8 @@ def admin_register():
             profile_image=profile_image,
             password=hash_password,
             admin=True,
-            created_date=dt.now().strftime("%I:%M %p, %d-%B-%Y"), 
-            last_login=dt.now().strftime("%I:%M %p, %d-%B-%Y")
+            created_date=datetime.now(pytz.timezone('Asia/Kolkata')).strftime("%I:%M %p, %d-%B-%Y"), 
+            last_login=datetime.now(pytz.timezone('Asia/Kolkata')).strftime("%I:%M %p, %d-%B-%Y")
             )
 
         db.session.add(new_user)
@@ -649,7 +650,7 @@ def admin_login():
         #   login user
         if check_password_hash(pwhash=user.password, password=password):
             #   update user last login
-            user.last_login = dt.now().strftime("%I:%M %p, %d-%B-%Y")
+            user.last_login = datetime.now(pytz.timezone('Asia/Kolkata')).strftime("%I:%M %p, %d-%B-%Y")
             db.session.add(user)
             db.session.commit()
 
@@ -915,7 +916,7 @@ def post_detail(post_id):
             return redirect(url_for("login"))
 
         text = request.form["comment"]
-        new_comment = Comment(text_comment=text, user=current_user, post=post, date_comment=dt.now().strftime("%I:%M %p, %d-%B-%Y"))
+        new_comment = Comment(text_comment=text, user=current_user, post=post, date_comment=datetime.now(pytz.timezone('Asia/Kolkata')).strftime("%d %B %Y"))
         db.session.add(new_comment)
         db.session.commit()
 
@@ -941,7 +942,7 @@ def bookmark():
     bookmark = Bookmark.query.filter_by(user_id=current_user.id, post_id=current_post.id).first()
     if bookmark == None:
         #   save post
-        new_bookmark = Bookmark(user=current_user, post=current_post, bookmark_date=dt.now().strftime("%I:%M %p, %d-%B-%Y"))
+        new_bookmark = Bookmark(user=current_user, post=current_post, bookmark_date=datetime.now(pytz.timezone('Asia/Kolkata')).strftime("%I:%M %p, %d-%B-%Y"))
         db.session.add(new_bookmark)
         db.session.commit()
         return redirect(url_for("post_detail", post_id=current_post.id))
@@ -966,7 +967,7 @@ def contact():
             subject = request.form["subject"]
             message = request.form["message"]
 
-            new_contact = Contact(subject=subject, message=message, user=current_user, send_date=dt.now().strftime("%I:%M %p, %d-%B-%Y"))
+            new_contact = Contact(subject=subject, message=message, user=current_user, send_date=datetime.now(pytz.timezone('Asia/Kolkata')).strftime("%I:%M %p, %d-%B-%Y"))
 
             db.session.add(new_contact)
             db.session.commit()
@@ -1015,8 +1016,8 @@ def register():
                 phone=phone,
                 password=password,
                 profile_image=profile_image,
-                created_date=dt.now().strftime("%I:%M %p, %d-%B-%Y"),
-                last_login=dt.now().strftime("%I:%M %p, %d-%B-%Y")
+                created_date=datetime.now(pytz.timezone('Asia/Kolkata')).strftime("%I:%M %p, %d-%B-%Y"),
+                last_login=datetime.now(pytz.timezone('Asia/Kolkata')).strftime("%I:%M %p, %d-%B-%Y")
                 )
 
             db.session.add(new_user)
@@ -1064,7 +1065,7 @@ def login():
         if user != None:
             if check_password_hash(pwhash=user.password, password=password):
                 #   update last login time
-                user.last_login = dt.now().strftime("%I:%M %p, %d-%B-%Y")
+                user.last_login = datetime.now(pytz.timezone('Asia/Kolkata')).strftime("%I:%M %p, %d-%B-%Y")
                 db.session.add(user)
                 db.session.commit()
 
