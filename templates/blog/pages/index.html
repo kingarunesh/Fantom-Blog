@@ -7,8 +7,8 @@
     {% for post in posts: %}
     <div class="item">
       <div class="post_s_item">
-        <div class="post_img">
-          <img src="{{ post.image_url }}" alt="" height="450" />
+        <div class="post_img slider-post-img">
+          <img src="{{ post.image_url }}" alt="" />
         </div>
         <div class="post_text">
           <a class="cat" href="#">{{ post.category }}</a>
@@ -17,12 +17,13 @@
           >
 
           <div class="date">
-            <a href="#"
+            <a href="{{ url_for('post_detail', post_id=post.id) }}"
               ><i class="fa fa-calendar" aria-hidden="true"></i> {{
               post.updated_date }}</a
             >
-            <a href="#"
-              ><i class="fa fa-comments-o" aria-hidden="true"></i> 05</a
+            <a href="{{ url_for('post_detail', post_id=post.id) }}"
+              ><i class="fa fa-eye fa-lg" aria-hidden="true"></i>{{ post.
+              total_view }}</a
             >
           </div>
         </div>
@@ -44,23 +45,29 @@
           {% for post in posts: %}
           <article class="blog_style1">
             <div class="blog_img">
-              <img class="img-fluid" src="{{ post.image_url }}" alt="" />
+              <img
+                class="img-fluid"
+                src="{{ post.image_url }}"
+                alt=""
+                style="width: 100%; max-height: 500px"
+              />
             </div>
             <div class="blog_text">
               <div class="blog_text_inner">
-                <a class="cat" href="#">{{ post.category }}</a>
+                <span class="cat">{{ post.category }}</span>
                 <a href="{{ url_for('post_detail', post_id=post.id) }}"
                   ><h4>{{ post.title }}</h4></a
                 >
                 <p>{{ post.subtitle }}</p>
                 <div class="date">
-                  <a href="#"
-                    ><i class="fa fa-calendar" aria-hidden="true"></i>{{
-                    post.updated_date }}</a
+                  <a href="{{ url_for('post_detail', post_id=post.id) }}">
+                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                    {{ post.updated_date }}</a
                   >
-                  <a href="#"
-                    ><i class="fa fa-comments-o" aria-hidden="true"></i> 05</a
-                  >
+                  <a href="{{ url_for('post_detail', post_id=post.id) }}">
+                    <i class="fa fa-eye fa-lg" aria-hidden="true"></i>{{ post.
+                    total_view }}
+                  </a>
                 </div>
               </div>
             </div>

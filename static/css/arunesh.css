@@ -85,6 +85,16 @@
   max-width: 100%;
 }
 
+.slider-post-img img {
+  height: 400px;
+}
+
+@media only screen and (max-width: 600px) {
+  .slider-post-img img {
+    height: 350px;
+  }
+}
+
 /**************************************************************************************************
 *
 *               login.html

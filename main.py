@@ -75,6 +75,9 @@ class User(UserMixin, db.Model):
     #   comment relation
     comment_info = db.relationship("Comment", back_populates="user")
 
+    #   post
+    post_info = db.relationship("Post", back_populates="user")
+
 
 class Contact(db.Model):
     __tablename__ = 'contacts'
@@ -101,6 +104,10 @@ class Post(db.Model):
     total_view = db.Column(db.Integer, nullable=False)
     created_date = db.Column(db.String(250), nullable=False)
     updated_date = db.Column(db.String(250), nullable=False)
+
+    #   author
+    user_id = db.Column(db.Integer, ForeignKey("users.id"))
+    user = db.relationship("User", back_populates="post_info")
     
     #   post relation
     post_info = db.relationship("Bookmark", back_populates="post")
@@ -232,7 +239,8 @@ def new_post():
             tags=tags,
             created_date=created_date,
             updated_date=updated_date,
-            total_view=total_view
+            total_view=total_view,
+            user=current_user
             )
 
         db.session.add(add_post)
@@ -823,7 +831,7 @@ def home():
             if query_tag in tag:
                 tag_posts.append(post)
         return render_template("blog/pages/search.html", path=request.path, posts=tag_posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
-    
+            
     return render_template("blog/pages/index.html", path=request.path, posts=posts, sidebar=sidebar, logged_in=current_user.is_authenticated)
 
 
@@ -926,7 +934,7 @@ def post_detail(post_id):
     # comments = Comment.query.filter_by(post_id=post_id).all()
     comments = Comment.query.order_by(desc(Comment.id)).filter_by(post_id=post_id).all()
 
-    return render_template("blog/pages/post-detail.html", post=post, sidebar=sidebar, logged_in=current_user.is_authenticated, saved=saved, total_bookmark=total_bookmark, comments=comments, total_comments=len(comments), user=current_user)
+    return render_template("blog/pages/post-detail.html", post=post, sidebar=sidebar, logged_in=current_user.is_authenticated, saved=saved, total_bookmark=total_bookmark, comments=comments, total_comments=len(comments), user=current_user, author=post.user)
 
 
 @app.route("/bookmark")
