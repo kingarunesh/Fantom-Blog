@@ -831,19 +831,19 @@ def home():
     #   SEARCH RESULTS
     search = request.args.get("search")
     if search != None:
-        search_posts = Post.query.filter(Post.title.contains(search)).all()
+        search_posts = Post.query.filter(Post.title.contains(search)).all()[::-1]
         return render_template("blog/pages/search.html", path=request.path, posts=search_posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
 
     #   get posts by category
     category = request.args.get("category")
     if category != None:
-        category_posts = Post.query.filter_by(category=category).all()
+        category_posts = Post.query.filter_by(category=category).all()[::-1]
         return render_template("blog/pages/search.html", path=request.path, posts=category_posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
     
     # get posts by tag
     query_tag = request.args.get("tag")
     if query_tag != None:        
-        posts_list = Post.query.all()
+        posts_list = Post.query.all()[::-1]
         tag_posts = []
         for post in posts_list:
             tag = post.tags
@@ -880,19 +880,19 @@ def blog():
     #   SEARCH RESULTS
     search = request.args.get("search")
     if search != None:
-        search_posts = Post.query.filter(Post.title.contains(search)).all()
+        search_posts = Post.query.filter(Post.title.contains(search)).all()[::-1]
         return render_template("blog/pages/search.html", path=request.path, posts=search_posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
 
     #   get posts by category
     category = request.args.get("category")
     if category != None:
-        category_posts = Post.query.filter_by(category=category).all()
+        category_posts = Post.query.filter_by(category=category).all()[::-1]
         return render_template("blog/pages/search.html", path=request.path, posts=category_posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
     
     # get posts by tag
     query_tag = request.args.get("tag")
     if query_tag != None:        
-        posts_list = Post.query.all()
+        posts_list = Post.query.all()[::-1]
         tag_posts = []
         for post in posts_list:
             tag = post.tags
@@ -904,7 +904,7 @@ def blog():
     
 
 @app.route("/post-detail/<int:post_id>", methods=["GET","POST"])
-def post_detail(post_id):   
+def post_detail(post_id):
     posts = Post.query.order_by(desc(Post.id)).all()
 
     # get top 5 popular post by post view count
@@ -926,7 +926,7 @@ def post_detail(post_id):
         if tag not in unique_tags:
             unique_tags.append(tag)
     
-    
+
     #   post details
     post = Post.query.get(post_id)
 
@@ -941,19 +941,19 @@ def post_detail(post_id):
     #   SEARCH RESULTS
     search = request.args.get("search")
     if search != None:
-        search_posts = Post.query.filter(Post.title.contains(search)).all()
+        search_posts = Post.query.filter(Post.title.contains(search)).all()[::-1]
         return render_template("blog/pages/search.html", path=request.path, posts=search_posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
 
     #   get posts by category
     category = request.args.get("category")
     if category != None:
-        category_posts = Post.query.filter_by(category=category).all()
+        category_posts = Post.query.filter_by(category=category).all()[::-1]
         return render_template("blog/pages/search.html", path=request.path, posts=category_posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
     
     # get posts by tag
     query_tag = request.args.get("tag")
     if query_tag != None:        
-        posts_list = Post.query.all()
+        posts_list = Post.query.all()[::-1]
         tag_posts = []
         for post in posts_list:
             tag = post.tags
