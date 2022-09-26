@@ -11,7 +11,7 @@ from flask_login import LoginManager, current_user, login_user, logout_user, log
 import uuid
 import os
 
-from send_mail import send_reset_mail, verification_admin, account_verified, send_latest_post
+from send_mail import send_reset_mail, verification_admin, account_verified, send_latest_post, contact_update_admin
 
 
 
@@ -1052,10 +1052,17 @@ def contact():
             subject = request.form["subject"]
             message = request.form["message"]
 
+            #   send contact to admin
             new_contact = Contact(subject=subject, message=message, user=current_user, send_date=datetime.now(pytz.timezone('Asia/Kolkata')).strftime("%I:%M %p, %d-%B-%Y"))
 
             db.session.add(new_contact)
             db.session.commit()
+
+            # mail send to admin
+            admins = User.query.filter_by(contact_update=True).all()
+
+            for admin in admins:
+                contact_update_admin(email=admin.email, name=admin.firstName, subject=subject, url="https://fantom-blog.herokuapp.com/admin/contacts")
 
             flash("Your message sent successfully.")
             return redirect(url_for("contact"))

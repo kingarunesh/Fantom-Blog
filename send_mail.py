@@ -235,3 +235,110 @@ def send_latest_post(email, url, name, category, title):
             msg=message.as_string()
         )
 
+
+
+
+
+
+#   send latest post
+def contact_update_admin(email, name, subject, url):
+    message = MIMEMultipart("alternative")
+    message["Subject"] = "Contact Update"
+    message["From"] = sender_email
+    message["To"] = email
+
+    #   HTML part
+    html = f"""\
+        <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bootstrap demo</title>
+
+    <style>
+      body {{
+        background-color: rgb(247, 247, 247);
+      }}
+
+      .container {{
+        max-width: 50%;
+        margin: auto;
+      }}
+
+      .card {{
+        border: 2px solid rgb(219, 219, 219);
+        border-radius: 0.5rem;
+        background-color: white;
+        padding: 1rem;
+      }}
+
+      .btn-container {{
+        margin: 2rem;
+        text-align: center;
+      }}
+
+      .text {{
+        margin: 1rem 0;
+      }}
+
+      .wish {{
+        margin-top: 0.7rem;
+      }}
+
+      .btn {{
+        background-color: black;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 1rem;
+        text-decoration: none;
+        font-size: 1.2rem;
+      }}
+
+      a:link {{
+        color: white;
+      }}
+
+      @media only screen and (max-width: 600px) {{
+        .container {{
+          max-width: 90%;
+        }}
+      }}
+    </style>
+  </head>
+  <body>
+    <!--  -->
+
+    <div class="container">
+      <div class="card">
+        <h4>Hello {name},</h4>
+        <div class="text">
+        You have latest contact, <br />
+        Related to '{subject}'. <br />
+        Please check your dashboard
+        </div>
+        <div class="btn-container">
+          <a href="{url}" class="btn btn-dark">Login</a>
+        </div>
+        <div class="wish">Thank You 🙏</div>
+      </div>
+    </div>
+
+    <!--  -->
+  </body>
+</html>
+
+    """
+    # convert both parts to MIMEText objects and add them to the MIMEMultipart message
+    send_data = MIMEText(html, "html")
+    message.attach(send_data)
+
+    with SMTP("smtp.gmail.com", port=587) as server:
+        server.starttls()
+        server.login(user=sender_email, password=sender_email_password)
+        server.sendmail(
+            from_addr=sender_email,
+            to_addrs=email,
+            msg=message.as_string()
+        )
+
