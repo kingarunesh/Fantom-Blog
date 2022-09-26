@@ -238,14 +238,9 @@
                   action="{{ url_for('admin_profile_setting') }}"
                   method="POST"
                 >
-                  <div class="row mb-3">
-                    <label
-                      for="fullName"
-                      class="col-md-4 col-lg-3 col-form-label"
-                      >Email Notifications</label
-                    >
+                  <div class="row mb-3" style="padding-left: 2rem">
+                    <!-- subscribe -->
                     <div class="col-md-8 col-lg-9">
-                      <!-- subscribe -->
                       <div class="form-check">
                         <input
                           class="form-check-input"
@@ -265,8 +260,27 @@
                           Get latest post updates
                         </label>
                       </div>
-                      <!-- subscribe -->
                     </div>
+                    <!-- end subscribe -->
+
+                    <!-- contact updates -->
+                    <div class="col-md-8 col-lg-9 mt-2">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="contactUpdatecheck"
+                          name="contactUpdate"
+                        />
+                        <label
+                          class="form-check-label"
+                          for="contactUpdatecheck"
+                        >
+                          Get Contact Updates
+                        </label>
+                      </div>
+                    </div>
+                    <!-- end contact updates -->
                   </div>
 
                   <div class="text-center">
