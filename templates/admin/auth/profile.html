@@ -234,7 +234,10 @@
 
               <!-- settings -->
               <div class="tab-pane fade pt-3" id="profile-settings">
-                <form>
+                <form
+                  action="{{ url_for('admin_profile_setting') }}"
+                  method="POST"
+                >
                   <div class="row mb-3">
                     <label
                       for="fullName"
@@ -247,11 +250,19 @@
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          id="subscribe"
+                          id="subscribecheck"
                           name="subscribe"
+                          {%
+                          if
+                          user.subscribe
+                          %}
+                          checked
+                          {%
+                          endif
+                          %}
                         />
-                        <label class="form-check-label" for="subscribe">
-                          Get latest all updates
+                        <label class="form-check-label" for="subscribecheck">
+                          Get latest post updates
                         </label>
                       </div>
                       <!-- subscribe -->

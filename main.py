@@ -353,6 +353,28 @@ def update_admin_profile():
         return redirect(url_for("admin_profile"))
         
 
+
+@app.route("/admin/profile-setting", methods=["POST"])
+@login_required
+@admin_only
+def admin_profile_setting():
+
+    user = current_user
+    
+    if request.method == "POST":
+        subscribe = request.form.get("subscribe")
+
+        if subscribe == "on":
+            user.subscribe = True
+        else:
+            user.subscribe = False
+        
+        db.session.add(user)
+        db.session.commit()
+        
+        return redirect(url_for("admin_profile"))
+
+
 @app.route("/admin/update-password", methods=["POST"])
 @login_required
 @admin_only
