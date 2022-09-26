@@ -69,6 +69,7 @@ class User(UserMixin, db.Model):
     secret_key = db.Column(db.String(250), default=uuid.uuid4().hex, nullable=False)
     created_date = db.Column(db.String(250), nullable=False)
     last_login = db.Column(db.String(250), nullable=False)
+    subscribe = db.Column(db.Boolean, default=False, nullable=False)
     #   user will give input
     firstName = db.Column(db.String(250), nullable=False)
     lastName = db.Column(db.String(250), nullable=False)
