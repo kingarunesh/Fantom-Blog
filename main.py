@@ -674,7 +674,7 @@ def admin_login():
             db.session.commit()
 
             # login user
-            login_user(user)
+            login_user(user, remember=True)
             return redirect(url_for("dashboard"))
         else:
             flash("Wrong password, Please enter correct password")
@@ -1068,7 +1068,7 @@ def register():
             db.session.add(new_user)
             db.session.commit()
 
-            login_user(new_user)
+            login_user(new_user, remember=True)
 
             return redirect(url_for("home"))
         else:
@@ -1115,7 +1115,7 @@ def login():
                 db.session.commit()
 
                 #   login 
-                login_user(user)
+                login_user(user, remember=True)
                 return redirect(url_for('home'))
             else:
                 flash("Wrong Password, Please enter correct password.")
