@@ -884,6 +884,18 @@ def home():
 
 @app.route("/blog")
 def blog():
+
+     #   pagination
+    page = request.args.get("page")
+
+    if page:
+        page = int(page)
+    else:
+        page = 1
+    
+    pages = Post.query.order_by(desc(Post.id)).paginate(page=page, per_page=1)
+
+
     posts = Post.query.order_by(desc(Post.id)).all()
 
     # get top 5 popular post by post view count
@@ -928,7 +940,7 @@ def blog():
                 tag_posts.append(post)
         return render_template("blog/pages/search.html", path=request.path, posts=tag_posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
 
-    return render_template("blog/pages/blogs.html", path=request.path, posts=posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)  
+    return render_template("blog/pages/blogs.html", path=request.path, posts=posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags, pages=pages)  
     
 
 @app.route("/post-detail/<int:post_id>", methods=["GET","POST"])

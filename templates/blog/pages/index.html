@@ -86,7 +86,7 @@
           <!-- pagination -->
           <nav class="blog-pagination justify-content-center d-flex">
             <ul class="pagination">
-              <!-- left -->
+              <!-- Previous -->
               <li
                 class="page-item {% if not pages.has_prev %}disabled{% endif %}"
               >
@@ -100,7 +100,7 @@
                   </span>
                 </a>
               </li>
-              <!-- end left -->
+              <!-- end Previous -->
 
               {% for page in pages.iter_pages() %}
               <li
@@ -112,7 +112,7 @@
               </li>
               {% endfor %}
 
-              <!-- right -->
+              <!-- next -->
               <li
                 class="page-item {% if not pages.has_next %}disabled{% endif %}"
               >
@@ -126,7 +126,7 @@
                   </span>
                 </a>
               </li>
-              <!-- end right -->
+              <!-- end next -->
             </ul>
           </nav>
           <!-- end pagination -->
