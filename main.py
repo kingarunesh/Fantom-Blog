@@ -1200,11 +1200,12 @@ def settings():
 
     if request.method == "POST":
         # get from form field
-        firstName = request.form["firstName"]
-        lastName = request.form["lastName"]
-        email = request.form["email"]
-        phone = request.form["phone"]
-        profile_image = request.form["image"]
+        firstName = request.form.get("firstName")
+        lastName = request.form.get("lastName")
+        email = request.form.get("email")
+        phone = request.form.get("phone")
+        profile_image = request.form.get("image")
+        subscribe = request.form.get("subscribe")
 
         #   update existing user data
         user.firstName = firstName
@@ -1212,6 +1213,12 @@ def settings():
         user.email = email
         user.phone = phone
         user.profile_image = profile_image
+
+        if subscribe == "on":
+            user.subscribe = True
+        else:
+            user.subscribe = False
+
 
         db.session.add(user)
         db.session.commit()        
@@ -1306,6 +1313,24 @@ def set_new_password(email, key):
             return redirect(url_for("register"))
 
     return render_template("blog/auth/set-new-password.html")
+
+
+
+
+
+##################################################################################
+#
+#           BLOG ROUTES
+#
+##################################################################################
+@app.route("/testing")
+def testing():
+
+    subscribers = User.query.filter_by(subscribe=True).all()
+
+    print(subscribers)
+
+    return "Hello"
 
 
 

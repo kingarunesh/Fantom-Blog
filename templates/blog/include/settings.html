@@ -67,12 +67,19 @@
         <input
           class="form-check-input"
           type="checkbox"
-          value=""
-          ame="subscribe"
+          name="subscribe"
           id="subscribe"
+          {%
+          if
+          user.subscribe
+          %}
+          checked
+          {%
+          endif
+          %}
         />
         <label class="form-check-label" for="subscribe">
-          Get latest post updated on your email address
+          Get latest post updates on your email address
         </label>
       </div>
     </div>
