@@ -258,6 +258,14 @@ def new_post():
         db.session.add(add_post)
         db.session.commit()
 
+
+        #   send post to subscribe users
+        subscribers = User.query.filter_by(subscribe=True).all()
+        post_url = f"https://fantom-blog.herokuapp.com/post-detail/{add_post.id}"
+        for user in subscribers:
+            send_latest_post(email=user.email, url=post_url, name=user.firstName, category=add_post.category, title=add_post.title)
+
+
         return redirect(url_for('get_all_post'))
 
     return render_template("admin/pages/new-post.html", path=request.path, user=current_user, pending_contacts=pending_contacts, last_5_contacts=last_5_contacts)
