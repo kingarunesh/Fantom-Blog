@@ -11,7 +11,7 @@ from flask_login import LoginManager, current_user, login_user, logout_user, log
 import uuid
 import os
 
-from send_mail import send_reset_mail, verification_admin, account_verified
+from send_mail import send_reset_mail, verification_admin, account_verified, send_latest_post
 
 
 
@@ -1320,7 +1320,7 @@ def set_new_password(email, key):
 
 ##################################################################################
 #
-#           BLOG ROUTES
+#           testing
 #
 ##################################################################################
 @app.route("/testing")
@@ -1328,7 +1328,10 @@ def testing():
 
     subscribers = User.query.filter_by(subscribe=True).all()
 
-    print(subscribers)
+    post_url = "http://127.0.0.1:5000/testing"
+
+    for user in subscribers:
+        send_latest_post(email=user.email, url=post_url, name=user.firstName, category="Business", title="This is new post related to business")
 
     return "Hello"
 
