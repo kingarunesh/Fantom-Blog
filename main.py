@@ -822,6 +822,18 @@ def admin_logout():
 ##################################################################################
 @app.route("/")
 def home():
+
+    #   pagination
+    page = request.args.get("page")
+
+    if page:
+        page = int(page)
+    else:
+        page = 1
+    
+    pages = Post.query.order_by(desc(Post.id)).paginate(page=page, per_page=1)
+
+
     #   get all post by updated_date - order
     posts = Post.query.order_by(desc(Post.id)).all()
 
@@ -867,7 +879,7 @@ def home():
                 tag_posts.append(post)
         return render_template("blog/pages/search.html", path=request.path, posts=tag_posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
             
-    return render_template("blog/pages/index.html", path=request.path, posts=posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags)
+    return render_template("blog/pages/index.html", path=request.path, posts=posts, logged_in=current_user.is_authenticated, popular_posts=popular_posts, categories_with_numbers=categories_with_numbers, unique_tags=unique_tags, pages=pages)
 
 
 @app.route("/blog")
