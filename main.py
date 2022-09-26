@@ -17,7 +17,7 @@ from send_mail import send_reset_mail, verification_admin, account_verified, sen
 
 #   FLASK
 app = Flask(__name__)
-app.config['SECRET_KEY']='iloveyounidawhyyoublockedme'
+app.config['SECRET_KEY']='thisismysecretkeyofdb'
 
 
 #   custom error page added
