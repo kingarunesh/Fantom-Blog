@@ -70,6 +70,7 @@ class User(UserMixin, db.Model):
     created_date = db.Column(db.String(250), nullable=False)
     last_login = db.Column(db.String(250), nullable=False)
     subscribe = db.Column(db.Boolean, default=False, nullable=False)
+    contact_update = db.Column(db.Boolean, default=False, nullable=False)
     #   user will give input
     firstName = db.Column(db.String(250), nullable=False)
     lastName = db.Column(db.String(250), nullable=False)
@@ -363,11 +364,19 @@ def admin_profile_setting():
     
     if request.method == "POST":
         subscribe = request.form.get("subscribe")
+        contact_update = request.form.get("contactUpdate")
 
+        #   post
         if subscribe == "on":
             user.subscribe = True
         else:
             user.subscribe = False
+        
+        #   contact
+        if contact_update == "on":
+            user.contact_update = True
+        else:
+            user.contact_update = False
         
         db.session.add(user)
         db.session.commit()

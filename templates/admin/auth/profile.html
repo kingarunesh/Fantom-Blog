@@ -271,6 +271,14 @@
                           type="checkbox"
                           id="contactUpdatecheck"
                           name="contactUpdate"
+                          {%
+                          if
+                          user.contact_update
+                          %}
+                          checked
+                          {%
+                          endif
+                          %}
                         />
                         <label
                           class="form-check-label"
