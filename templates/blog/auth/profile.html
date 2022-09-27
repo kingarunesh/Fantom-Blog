@@ -331,7 +331,7 @@
             >
               <div class="row">
                 <div style="overflow-x: auto">
-                  {% if comments == [] %}
+                  {% if contact_list == [] %}
                   <div>
                     <h1>Empty</h1>
                     <p>You didn't post any comments in any post yet.</p>
@@ -341,9 +341,9 @@
                     <thead>
                       <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Subject</th>
-                        <th scope="col">Message</th>
-                        <th scope="col">Sent Date</th>
+                        <th scope="col" style="min-width: 300px">Subject</th>
+                        <th scope="col" style="min-width: 500px">Message</th>
+                        <th scope="col" style="min-width: 200px">Sent Date</th>
                       </tr>
                     </thead>
                     <tbody>
