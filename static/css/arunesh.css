@@ -82,7 +82,7 @@
 
 /* body image size */
 .post-desc-img img {
-  max-width: 100%;
+  width: 100%;
 }
 
 .slider-post-img img {
