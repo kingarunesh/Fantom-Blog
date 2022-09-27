@@ -204,10 +204,10 @@ def send_latest_post(email, url, name, category, title):
 
     <div class="container">
       <div class="card">
-        <h4>Hello {name},</h4>
+        <h1>Hello {name},</h1>
         <div class="text">
           We have just added new post on related to {category}. <br />
-          Post Title is : {title}. <br />
+          Post Title is : <h2>{title}</h2>. <br />
           Please click the button to read our latest post.
         </div>
         <div class="btn-container">
