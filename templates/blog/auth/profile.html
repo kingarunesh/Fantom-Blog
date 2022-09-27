@@ -159,6 +159,7 @@
                 </div>
               </div>
             </div>
+            <!-- end profile details -->
 
             <!-- Bookmarks Posts -->
             <div
@@ -329,45 +330,56 @@
               class="tab-pane fade p-3"
             >
               <div class="row">
-                <table class="table table-hover table-responsive saved-table">
-                  <thead>
-                    <tr>
-                      <th scope="col">ID</th>
-                      <th scope="col">Subject</th>
-                      <th scope="col">Message</th>
-                      <th scope="col">Sent Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for contact in contact_list %}
-                    <tr>
-                      <th scope="row" id="contact_number">{{ contact.id }}</th>
-                      <td>{{ contact.subject }}</td>
-                      <td>{{ contact.message }}</td>
-                      <td>{{ contact.send_date }}</td>
-                    </tr>
-                    {% endfor %}
+                <div style="overflow-x: auto">
+                  {% if comments == [] %}
+                  <div>
+                    <h1>Empty</h1>
+                    <p>You didn't post any comments in any post yet.</p>
+                  </div>
+                  {% else %}
+                  <table class="table table-hover table-responsive saved-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Message</th>
+                        <th scope="col">Sent Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for contact in contact_list %}
+                      <tr>
+                        <th scope="row" id="contact_number">
+                          {{ contact.id }}
+                        </th>
+                        <td>{{ contact.subject }}</td>
+                        <td>{{ contact.message }}</td>
+                        <td>{{ contact.send_date }}</td>
+                      </tr>
+                      {% endfor %}
 
-                    <!-- new -->
-                    {# {% for contact in contact_list %}
-                    <tr>
-                      <th scope="row" id="contact_number"></th>
-                      <td>{{ contact.subject }}</td>
-                      <td>{{ contact.message }}</td>
-                      <td>{{ contact.send_date }}</td>
-                    </tr>
-                    {% endfor %} #}
+                      <!-- new -->
+                      {# {% for contact in contact_list %}
+                      <tr>
+                        <th scope="row" id="contact_number"></th>
+                        <td>{{ contact.subject }}</td>
+                        <td>{{ contact.message }}</td>
+                        <td>{{ contact.send_date }}</td>
+                      </tr>
+                      {% endfor %} #}
 
-                    <!-- <script>
+                      <!-- <script>
                       for (i = 0; i <= "{{contact_list|length}}"; i++) {
                         document.getElementById("contact_number").textContent =
                           i;
                       }
                     </script> -->
 
-                    <!-- end new -->
-                  </tbody>
-                </table>
+                      <!-- end new -->
+                    </tbody>
+                  </table>
+                  {% endif %}
+                </div>
               </div>
             </div>
 
@@ -385,7 +397,7 @@
                     <!-- flash message -->
                     {% with messages = get_flashed_messages() %} {% if messages
                     %} {% for message in messages %}
-                    <p style="color: red">{{ message }}</p>
+                    <div class="alert alert-danger">{{ message }}</div>
                     {% endfor %} {% endif %} {% endwith %}
                     <!-- current password -->
                     <div class="form-group">
@@ -454,6 +466,7 @@
                 </a>
               </div>
             </div>
+            <!-- end settings -->
           </div>
           <!-- End rounded tabs -->
         </div>
