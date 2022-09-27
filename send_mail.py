@@ -16,23 +16,85 @@ def send_reset_mail(receiver_email, url, name):
 
     #   HTML part
     html = f"""\
-    <!DOCTYPE html>
-    <html lang="en">
-    <body style="background-color: rgb(247, 247, 247);">
-        <div style="width: 80%;margin: auto;padding:1rem 0">
-        <div style="background-color: white;padding: 1rem;border: 1px solid rgb(225, 225, 225);border-radius: 0.5rem;width: 50vh;margin: auto;margin-top: 1rem;">
-            <div>
-            Hi {name}, <br />A password reset for your account was requested.
-            </div>
-            <div>Please click the link below to change your password.</div>
-            <div style="margin: 2rem 0;">
-            <a href="{url}" style="background-color: black;padding: 1rem;color: white;font-size: 1.2rem;border-radius: 0.5rem;text-decoration: none;">Change Your Password </a>
-            </div>
-            <div>If you did not make this request, please ignore.</div>
+   <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bootstrap demo</title>
+
+    <style>
+      body {{
+        background-color: rgb(247, 247, 247);
+      }}
+
+      .container {{
+        max-width: 50%;
+        margin: auto;
+      }}
+
+      .card {{
+        border: 2px solid rgb(219, 219, 219);
+        border-radius: 0.5rem;
+        background-color: white;
+        padding: 1rem;
+      }}
+
+      .btn-container {{
+        margin: 2rem;
+        text-align: center;
+      }}
+
+      .text {{
+        margin: 1rem 0;
+      }}
+
+      .wish {{
+        margin-top: 0.7rem;
+      }}
+
+      .btn {{
+        background-color: black;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 1rem;
+        text-decoration: none;
+        font-size: 1.2rem;
+      }}
+
+      a:link {{
+        color: white;
+      }}
+
+      @media only screen and (max-width: 600px) {{
+        .container {{
+          max-width: 90%;
+        }}
+      }}
+    </style>
+  </head>
+  <body>
+    <!--  -->
+
+    <div class="container">
+      <div class="card">
+        <h1>Hello {name},</h1>
+        <div class="text">
+          A password reset for your account was requested. If you did request,
+          then please click the link below to change your password. If you did
+          not make this request, please ignore.
         </div>
+        <div class="btn-container">
+          <a href="{url}" class="btn btn-dark">Change Your Password</a>
         </div>
-    </body>
-    </html>
+        <div class="wish">Thank You 🙏</div>
+      </div>
+    </div>
+
+    <!--  -->
+  </body>
+</html>
+
     """
     # convert both parts to MIMEText objects and add them to the MIMEMultipart message
     send_data = MIMEText(html, "html")
@@ -58,22 +120,84 @@ def verification_admin(url):
     #   HTML part
     html = f"""\
     <!DOCTYPE html>
-    <html lang="en">
-    <body style="background-color: rgb(247, 247, 247);">
-        <div style="width: 80%;margin: auto;padding:1rem 0">
-        <div style="background-color: white;padding: 1rem;border: 1px solid rgb(225, 225, 225);border-radius: 0.5rem;width: 50vh;margin: auto;margin-top: 1rem;">
-            <h4>
-                Hello Fantom Blog,
-            </h4>
-            <div>A user has request to you become 'Fantom Blog' admin. Please click the link below to make requested user to become admin.</div>
-            <div style="margin: 2rem 0;">
-            <a href="{url}" style="background-color: black;padding: 1rem;color: white;font-size: 1.2rem;border-radius: 0.5rem;text-decoration: none;">Verified</a>
-            </div>
-            <div>If you do not want make admin then, please ignore.</div>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bootstrap demo</title>
+
+    <style>
+      body {{
+        background-color: rgb(247, 247, 247);
+      }}
+
+      .container {{
+        max-width: 50%;
+        margin: auto;
+      }}
+
+      .card {{
+        border: 2px solid rgb(219, 219, 219);
+        border-radius: 0.5rem;
+        background-color: white;
+        padding: 1rem;
+      }}
+
+      .btn-container {{
+        margin: 2rem;
+        text-align: center;
+      }}
+
+      .text {{
+        margin: 1rem 0;
+      }}
+
+      .wish {{
+        margin-top: 0.7rem;
+      }}
+
+      .btn {{
+        background-color: black;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 1rem;
+        text-decoration: none;
+        font-size: 1.2rem;
+      }}
+
+      a:link {{
+        color: white;
+      }}
+
+      @media only screen and (max-width: 600px) {{
+        .container {{
+          max-width: 90%;
+        }}
+      }}
+    </style>
+  </head>
+  <body>
+    <!--  -->
+
+    <div class="container">
+      <div class="card">
+        <h1>Hello Fantom Blog,</h1>
+        <div class="text">
+          A user has request to you become 'Fantom Blog' admin. Please click the
+          link below to make requested user to become admin. If you do not want
+          make admin then, please ignore.
         </div>
+        <div class="btn-container">
+          <a href="{url}" class="btn btn-dark">Change Your Password</a>
         </div>
-    </body>
-    </html>
+        <div class="wish">Thank You 🙏</div>
+      </div>
+    </div>
+
+    <!--  -->
+  </body>
+</html>
+
     """
     # convert both parts to MIMEText objects and add them to the MIMEMultipart message
     send_data = MIMEText(html, "html")
@@ -99,23 +223,85 @@ def account_verified(email, url, name):
 
     #   HTML part
     html = f"""\
-    <!DOCTYPE html>
-    <html lang="en">
-    <body style="background-color: rgb(247, 247, 247);">
-        <div style="width: 80%;margin: auto;padding:1rem 0">
-        <div style="background-color: white;padding: 1rem;border: 1px solid rgb(225, 225, 225);border-radius: 0.5rem;width: 50vh;margin: auto;margin-top: 1rem;">
-            <h4>
-                Hello {name},
-            </h4>
-            <div>Your account had verified. Now you are admin of 'Fantom Blog', You can post new blog, update, delete and more thing you can do now.</div>
-            <div style="margin: 2rem 0;">
-            <a href="{url}" style="background-color: black;padding: 1rem;color: white;font-size: 1.2rem;border-radius: 0.5rem;text-decoration: none;">Login</a>
-            </div>
-            <div>Congratulation 🥳</div>
+   <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bootstrap demo</title>
+
+    <style>
+      body {{
+        background-color: rgb(247, 247, 247);
+      }}
+
+      .container {{
+        max-width: 50%;
+        margin: auto;
+      }}
+
+      .card {{
+        border: 2px solid rgb(219, 219, 219);
+        border-radius: 0.5rem;
+        background-color: white;
+        padding: 1rem;
+      }}
+
+      .btn-container {{
+        margin: 2rem;
+        text-align: center;
+      }}
+
+      .text {{
+        margin: 1rem 0;
+      }}
+
+      .wish {{
+        margin-top: 0.7rem;
+      }}
+
+      .btn {{
+        background-color: black;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 1rem;
+        text-decoration: none;
+        font-size: 1.2rem;
+      }}
+
+      a:link {{
+        color: white;
+      }}
+
+      @media only screen and (max-width: 600px) {{
+        .container {{
+          max-width: 90%;
+        }}
+      }}
+    </style>
+  </head>
+  <body>
+    <!--  -->
+
+    <div class="container">
+      <div class="card">
+        <h1>Hello {name},</h1>
+        <div class="text">
+          Your account had verified as a Admin. Now you are admin of 'Fantom
+          Blog', You can post new blog, update, delete and more thing you can do
+          now.
         </div>
+        <div class="wish">Congratulation 🥳, To become our family part.</div>
+        <div class="btn-container">
+          <a href="{url}" class="btn btn-dark">Login</a>
         </div>
-    </body>
-    </html>
+      </div>
+    </div>
+
+    <!--  -->
+  </body>
+</html>
+
     """
     # convert both parts to MIMEText objects and add them to the MIMEMultipart message
     send_data = MIMEText(html, "html")
