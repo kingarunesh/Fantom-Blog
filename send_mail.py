@@ -397,7 +397,7 @@ def send_latest_post(email, url, name, category, title):
           Please click the button to read our latest post.
         </div>
         <div class="btn-container">
-          <a href="{url}" class="btn btn-dark">Login</a>
+          <a href="{url}" class="btn btn-dark">Read Post</a>
         </div>
         <div class="wish">Thank You 🙏</div>
       </div>
