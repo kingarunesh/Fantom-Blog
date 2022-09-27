@@ -311,11 +311,11 @@ def contact_update_admin(email, name, subject, url):
 
     <div class="container">
       <div class="card">
-        <h4>Hello {name},</h4>
+        <h1>Hello {name},</h1>
         <div class="text">
-        You have latest contact, <br />
-        Related to '{subject}'. <br />
-        Please check your dashboard
+        Fantom user trying to contact with you, <br /> 
+         Subject : <h2>'{subject}'.</h2> <br />
+         If you like then please check your dashboard, click on login button.
         </div>
         <div class="btn-container">
           <a href="{url}" class="btn btn-dark">Login</a>
