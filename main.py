@@ -187,19 +187,19 @@ def admin_only(f):
 @login_required
 @admin_only
 def dashboard():
-    #   get all posts
+    #   last 5 posts
     posts = Post.query.order_by(desc(Post.id)).all()[:5]
     
-    #   count total pendding contact
+    #   pendding contact
     pending_contacts = Contact.query.filter_by(status=False).count()
     #   get last 5 contact person
     last_5_contacts = Contact.query.order_by(desc(Contact.id)).filter_by(status=False).all()[:5]
 
-    #   total post
+    #   posts total
     total_posts = len(Post.query.all())
-    #   total users
+    #   users total
     users_total = len(User.query.all())
-    #   total contacts
+    #   contacts total
     total_contacts = len(Contact.query.all())
 
     return render_template("admin/pages/dashboard.html", path=request.path, posts=posts, pending_contacts=pending_contacts, last_5_contacts=last_5_contacts, user=current_user, total_posts=total_posts, users_total=users_total, total_contacts=total_contacts)
@@ -1395,14 +1395,6 @@ def set_new_password(email, key):
 ##################################################################################
 @app.route("/testing")
 def testing():
-
-    subscribers = User.query.filter_by(subscribe=True).all()
-
-    post_url = "http://127.0.0.1:5000/testing"
-
-    for user in subscribers:
-        send_latest_post(email=user.email, url=post_url, name=user.firstName, category="Business", title="This is new post related to business")
-
     return "Hello"
 
 

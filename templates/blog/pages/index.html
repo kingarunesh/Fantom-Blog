@@ -19,7 +19,7 @@
           <img src="{{ post.image_url }}" alt="" />
         </div>
         <div class="post_text">
-          <a class="cat" href="#">{{ post.category }}</a>
+          <span class="cat">{{ post.category }}</span>
           <a href="{{ url_for('post_detail', post_id=post.id) }}"
             ><h4>{{ post.title }}</h4></a
           >
