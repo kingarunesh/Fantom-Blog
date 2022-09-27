@@ -831,7 +831,7 @@ def home():
     else:
         page = 1
     
-    pages = Post.query.order_by(desc(Post.id)).paginate(page=page, per_page=1)
+    pages = Post.query.order_by(desc(Post.id)).paginate(page=page, per_page=5)
 
 
     #   get all post by updated_date - order
@@ -893,7 +893,7 @@ def blog():
     else:
         page = 1
     
-    pages = Post.query.order_by(desc(Post.id)).paginate(page=page, per_page=1)
+    pages = Post.query.order_by(desc(Post.id)).paginate(page=page, per_page=5)
 
 
     posts = Post.query.order_by(desc(Post.id)).all()
