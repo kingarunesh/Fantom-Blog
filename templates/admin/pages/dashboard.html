@@ -99,7 +99,7 @@
 
           <!-- end card -->
 
-          <!-- last 5 posts -->
+          <!-- posts -->
           <div class="col-12">
             <div class="card top-selling overflow-auto">
               <div class="filter">
@@ -110,13 +110,13 @@
                       font-size: 1.1rem;
                       text-decoration: underline;
                     "
-                    >All Posts</span
+                    >Posts</span
                   ></a
                 >
               </div>
 
               <div class="card-body pb-0">
-                <h5 class="card-title">Latest 5 Posts</h5>
+                <h5 class="card-title">Posts - Latest 5 posts</h5>
                 <table class="table table-borderless">
                   <thead>
                     <tr>
@@ -128,7 +128,6 @@
                       <th scope="col">Category</th>
                       <th scope="col">Updated Date</th>
                       <th scope="col">Views</th>
-                      <th scope="col">Comments</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -153,7 +152,6 @@
                       <td>{{ post.category }}</td>
                       <td>{{ post.updated_date }}</td>
                       <td class="fw-bold">{{ post.total_view }}</td>
-                      <td class="fw-bold">{{ post.total_view }}</td>
                     </tr>
                     {% endfor %}
                   </tbody>
@@ -161,7 +159,60 @@
               </div>
             </div>
           </div>
-          <!-- end last 5 posts -->
+          <!-- end posts -->
+
+          <!-- contacts -->
+          <div class="col-12">
+            <div class="card top-selling overflow-auto">
+              <div class="filter">
+                <a href="{{ url_for('admin_contact') }}" class="m-5"
+                  ><span
+                    style="
+                      color: rgb(10, 10, 222);
+                      font-size: 1.1rem;
+                      text-decoration: underline;
+                    "
+                    >Contacts</span
+                  ></a
+                >
+              </div>
+
+              <div class="card-body pb-0">
+                <h5 class="card-title">Contacts - Latest 5 contacts</h5>
+                <table class="table table-borderless">
+                  <thead>
+                    <tr>
+                      <th scope="col">ID</th>
+                      <th scope="col">User</th>
+                      <th scope="col">Subject</th>
+                      <th scope="col" style="min-width: 400px; width: 450px">
+                        Message
+                      </th>
+                      <th scope="col">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for contact in last_5_contacts: %}
+                    <tr>
+                      <th>{{ contact.id }}</th>
+                      <td>
+                        <a
+                          href="{{ url_for('admin_user_profile', user_id=contact.user.id) }}"
+                          class="text-primary fw-bold"
+                          >{{ contact.user.email }}</a
+                        >
+                      </td>
+                      <td class="fw-bold">{{ contact.subject }}</td>
+                      <td>{{ contact.message }}</td>
+                      <td>{{ contact.send_date }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- end contacts -->
         </div>
       </div>
       <!-- End Left side columns -->

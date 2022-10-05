@@ -193,7 +193,7 @@ def dashboard():
     #   pendding contact
     pending_contacts = Contact.query.filter_by(status=False).count()
     #   get last 5 contact person
-    last_5_contacts = Contact.query.order_by(desc(Contact.id)).filter_by(status=False).all()[:5]
+    last_5_contacts = Contact.query.order_by(desc(Contact.id)).all()[:5]
 
     #   posts total
     total_posts = len(Post.query.all())
