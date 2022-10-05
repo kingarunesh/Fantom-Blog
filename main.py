@@ -194,6 +194,8 @@ def dashboard():
     pending_contacts = Contact.query.filter_by(status=False).count()
     #   get last 5 contact person
     last_5_contacts = Contact.query.order_by(desc(Contact.id)).all()[:5]
+    #   last 5 comments
+    last_5_comments = Comment.query.order_by(desc(Comment.id)).all()[:5]
 
     #   posts total
     total_posts = len(Post.query.all())
@@ -202,7 +204,7 @@ def dashboard():
     #   contacts total
     total_contacts = len(Contact.query.all())
 
-    return render_template("admin/pages/dashboard.html", path=request.path, posts=posts, pending_contacts=pending_contacts, last_5_contacts=last_5_contacts, user=current_user, total_posts=total_posts, users_total=users_total, total_contacts=total_contacts)
+    return render_template("admin/pages/dashboard.html", path=request.path, posts=posts, pending_contacts=pending_contacts, last_5_contacts=last_5_contacts, last_5_comments=last_5_comments, user=current_user, total_posts=total_posts, users_total=users_total, total_contacts=total_contacts)
 
 
 #   posts

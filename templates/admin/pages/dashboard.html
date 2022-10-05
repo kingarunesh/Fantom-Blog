@@ -161,6 +161,57 @@
           </div>
           <!-- end posts -->
 
+          <!-- comments -->
+          <div class="col-12">
+            <div class="card top-selling overflow-auto">
+              <div class="filter">
+                <a href="{{ url_for('admin_comments') }}" class="m-5"
+                  ><span
+                    style="
+                      color: rgb(10, 10, 222);
+                      font-size: 1.1rem;
+                      text-decoration: underline;
+                    "
+                    >Comments</span
+                  ></a
+                >
+              </div>
+
+              <div class="card-body pb-0">
+                <h5 class="card-title">Comments - Latest 5 comments</h5>
+                <table class="table table-borderless">
+                  <thead>
+                    <tr>
+                      <th scope="col" style="width: 5%">ID</th>
+                      <th scope="col" style="width: 10%">User</th>
+                      <th scope="col" style="width: 30%">Post Title</th>
+                      <th scope="col" style="width: 40%">Comment</th>
+                      <th scope="col" style="width: 15%">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for comment in last_5_comments: %}
+                    <tr>
+                      <th>{{ comment.id }}</th>
+                      <td>
+                        <a
+                          href="{{ url_for('admin_user_profile', user_id=comment.user.id) }}"
+                          class="text-primary fw-bold"
+                          >{{ comment.user.email }}</a
+                        >
+                      </td>
+                      <td class="fw-bold">{{ comment.post.title }}</td>
+                      <td>{{ comment.text_comment }}</td>
+                      <td>{{ comment.date_comment }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- end comments -->
+
           <!-- contacts -->
           <div class="col-12">
             <div class="card top-selling overflow-auto">
