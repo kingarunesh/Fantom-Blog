@@ -34,6 +34,7 @@
               action="{{ url_for('new_post') }}"
               method="POST"
             >
+              <!-- title -->
               <div class="col-md-12">
                 <label for="title" class="form-label">Title</label>
                 <input
@@ -45,17 +46,26 @@
                 />
               </div>
 
+              <!-- subtitle -->
               <div class="col-md-12">
                 <label for="subtitle" class="form-label">Subtitle</label>
-                <input
+                <textarea
+                  class="form-control"
+                  id="subtitle"
+                  name="subtitle"
+                  rows="4"
+                  required
+                ></textarea>
+                <!-- <input
                   type="text"
                   name="subtitle"
                   class="form-control"
                   id="subtitle"
                   required
-                />
+                /> -->
               </div>
 
+              <!-- image -->
               <div class="col-md-12">
                 <label for="image" class="form-label">Image URL</label>
                 <input
@@ -67,11 +77,13 @@
                 />
               </div>
 
+              <!-- body -->
               <div class="col-md-12">
                 <label for="description" class="form-label">Textarea</label>
                 {{ ckeditor.create() }} {{ ckeditor.config(name='body') }}
               </div>
 
+              <!-- category -->
               <div class="col-md-6">
                 <label for="category" class="form-label">Category</label>
                 <select id="category" class="form-select" name="category">
@@ -84,6 +96,7 @@
                 </select>
               </div>
 
+              <!-- tags -->
               <div class="col-md-6">
                 <label for="tags" class="form-label">Tags</label>
                 <input
